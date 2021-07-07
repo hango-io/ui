@@ -1,0 +1,19 @@
+name: Build and Deploy
+on:
+    push:
+        branches:
+            - main
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@master
+
+            - name: Build
+              run: sh ./build.sh
+
+            # - name: Deploy
+            #   run: npm run-script deploy
+            #   env:
+            #       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}

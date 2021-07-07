@@ -1,0 +1,38 @@
+{
+  "name": "@hango/ui-server",
+  "version": "0.0.0",
+  "description": "ui server for hango gateway",
+  "private": true,
+  "keywords": [
+    "hango"
+  ],
+  "author": "Zyao89 <zyao89@gmail.com>",
+  "homepage": "https://github.com/hango-io/ui.git",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "files": [
+    "src"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.yarnpkg.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com:hango-io/ui.git"
+  },
+  "scripts": {
+    "nodemon": "nodemon -x 'npm run serve'",
+    "showAlias": "micro-app show alias",
+    "serve": "micro-app serve",
+    "start": "micro-app start",
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "dependencies": {
+    "@2o3t/koa2-proxy-middleware": "^0.0.5",
+    "@micro-app/cli": "^0.4.0",
+    "@micro-app/plugin-koa": "^0.2.2",
+    "koa-body": "^4.2.0",
+    "koa-static": "^5.0.0",
+    "lru-cache": "^6.0.0"
+  }
+}
