@@ -59,7 +59,6 @@
             <validation-provider
                 v-slot="{ errors }"
                 name="HostList"
-                rules="required"
             >
                     <g-multi-validation-text-field
                         label="host"
