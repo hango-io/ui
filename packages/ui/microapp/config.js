@@ -2,7 +2,7 @@ const path = require('path');
 process.env.VUE_CLI_SERVICE_CONFIG_PATH = path.resolve(__dirname, 'vue.config.js');
 
 const config = {
-    type: '', // types 类型
+    type: 'app', // 类型
 
     entry: {
         app: [ './src/main.js' ],
@@ -43,7 +43,7 @@ const config = {
     devServer: {
         proxy: {
             '/proxy/api/gportal': {
-                target: 'http://portal.hango.io',
+                target: 'http://portal.hango.io:31833',
                 changeOrigin: true,
                 ws: true,
                 pathRewrite: {

@@ -1,6 +1,6 @@
 <p align="center">
   <a href="#">
-    <img width="400" src="packages/ui/src/assets/logo.png">
+    <img width="400" src="packages/ui/src/assets/logo.svg">
   </a>
 </p>
 

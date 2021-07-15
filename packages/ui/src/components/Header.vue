@@ -8,7 +8,7 @@
             <v-img
               max-height="64"
               max-width="130"
-              src="@/assets/logo.png"
+              src="@/assets/logo.svg"
             ></v-img>
             <h1 style="display: none;" title="hango">hango</h1>
           </v-app-bar-title>

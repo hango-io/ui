@@ -23,8 +23,9 @@
         <template #item.HostList="{ item }">
             <v-tooltip top min-width="320">
                 <template v-slot:activator="{ on, attrs }">
-                    <span>{{ item.HostList && item.HostList[0] || '-' }}</span>
+                    <span>{{ Array.isArray(item.HostList) && item.HostList[0] || '-' }}</span>
                     <v-btn
+                        v-if="Array.isArray(item.HostList) && item.HostList.length > 1"
                         class="ml-2"
                         style="vertical-align: bottom;"
                         x-small
@@ -34,7 +35,7 @@
                         v-on="{ ...on, ...$listeners }"
                     >更多</v-btn>
                 </template>
-                <div>
+                <div v-if="Array.isArray(item.HostList) && item.HostList.length > 1">
                     <div v-for="(host, i) in item.HostList" :key="i">{{ host || '-' }}</div>
                 </div>
             </v-tooltip>
