@@ -32,7 +32,7 @@
                                 <v-col cols="12">
                                     <g-label>服务类型：</g-label>
                                     <v-chip
-                                        color="success"
+                                        color="info"
                                         label
                                         x-small
                                     >
@@ -55,7 +55,7 @@
                         :list="basicInfoList">
                         <template #ServiceType="{ item }">
                             <v-chip
-                                color="success"
+                                color="info"
                                 x-small
                                 label
                             >
@@ -70,15 +70,6 @@
                     <g-info-card
                         title="发布详情"
                         :list="publishedInfoList">
-                        <template #ServiceType="{ item }">
-                            <v-chip
-                                color="success"
-                                x-small
-                                label
-                            >
-                                {{ item.text && item.text.toUpperCase() || '-' }}
-                            </v-chip>
-                        </template>
                     </g-info-card>
                 </v-col>
             </v-row>

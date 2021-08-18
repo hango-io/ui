@@ -20,24 +20,32 @@
                             color="secondary"
                             size="54"
                         >
-                            <span class="white--text text-h5">{{ info.ServiceName.substring(0, 2).toUpperCase() }}</span>
+                            <span class="white--text text-h5">{{ info.RouteRuleName.substring(0, 2).toUpperCase() }}</span>
                         </v-avatar>
                     </v-list-item-avatar>
                     <v-list-item-content>
                         <v-list-item-title class="text-h5 mb-2">
-                            <span>{{ info.ServiceName }}</span>
+                            <span>{{ info.RouteRuleName }}</span>
                         </v-list-item-title>
                         <v-list-item-subtitle>
-                            <v-row justify="center">
-                                <v-col>
+                            <v-row dense>
+                                <v-col cols="12">
+                                    <g-label>所属服务：</g-label>
+                                    <span>{{ info.ServiceName || '-' }}</span>
+                                </v-col>
+                                <v-col cols="12">
                                     <g-label>服务类型：</g-label>
                                     <v-chip
-                                        color="success"
+                                        color="info"
                                         label
                                         x-small
                                     >
                                         {{ info.ServiceType && info.ServiceType.toUpperCase() || '-' }}
                                     </v-chip>
+                                </v-col>
+                                <v-col cols="12">
+                                    <g-label>所属网关：</g-label>
+                                    <span>{{ info.GwName || '-' }}</span>
                                 </v-col>
                             </v-row>
                         </v-list-item-subtitle>
@@ -51,20 +59,20 @@
                         :list="basicInfoList">
                         <template #ServiceType="{ item }">
                             <v-chip
-                                color="success"
+                                color="info"
                                 x-small
                                 label
                             >
                                 {{ item.text && item.text.toUpperCase() || '-' }}
                             </v-chip>
                         </template>
-                        <template #PublishStatus="{ item }">
+                        <template #EnableState="{ item }">
                             <v-chip
-                                :color="+item.PublishStatus === 1 ? 'success' : ''"
-                                label
                                 x-small
+                                :color="item.text === 'enable' ? 'success' : 'error'"
+                                label
                             >
-                                {{ +item.PublishStatus === 1 ? '已发布' : '未发布' }}
+                                {{ item.text !== 'enable' ? '已禁用' : '已启用' }}
                             </v-chip>
                         </template>
                         <template #Priority="{ item }">
@@ -107,7 +115,7 @@ export default {
                 { label: '所属网关', text: info.GwName },
                 { label: '服务类型', key: 'ServiceType', text: info.ServiceType },
                 { label: '所属服务', text: info.ServiceName },
-                { label: '发布状态', key: 'PublishStatus', text: info.PublishStatus },
+                { label: '使能状态', key: 'EnableState', text: info.EnableState },
                 { label: '优先级', key: 'Priority', text: info.Priority },
                 { label: '创建时间', key: 'CreateTime', text: info.CreateTime },
                 { label: '修改时间', key: 'UpdateTime', text: info.UpdateTime },

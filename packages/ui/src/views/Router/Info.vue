@@ -32,7 +32,7 @@
                                 <v-col>
                                     <g-label>服务类型：</g-label>
                                     <v-chip
-                                        color="success"
+                                        color="info"
                                         label
                                         x-small
                                     >
@@ -51,7 +51,7 @@
                         :list="basicInfoList">
                         <template #ServiceType="{ item }">
                             <v-chip
-                                color="success"
+                                color="info"
                                 x-small
                                 label
                             >
@@ -60,11 +60,11 @@
                         </template>
                         <template #PublishStatus="{ item }">
                             <v-chip
-                                :color="+item.PublishStatus === 1 ? 'success' : ''"
+                                :color="+item.text === 1 ? 'success' : ''"
                                 label
                                 x-small
                             >
-                                {{ +item.PublishStatus === 1 ? '已发布' : '未发布' }}
+                                {{ +item.text === 1 ? '已发布' : '未发布' }}
                             </v-chip>
                         </template>
                         <template #Priority="{ item }">
