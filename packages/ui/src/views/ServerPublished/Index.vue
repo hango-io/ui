@@ -64,7 +64,7 @@ const TABLE_HEADERS = [
     { text: '发布信息', value: 'custom', name: 'PublishType' },
     { text: '所属网关', value: 'GwName' },
     { text: '发布时间', value: 'UpdateTime' },
-    { text: '操作', value: 'custom', name: 'actions', width: 50 },
+    { text: '操作', value: 'custom', name: 'actions', width: 100 },
 ];
 import _ from 'lodash';
 import ActionBtnComp from '@/components/ActionBtn';

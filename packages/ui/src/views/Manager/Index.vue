@@ -20,6 +20,26 @@
                 @click="handleCreate()"
             ></ActionBtnComp>
         </template>
+        <template #item.HostList="{ item }">
+            <v-tooltip top min-width="320">
+                <template v-slot:activator="{ on, attrs }">
+                    <span>{{ Array.isArray(item.HostList) && item.HostList[0] || '-' }}</span>
+                    <v-btn
+                        v-if="Array.isArray(item.HostList) && item.HostList.length > 1"
+                        class="ml-2"
+                        style="vertical-align: bottom;"
+                        x-small
+                        text
+                        color="primary"
+                        v-bind="{ ...attrs, ...$attrs }"
+                        v-on="{ ...on, ...$listeners }"
+                    >更多</v-btn>
+                </template>
+                <div v-if="Array.isArray(item.HostList) && item.HostList.length > 1">
+                    <div v-for="(host, i) in item.HostList" :key="i">{{ host || '-' }}</div>
+                </div>
+            </v-tooltip>
+        </template>
         <template #item.actions="{ item }">
             <ActionBtnComp
                 color="primary"
@@ -45,6 +65,7 @@
 const TABLE_HEADERS = [
     { text: '网关名称', value: 'GwName' },
     { text: '网关地址', value: 'GwAddr' },
+    { text: '域名列表', value: 'custom', name: 'HostList' },
     { text: '备注信息', value: 'Description' },
     { text: '操作', value: 'custom', name: 'actions', width: 120 },
 ];

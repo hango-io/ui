@@ -16,6 +16,10 @@
     <v-footer app>
       <!-- -->
     </v-footer>
+
+    <div :class="$style.waterBgMask">
+       <div :class="$style.waterBgImg"></div>
+    </div>
   </v-app>
 </template>
 
@@ -52,5 +56,23 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" module>
+.waterBgMask {
+    position: absolute;
+    z-index: 99999;
+    opacity: 0.05;
+    filter: alpha(opacity=5);
+    pointer-events: none;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+.waterBgImg {
+    background: url('~@/assets/logo.svg') no-repeat center center;
+    width: 100%;
+    height: 100%;
+    max-width: 60%;
+    margin: auto;
+}
 </style>
