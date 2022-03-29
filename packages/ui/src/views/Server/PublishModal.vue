@@ -88,14 +88,32 @@
                 </g-multi-validation-text-field>
             </template>
 
+            <!-- 更多配置 -->
+             <v-switch
+                v-model="moreSwitch"
+                label="更多配置"
+            ></v-switch>
+            <MoreConfig v-model="form.TrafficPolicy"
+                v-show="moreSwitch"
+                :publishType="form.PublishType">
+                <g-label slot="title">更多配置</g-label>
+            </MoreConfig>
+
+            <VersionExpansionPanels v-model="form.Subsets"
+                :staticAddrList="form.BackendService.split(',')"
+                :publishType="form.PublishType">
+                <g-label slot="title">版本配置</g-label>
+            </VersionExpansionPanels>
         </template>
     </g-modal-form>
 </template>
 <script>
 import { ValidationProvider } from 'vee-validate';
+import MoreConfig from './MoreConfig';
+import VersionExpansionPanels from './VersionExpansionPanels';
 export default {
     components: {
-        ValidationProvider,
+        ValidationProvider, VersionExpansionPanels, MoreConfig,
     },
     props: {
         current: Object,
@@ -106,10 +124,11 @@ export default {
     },
     data: () => ({
         registryCenterList: [],
+        moreSwitch: false,
         form: {
             GwId: '',
             RegistryCenterType: 'Kubernetes',
-            PublishType: 'DYNAMIC',
+            PublishType: 'DYNAMIC', // 'STATIC'
             PublishProtocol: 'http',
             BackendService: '',
         },

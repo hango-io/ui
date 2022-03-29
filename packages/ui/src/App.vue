@@ -5,7 +5,7 @@
 
     <MenusComp/>
 
-    <v-main>
+    <v-main :class="$style.main">
       <v-container fluid>
         <router-view></router-view>
       </v-container>
@@ -74,5 +74,9 @@ export default {
     height: 100%;
     max-width: 60%;
     margin: auto;
+}
+
+.main {
+  padding-left: 64px !important;
 }
 </style>
