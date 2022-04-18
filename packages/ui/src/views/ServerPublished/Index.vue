@@ -51,9 +51,22 @@
                 tooltip="下线"
                 @click="handleDelete(item)"
             ></ActionBtnComp>
+            <ActionBtnComp
+                color="primary"
+                icon="mdi-heart"
+                tooltip="健康检查"
+                @click="handleHealth(item)"
+            ></ActionBtnComp>
+            <!-- <ActionBtnComp
+                color="success"
+                icon="mdi-compare"
+                tooltip="复制发布"
+                @click="handleCopyPublish(item)"
+            ></ActionBtnComp> -->
         </template>
       </g-table-list>
     </div>
+    <HealthModalComp v-if="healthVisible" :current="current" @close="handleClose"/>
   </v-container>
 </template>
 
@@ -64,12 +77,13 @@ const TABLE_HEADERS = [
     { text: '发布信息', value: 'custom', name: 'PublishType' },
     { text: '所属网关', value: 'GwName' },
     { text: '发布时间', value: 'UpdateTime' },
-    { text: '操作', value: 'custom', name: 'actions', width: 100 },
+    { text: '操作', value: 'custom', name: 'actions', width: 180 },
 ];
 import _ from 'lodash';
 import ActionBtnComp from '@/components/ActionBtn';
+import HealthModalComp from './HealthModal';
 export default {
-    components: { ActionBtnComp },
+    components: { ActionBtnComp, HealthModalComp },
     data() {
         return {
             headers: TABLE_HEADERS.map(item => {
@@ -79,6 +93,8 @@ export default {
                     sortable: false,
                 };
             }),
+            healthVisible: false,
+            current: null,
         };
     },
     methods: {
@@ -95,11 +111,22 @@ export default {
                 return { list: ServiceProxyList, total: TotalCount };
             });
         },
+        handleClose() {
+            this.healthVisible = false;
+            this.current = null;
+            this.refresh();
+        },
         handleEdit(item) {
             console.info(item);
+            this.current = item;
         },
-        handlePublish(item) {
+        handleHealth(item) {
+            this.current = item;
+            this.healthVisible = true;
+        },
+        handleCopyPublish(item) {
             console.info(item);
+            this.current = item;
         },
         handleDelete(item) {
             this.$confirm({

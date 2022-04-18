@@ -307,4 +307,19 @@ export default {
             Version: '2019-09-01',
         },
     },
+    DescribeHealthCheckRule: {
+        url: '/gdashboard/envoy',
+        params: {
+            Action: 'DescribeHealthCheckRule',
+            Version: '2019-09-01',
+        },
+    },
+    UpdateHealthCheckRule: {
+        method: 'post',
+        url: '/gdashboard/envoy',
+        params: {
+            Action: 'UpdateHealthCheckRule',
+            Version: '2019-09-01',
+        },
+    },
 };
