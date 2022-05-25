@@ -54,7 +54,6 @@ const options = {
                 },
             }, c);
         },
-        update: () => this.$forceUpdate(),
         getValue() {
             return this.schemaForm && this.schemaForm.formatValue || null;
         },
@@ -64,8 +63,10 @@ const options = {
             ...this.schema,
         }, this.value, {
             render: this.render,
-            update: this.update,
-        });
+            update: () => {
+                this.$forceUpdate();
+            },
+        }).create();
     },
     render(h) {
         return this.schemaForm.render(h);

@@ -98,6 +98,21 @@
                     required
                 ></v-text-field>
             </validation-provider>
+
+            <!-- 重试 -->
+            <template>
+                <v-switch
+                    v-model="form.HttpRetry.IsRetry"
+                    label="重试"
+                >
+                </v-switch>
+
+                <!-- 重试详情 -->
+                <template v-if="form.HttpRetry.IsRetry">
+                    <!-- 重试条件 -->
+                    <ss-form-schema ref="ssformSchemaRef" v-model="form.HttpRetry" :schema="HttpRetrySchema"></ss-form-schema>
+                </template>
+            </template>
         </template>
 
     </g-modal-form>
@@ -122,11 +137,52 @@ export default {
             EnableState: 'enable',
             Timeout: '60000',
             DestinationServices: [],
+            HttpRetry: {
+                IsRetry: false,
+                RetryOn: [],
+                Attempts: '2',
+                PerTryTimeout: '60000',
+            },
         },
     }),
     computed: {
         isEdit() {
             return this.type === 'edit';
+        },
+        HttpRetrySchema() {
+            return {
+                layouts: [
+                    {
+                        key: 'RetryOn',
+                        type: 'checkbox',
+                        alias: '重试条件',
+                        options: [
+                            '5xx',
+                            'refused-stream',
+                            'connect-failure',
+                            'gateway-error',
+                        ],
+                        rules: [ 'Required' ],
+                        default: [],
+                    },
+                    {
+                        key: 'Attempts',
+                        type: 'number',
+                        alias: '重试次数',
+                        placeholder: '1-10内的整数',
+                        rules: [ 'Required' ],
+                        default: 2,
+                    },
+                    {
+                        key: 'PerTryTimeout',
+                        type: 'number',
+                        alias: '重试超时时间',
+                        placeholder: '1-1000000内的整数',
+                        rules: [ 'Required' ],
+                        default: 60000,
+                    },
+                ],
+            };
         },
     },
     methods: {
@@ -134,6 +190,17 @@ export default {
             const param = JSON.parse(JSON.stringify(this.form));
             param.ServiceId = this.current.ServiceId;
             param.RouteRuleId = this.current.RouteRuleId;
+
+            if (param.HttpRetry.IsRetry) {
+                const ssformSchemaRef = this.$refs.ssformSchemaRef;
+                if (ssformSchemaRef) {
+                    const config = ssformSchemaRef.getValue();
+                    console.info('config:', config);
+                    param.HttpRetry = config;
+                    param.HttpRetry.IsRetry = true;
+                }
+            }
+
             return this.axios({
                 action: 'PublishRouteRule',
                 data: {
