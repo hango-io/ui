@@ -1,16 +1,16 @@
 export default {
     // 服务管理
     DescribeServiceList: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'get',
         params: {
             Action: 'DescribeServiceList',
-            Version: '2019-09-01',
+            Version: '2018-08-09',
         },
     },
     // 路由管理
     DescribeRouteRuleList: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'get',
         params: {
             Action: 'DescribeRouteRuleList',
@@ -19,7 +19,7 @@ export default {
     },
     // 已发布服务管理
     DescribeEnvoyServiceProxyList: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'get',
         params: {
             Action: 'DescribeServiceProxyList',
@@ -28,7 +28,7 @@ export default {
     },
     // 已发布路由管理
     DescribePublishRouteRuleList: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'get',
         params: {
             Action: 'DescribeRouteRuleProxyList',
@@ -36,7 +36,7 @@ export default {
         },
     },
     DescribeBindingPlugins: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'get',
         params: {
             Action: 'DescribeBindingPlugins',
@@ -44,7 +44,7 @@ export default {
         },
     },
     DescribeGatewayListForGatewayTab: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'get',
         params: {
             Action: 'DescribeGatewayList',
@@ -52,31 +52,31 @@ export default {
         },
     },
     CreateService: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'post',
         params: {
             Action: 'CreateService',
-            Version: '2019-09-01',
+            Version: '2018-08-09',
         },
     },
     DeleteService: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'get',
         params: {
             Action: 'DeleteService',
-            Version: '2019-09-01',
+            Version: '2018-08-09',
         },
     },
     UpdateService: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'post',
         params: {
             Action: 'UpdateService',
-            Version: '2019-09-01',
+            Version: '2018-08-09',
         },
     },
     DescribeGatewayList: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'get',
         params: {
             Action: 'DescribeGatewayList',
@@ -84,7 +84,7 @@ export default {
         },
     },
     GetRegistryCenterList: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'get',
         params: {
             Action: 'GetRegistryCenterList',
@@ -92,7 +92,7 @@ export default {
         },
     },
     DescribeServiceListByGw: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'get',
         params: {
             Action: 'DescribeServiceListByGw',
@@ -100,7 +100,7 @@ export default {
         },
     },
     PublishService: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'post',
         params: {
             Action: 'PublishService',
@@ -108,7 +108,7 @@ export default {
         },
     },
     CreateRouteRule: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'post',
         params: {
             Action: 'CreateRouteRule',
@@ -116,7 +116,7 @@ export default {
         },
     },
     UpdateRouteRule: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'post',
         params: {
             Action: 'UpdateRouteRule',
@@ -124,7 +124,7 @@ export default {
         },
     },
     DescribeGatewayForPublishedRule: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'get',
         params: {
             Action: 'DescribeGatewayForRouteRuleProxy',
@@ -132,7 +132,7 @@ export default {
         },
     },
     DescribeServiceProxyForPublishRoute: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'get',
         params: {
             Action: 'DescribeServiceProxyForRouteProxy',
@@ -140,7 +140,7 @@ export default {
         },
     },
     PublishRouteRule: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'post',
         params: {
             Action: 'PublishRouteRule',
@@ -148,7 +148,7 @@ export default {
         },
     },
     DeleteRouteRule: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'get',
         params: {
             Action: 'DeleteRouteRule',
@@ -156,7 +156,7 @@ export default {
         },
     },
     DeleteServiceProxy: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'get',
         params: {
             Action: 'DeleteServiceProxy',
@@ -164,7 +164,7 @@ export default {
         },
     },
     DeletePublishedRouteRule: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'get',
         params: {
             Action: 'DeleteRouteRuleProxy',
@@ -172,7 +172,7 @@ export default {
         },
     },
     CreateGateway: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'post',
         params: {
             Action: 'CreateGateway',
@@ -180,7 +180,7 @@ export default {
         },
     },
     UpdateGateway: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'post',
         params: {
             Action: 'UpdateGateway',
@@ -188,7 +188,7 @@ export default {
         },
     },
     DescribePluginInfoList: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'get',
         params: {
             Action: 'DescribePluginInfoList',
@@ -196,7 +196,7 @@ export default {
         },
     },
     DescribePluginInfo: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'get',
         params: {
             Action: 'DescribePluginInfo',
@@ -204,7 +204,7 @@ export default {
         },
     },
     BindingPlugin: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'post',
         params: {
             Action: 'BindingPlugin',
@@ -212,7 +212,7 @@ export default {
         },
     },
     DescribeBindingPlugin: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'get',
         params: {
             Action: 'DescribeBindingPlugin',
@@ -220,7 +220,7 @@ export default {
         },
     },
     UpdatePluginConfiguration: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'post',
         params: {
             Action: 'UpdatePluginConfiguration',
@@ -228,7 +228,7 @@ export default {
         },
     },
     UnbindingPlugin: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'get',
         params: {
             Action: 'UnbindingPlugin',
@@ -236,7 +236,7 @@ export default {
         },
     },
     UpdatePluginBindingStatus: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'get',
         params: {
             Action: 'UpdatePluginBindingStatus',
@@ -245,70 +245,70 @@ export default {
     },
     // -------
     DescribeGatewayById: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         params: {
             Action: 'DescribeGateway',
             Version: '2019-09-01',
         },
     },
     DescribePublishRouteRuleById: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         params: {
             Action: 'DescribeRouteRuleProxy',
             Version: '2019-09-01',
         },
     },
     DescribePublishedRouteRule: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         params: {
             Action: 'DescribeRouteRuleProxy',
             Version: '2019-09-01',
         },
     },
     DescribePublishRouteRuleByRouteRuleId: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         params: {
             Action: 'DescribeRouteRuleProxyByRouteRuleId',
             Version: '2019-09-01',
         },
     },
     UpdateRouteRuleEnableState: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         params: {
             Action: 'UpdateRouteRuleProxyEnableState',
             Version: '2019-09-01',
         },
     },
     UpdatePublishService: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         params: {
             Action: 'UpdateServiceProxy',
             Version: '2019-09-01',
         },
     },
     DescribeServiceById: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         params: {
             Action: 'DescribeServiceById',
-            Version: '2019-09-01',
+            Version: '2018-08-09',
         },
     },
     DescribeServiceProxy: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         params: {
             Action: 'DescribeServiceProxy',
             Version: '2019-09-01',
         },
     },
     DescribeRouteRule: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         params: {
             Action: 'DescribeRouteRule',
             Version: '2019-09-01',
         },
     },
     DescribeHealthCheckRule: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         params: {
             Action: 'DescribeHealthCheckRule',
             Version: '2019-09-01',
@@ -316,7 +316,7 @@ export default {
     },
     UpdateHealthCheckRule: {
         method: 'post',
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         params: {
             Action: 'UpdateHealthCheckRule',
             Version: '2019-09-01',

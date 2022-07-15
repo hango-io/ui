@@ -3236,10 +3236,10 @@
   resolved "https://registry.yarnpkg.com/@soda/get-current-script/-/get-current-script-1.0.2.tgz#a53515db25d8038374381b73af20bb4f2e508d87"
   integrity sha512-T7VNNlYVM1SgQ+VsMYhnDkcGmWhQdL0bDyGm5TlQ3GBXnJscEClUUOKduWTmm2zCnvNLC1hc3JpuXjs/nFOc5w==
 
-"@ssform/core@0.0.0-alpha.9":
-  version "0.0.0-alpha.9"
-  resolved "https://registry.yarnpkg.com/@ssform/core/-/core-0.0.0-alpha.9.tgz#a386cefce736dbfba4f9c342d238814b7849d7f8"
-  integrity sha512-JtizUqFIukNgJJnEJXDoo2Zx8/0g4r21Irs0s5vYiDFNXs5lac9zqVBnV52Awt5Dz5A5DE7toGVerXl0x/bZIg==
+"@ssform/core@0.0.0-alpha.10":
+  version "0.0.0-alpha.10"
+  resolved "https://registry.yarnpkg.com/@ssform/core/-/core-0.0.0-alpha.10.tgz#509b3b589beea46f700848d3b40ee501020a48cc"
+  integrity sha512-TZ1Ab9D6+1xX2ckh07OQuZ3s2CoJxL4XsGfpIWV0ZAEaULgAhR/54In5TE46KXhfBAPInIfuSkH/g2IxshSUiA==
   dependencies:
     lodash "^4.17.20"
     validator "^13.1.1"
