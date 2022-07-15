@@ -48,7 +48,7 @@ export default {
         method: 'get',
         params: {
             Action: 'DescribeGatewayList',
-            Version: '2019-09-01',
+            Version: '2018-08-09',
         },
     },
     CreateService: {
@@ -80,7 +80,7 @@ export default {
         method: 'get',
         params: {
             Action: 'DescribeGatewayList',
-            Version: '2019-09-01',
+            Version: '2018-08-09',
         },
     },
     GetRegistryCenterList: {
@@ -176,7 +176,7 @@ export default {
         method: 'post',
         params: {
             Action: 'CreateGateway',
-            Version: '2019-09-01',
+            Version: '2018-08-09',
         },
     },
     UpdateGateway: {
@@ -184,7 +184,7 @@ export default {
         method: 'post',
         params: {
             Action: 'UpdateGateway',
-            Version: '2019-09-01',
+            Version: '2018-08-09',
         },
     },
     DescribePluginInfoList: {
@@ -248,7 +248,7 @@ export default {
         url: '/gdashboard',
         params: {
             Action: 'DescribeGateway',
-            Version: '2019-09-01',
+            Version: '2018-08-09',
         },
     },
     DescribePublishRouteRuleById: {
