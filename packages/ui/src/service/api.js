@@ -254,14 +254,14 @@ export default {
     DescribePublishRouteRuleById: {
         url: '/gdashboard',
         params: {
-            Action: 'DescribeRouteRuleProxy',
+            Action: 'DescribePublishRouteRuleById',
             Version: '2019-09-01',
         },
     },
     DescribePublishedRouteRule: {
         url: '/gdashboard',
         params: {
-            Action: 'DescribeRouteRuleProxy',
+            Action: 'DescribePublishRouteRuleById',
             Version: '2019-09-01',
         },
     },

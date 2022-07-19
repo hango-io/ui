@@ -64,7 +64,7 @@
                         label="host"
                         rules="Required"
                         :error-messages="errors"
-                        v-model="form.HostList">
+                        v-model="form.VirtualHostList[0].HostList">
                     </g-multi-validation-text-field>
             </validation-provider>
         </div>
@@ -90,7 +90,8 @@ const TEMPLATE_MODEL = {
     GwType: 'envoy',
     ApiPlaneAddr: '',
     GwClusterName: '',
-    HostList: [ '' ],
+    VirtualHostList: [{ ProjectId: 1, HostList: [ '' ], BindType: 'host' }],
+    // HostList: [ '' ],
 };
 import _ from 'lodash';
 import { ValidationProvider } from 'vee-validate';
