@@ -31,7 +31,7 @@ export default {
         url: '/gdashboard',
         method: 'get',
         params: {
-            Action: 'DescribeRouteRuleProxyList',
+            Action: 'DescribePublishRouteRuleList',
             Version: '2019-09-01',
         },
     },
@@ -127,7 +127,7 @@ export default {
         url: '/gdashboard',
         method: 'get',
         params: {
-            Action: 'DescribeGatewayForRouteRuleProxy',
+            Action: 'DescribeGatewayForPublishedRule',
             Version: '2019-09-01',
         },
     },
@@ -135,7 +135,7 @@ export default {
         url: '/gdashboard',
         method: 'get',
         params: {
-            Action: 'DescribeServiceProxyForRouteProxy',
+            Action: 'DescribeServiceProxyForPublishRoute',
             Version: '2019-09-01',
         },
     },
@@ -167,7 +167,7 @@ export default {
         url: '/gdashboard',
         method: 'get',
         params: {
-            Action: 'DeleteRouteRuleProxy',
+            Action: 'DeletePublishedRouteRule',
             Version: '2019-09-01',
         },
     },
@@ -268,21 +268,21 @@ export default {
     DescribePublishRouteRuleByRouteRuleId: {
         url: '/gdashboard',
         params: {
-            Action: 'DescribeRouteRuleProxyByRouteRuleId',
+            Action: 'DescribePublishRouteRuleByRouteRuleId',
             Version: '2019-09-01',
         },
     },
     UpdateRouteRuleEnableState: {
         url: '/gdashboard',
         params: {
-            Action: 'UpdateRouteRuleProxyEnableState',
+            Action: 'UpdateRouteRuleEnableState',
             Version: '2019-09-01',
         },
     },
     UpdatePublishService: {
         url: '/gdashboard',
         params: {
-            Action: 'UpdateServiceProxy',
+            Action: 'UpdatePublishService',
             Version: '2019-09-01',
         },
     },
