@@ -15,8 +15,8 @@ module.exports = function(app) {
     };
 
     proxyOptions.onProxyReq = (proxyReq, req, res) => {
-        proxyReq.setHeader('x-auth-projectId', '0');
-        proxyReq.setHeader('x-auth-tenantId', '0');
+        proxyReq.setHeader('x-auth-projectId', '1');
+        proxyReq.setHeader('x-auth-tenantId', '1');
     };
 
     proxyOptions.onError = (e, req, res) => {
