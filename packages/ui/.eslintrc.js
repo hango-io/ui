@@ -6,5 +6,7 @@ module.exports = {
     "rules": {
         "no-unused-vars": "warn",
         "vue/valid-v-slot": ["error", { "allowModifiers": true }],
+        "no-debugger": "off",
+        "no-console": "off",
     },
 };
