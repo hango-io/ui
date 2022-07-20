@@ -49,10 +49,10 @@ const config = {
                 pathRewrite: {
                     '^/proxy/api/gportal': '',
                 },
-                // onProxyReq(proxyReq, req, res) {
-                //     proxyReq.setHeader('x-auth-projectId', 1); // add new header to response
-                //     proxyReq.setHeader('x-auth-tenantId', 1); // add new header to response
-                // },
+                onProxyReq(proxyReq, req, res) {
+                    proxyReq.setHeader('x-auth-projectId', 1); // add new header to response
+                    proxyReq.setHeader('x-auth-tenantId', 1); // add new header to response
+                },
             },
         },
     },
