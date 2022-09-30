@@ -15,7 +15,7 @@
                 v-model="form.GwId"
                 label="目标网关*"
                 :error-messages="errors"
-                @change="loadRegistryCenterList"
+                @change="loadServiceAddressList"
                 required
             ></g-gateway-select>
         </validation-provider>
@@ -32,15 +32,13 @@
                     :error-messages="errors"
                     required
                     row
-                    @change="loadRegistryCenterList"
+                    @change="loadServiceAddressList"
                 >
                     <v-radio
-                        label="从注册中心同步"
-                        value="DYNAMIC"
-                    ></v-radio>
-                    <v-radio
-                        label="静态地址"
-                        value="STATIC"
+                        v-for="item in supportTypes"
+                        :key="item.value"
+                        :label="item.text"
+                        :value="item.value"
                     ></v-radio>
                 </v-radio-group>
             </validation-provider>
@@ -56,11 +54,13 @@
                         :error-messages="errors"
                         required
                         row
-                        @change="loadRegistryCenterList"
+                        @change="loadServiceAddressList"
                     >
                         <v-radio
-                            label="K8S 注册中心"
-                            value="Kubernetes"
+                            v-for="item in registryCenterTypes"
+                            :key="item.value"
+                            :label="item.text"
+                            :value="item.value"
                         ></v-radio>
                     </v-radio-group>
                 </validation-provider>
@@ -99,7 +99,9 @@
                 <g-label slot="title">更多配置</g-label>
             </MoreConfig>
 
-            <VersionExpansionPanels v-model="form.Subsets"
+            <VersionExpansionPanels
+                v-if="!isDubboType"
+                v-model="form.Subsets"
                 :staticAddrList="form.BackendService.split(',')"
                 :publishType="form.PublishType">
                 <g-label slot="title">版本配置</g-label>
@@ -111,6 +113,23 @@
 import { ValidationProvider } from 'vee-validate';
 import MoreConfig from './MoreConfig';
 import VersionExpansionPanels from './VersionExpansionPanels';
+export const SUPPORT_TYPES = [
+    {
+        text: '从注册中心同步', value: 'DYNAMIC',
+    },
+    {
+        text: '静态地址', value: 'STATIC',
+    },
+];
+
+export const REGISTRY_CENTER_TYPES = [
+    {
+        text: 'K8S 注册中心', value: 'Kubernetes',
+    },
+    {
+        text: 'Zookeeper 注册中心', value: 'Zookeeper',
+    },
+];
 export default {
     components: {
         ValidationProvider, VersionExpansionPanels, MoreConfig,
@@ -124,29 +143,58 @@ export default {
     },
     data: () => ({
         registryCenterList: [],
+        GetRegistryCenterList: [],
         moreSwitch: false,
         form: {
             GwId: '',
             RegistryCenterType: 'Kubernetes',
             PublishType: 'DYNAMIC', // 'STATIC'
-            PublishProtocol: 'http',
+            // PublishProtocol: 'http',
             BackendService: '',
         },
     }),
+    watch: {
+        current: {
+            handler() {
+                // this.form.PublishProtocol = newValue.ServiceType;
+                this.isDubboType ? this.form.RegistryCenterType = 'Zookeeper' : '';
+            },
+            immediate: true,
+            deep: true,
+        },
+    },
     computed: {
         isEdit() {
             return this.type === 'edit';
         },
+        isDubboType() {
+            return this.current.ServiceType === 'dubbo';
+        },
+        supportTypes() {
+            return SUPPORT_TYPES.filter(item => {
+                // dubbo 只支持注册中心
+                if (this.isDubboType) {
+                    return item.value === 'DYNAMIC';
+                }
+                return true;
+            });
+        },
+        registryCenterTypes() {
+            return REGISTRY_CENTER_TYPES.filter(item => {
+                // dubbo 只支持 Zookeeper 注册中心
+                if (this.isDubboType) {
+                    return item.value === 'Zookeeper';
+                }
+                return item.value !== 'Zookeeper';
+            });
+        },
     },
     methods: {
-        loadRegistryCenterList() {
+        loadServiceAddressList() {
             this.registryCenterList = [];
             const GwId = this.form.GwId;
             if (!GwId) return;
             const RegistryCenterType = this.form.RegistryCenterType;
-            if (RegistryCenterType !== 'Kubernetes') {
-                return;
-            }
             return this.axios({
                 action: 'DescribeServiceListByGw',
                 params: {
@@ -160,6 +208,8 @@ export default {
         handleSubmit() {
             const param = JSON.parse(JSON.stringify(this.form));
             param.ServiceId = this.current.ServiceId;
+            // 目前暂时写死，等后端将将相关校验去除，RegistryCenterAddr就不用传了
+            this.form.RegistryCenterType !== 'Kubernetes' ? param.RegistryCenterAddr = 'zookeeper.apigw-demo.svc.cluster.local' : '';
             return this.axios({
                 action: 'PublishService',
                 data: {

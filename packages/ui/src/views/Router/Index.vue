@@ -52,6 +52,24 @@
                 {{ +item.PublishStatus === 0 ? '未发布' : '已发布' }}
             </v-chip>
         </template>
+        <template #item.ServiceName="{ item }">
+            <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-chip
+                        v-bind="attrs"
+                        v-on="on"
+                        :color="item.ServiceType === 'dubbo' ? 'indigo' : 'info'"
+                        text-color="white"
+                        x-small
+                        label
+                    >
+                        {{ item.ServiceType.substr(0,1).toUpperCase() || '-' }}
+                    </v-chip>
+                </template>
+                <span>{{ item.ServiceType.toUpperCase() }}</span>
+            </v-tooltip>
+            {{item.ServiceName}}
+        </template>
         <template #expanded-item="{ headers, item }">
             <td :colspan="headers.length">
                 <g-label>备注信息：</g-label>
@@ -91,7 +109,7 @@
 const TABLE_HEADERS = [
     { text: '路由名称', value: 'custom', name: 'RouteRuleName' },
     { text: '路由信息', value: 'custom', name: 'routeRuleInfo' }, // Uri、Headers、Host、Method
-    { text: '所属服务', value: 'ServiceName' },
+    { text: '所属服务', value: 'custom', name: 'ServiceName' },
     { text: '发布状态', value: 'custom', name: 'PublishStatus' },
     // { text: '备注信息', value: 'Description' },
     { text: '创建时间', value: 'CreateTime' },

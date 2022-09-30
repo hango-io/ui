@@ -32,7 +32,8 @@
                                 <v-col>
                                     <g-label>服务类型：</g-label>
                                     <v-chip
-                                        color="info"
+                                        :color="info.ServiceType === 'dubbo' ? 'indigo' : 'info'"
+                                        text-color="white"
                                         label
                                         x-small
                                     >
@@ -51,7 +52,8 @@
                         :list="basicInfoList">
                         <template #ServiceType="{ item }">
                             <v-chip
-                                color="info"
+                                :color="item.text === 'dubbo' ? 'indigo' : 'info'"
+                                text-color="white"
                                 x-small
                                 label
                             >

@@ -34,6 +34,24 @@
                 </div>
             </v-tooltip>
         </template>
+        <template #item.ServiceName="{ item }">
+            <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-chip
+                        v-bind="attrs"
+                        v-on="on"
+                        :color="item.ServiceType === 'dubbo' ? 'indigo' : 'info'"
+                        text-color="white"
+                        x-small
+                        label
+                    >
+                        {{ item.ServiceType.substr(0,1).toUpperCase() || '-' }}
+                    </v-chip>
+                </template>
+                <span>{{ item.ServiceType.toUpperCase() }}</span>
+            </v-tooltip>
+            {{item.ServiceName}}
+        </template>
         <template v-slot:item.EnableState="{ item }">
             <v-chip
                 small
@@ -65,10 +83,18 @@
                 tooltip="下线"
                 @click="handleDelete(item)"
             ></ActionBtnComp>
+            <ActionBtnComp
+                v-if="item.ServiceType === 'dubbo'"
+                color="primary"
+                icon="mdi-protocol"
+                tooltip="协议转换"
+                @click="handleConvert(item)"
+            ></ActionBtnComp>
         </template>
       </g-table-list>
     </div>
     <PublishModalComp v-if="publishVisible" :current="current" type="edit" @close="handleClose"/>
+    <ConvertModelComp v-if="convertVisible" :current="current" @close="handleClose"/>
   </v-container>
 </template>
 
@@ -76,7 +102,7 @@
 const TABLE_HEADERS = [
     { text: '路由名称', value: 'custom', name: 'RouteRuleName' },
     { text: '路由信息', value: 'custom', name: 'routeRuleInfo' }, // Uri、Headers、Host、Method
-    { text: '所属服务', value: 'ServiceName' },
+    { text: '所属服务', value: 'custom', name: 'ServiceName' },
     { text: '使能状态', value: 'custom', name: 'EnableState' },
     { text: '优先级', value: 'custom', name: 'Priority' },
     { text: '发布时间', value: 'CreateTime' },
@@ -86,8 +112,9 @@ import _ from 'lodash';
 import ActionBtnComp from '@/components/ActionBtn';
 import RouterRuleInfoComp from '@/views/Router/RouterRuleInfo';
 import PublishModalComp from '@/views/Router/PublishModal';
+import ConvertModelComp from '@/views/RouterPublished/ConvertModel';
 export default {
-    components: { ActionBtnComp, RouterRuleInfoComp, PublishModalComp },
+    components: { ActionBtnComp, RouterRuleInfoComp, PublishModalComp, ConvertModelComp },
     data() {
         return {
             headers: TABLE_HEADERS.map(item => {
@@ -98,6 +125,7 @@ export default {
                 };
             }),
             publishVisible: false,
+            convertVisible: false,
             current: null,
         };
     },
@@ -117,8 +145,13 @@ export default {
         },
         handleClose() {
             this.publishVisible = false;
+            this.convertVisible = false;
             this.current = null;
             this.refresh();
+        },
+        handleConvert(item) {
+            this.current = item;
+            this.convertVisible = true;
         },
         handlePublishUpdate(item) {
             console.info(item);

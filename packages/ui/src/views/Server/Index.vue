@@ -24,6 +24,24 @@
         <template #item.ServiceName="{ item }">
             <g-link :to="{ name: 'hango.server.info', query: { Id: item.ServiceId } }">{{ item.ServiceName }}</g-link>
         </template>
+        <template #item.ServiceTag="{ item }">
+            <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-chip
+                        v-bind="attrs"
+                        v-on="on"
+                        :color="item.ServiceType === 'dubbo' ? 'indigo' : 'info'"
+                        text-color="white"
+                        x-small
+                        label
+                    >
+                        {{ item.ServiceType.substr(0,1).toUpperCase() || '-' }}
+                    </v-chip>
+                </template>
+                <span>{{ item.ServiceType.toUpperCase() }}</span>
+            </v-tooltip>
+            {{item.ServiceTag}}
+        </template>
         <template #item.PublishedStatus="{ item }">
             <v-chip
                 small
@@ -70,7 +88,7 @@
 <script>
 const TABLE_HEADERS = [
     { text: '服务名称', value: 'custom', name: 'ServiceName' },
-    { text: '服务标识', value: 'ServiceTag' },
+    { text: '服务标识', value: 'custom', name: 'ServiceTag' },
     { text: '发布状态', value: 'custom', name: 'PublishedStatus' },
     { text: '创建时间', value: 'CreateDate' },
     { text: '修改时间', value: 'ModifyDate' },

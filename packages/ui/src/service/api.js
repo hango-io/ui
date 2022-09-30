@@ -322,4 +322,42 @@ export default {
             Version: '2019-09-01',
         },
     },
+    DescribePublishedDubbo: {
+        url: '/gdashboard/envoy',
+        params: {
+            Action: 'DescribePublishedDubbo',
+            Version: '2020-10-29',
+        },
+    },
+    DescribeDubboMeta: {
+        url: '/gdashboard/envoy',
+        params: {
+            Action: 'DescribeDubboMeta',
+            Version: '2021-10-30',
+        },
+    },
+    PublishDubbo: {
+        url: '/gdashboard/envoy',
+        method: 'post',
+        params: {
+            Action: 'PublishDubbo',
+            Version: '2020-10-29',
+        },
+    },
+    OfflineDubbo: {
+        url: '/gdashboard/envoy',
+        method: 'get',
+        params: {
+            Action: 'OfflineDubbo',
+            Version: '2020-10-29',
+        },
+    },
+    RefreshDubboMeta: {
+        url: '/gdashboard/envoy',
+        method: 'get',
+        params: {
+            Action: 'RefreshDubboMeta',
+            Version: '2021-10-30',
+        },
+    },
 };

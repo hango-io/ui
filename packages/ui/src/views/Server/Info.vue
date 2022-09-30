@@ -32,8 +32,9 @@
                                 <v-col>
                                     <g-label>服务类型：</g-label>
                                     <v-chip
-                                        color="info"
+                                        :color="info.ServiceType === 'dubbo' ? 'indigo' : 'info'"
                                         label
+                                        text-color="white"
                                         x-small
                                     >
                                         {{ info.ServiceType && info.ServiceType.toUpperCase() || '-' }}
@@ -49,8 +50,9 @@
                 :list="basicInfoList">
                 <template #ServiceType="{ item }">
                     <v-chip
-                        color="info"
+                        :color="item.text === 'dubbo' ? 'indigo' : 'info'"
                         x-small
+                        text-color="white"
                         label
                     >
                         {{ item.text && item.text.toUpperCase() || '-' }}

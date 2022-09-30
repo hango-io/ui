@@ -4,7 +4,10 @@
       <thead>
         <tr>
           <th class="text-left" v-for="item in headers" :key="item.value">
-            {{ item.text }}
+              {{ item.text }}
+            <template v-if="item.help">
+                <g-note>{{ item.help }}</g-note>
+            </template>
           </th>
         </tr>
       </thead>

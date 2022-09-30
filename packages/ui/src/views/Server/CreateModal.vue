@@ -8,6 +8,25 @@
     >
         <validation-provider
             v-slot="{ errors }"
+            name="协议类型"
+            rules="required"
+        >
+            <v-radio-group
+                label="协议类型"
+                v-model="form.ServiceType"
+                row
+                :error-messages="errors"
+            >
+            <v-radio
+                v-for="item in ProtocolType"
+                :key="item.value"
+                :label="item.text"
+                :value="item.value"
+            ></v-radio>
+            </v-radio-group>
+        </validation-provider>
+        <validation-provider
+            v-slot="{ errors }"
             name="服务名称"
             rules="required"
         >
@@ -64,6 +83,16 @@ export default {
             Description: '',
             Contacts: 'admin',
         },
+        ProtocolType: [
+            {
+                text: 'HTTP',
+                value: 'http',
+            },
+            {
+                text: 'Dubbo',
+                value: 'dubbo',
+            },
+        ],
     }),
     computed: {
         isEdit() {

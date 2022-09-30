@@ -36,7 +36,8 @@
                                 <v-col cols="12">
                                     <g-label>服务类型：</g-label>
                                     <v-chip
-                                        color="info"
+                                        :color="info.ServiceType === 'dubbo' ? 'indigo' : 'info'"
+                                        text-color="white"
                                         label
                                         x-small
                                     >
@@ -59,7 +60,8 @@
                         :list="basicInfoList">
                         <template #ServiceType="{ item }">
                             <v-chip
-                                color="info"
+                                :color="item.text === 'dubbo' ? 'indigo' : 'info'"
+                                text-color="white"
                                 x-small
                                 label
                             >
@@ -95,16 +97,23 @@
                     </g-info-card>
                 </v-col>
             </v-row>
+            <v-row v-if="info.ServiceType === 'dubbo'">
+                <v-col>
+                    <ConvertInfo :info="info" :serviceProxyInfo="serviceProxyInfo"/>
+                </v-col>
+            </v-row>
         </div>
     </v-container>
 </template>
 <script>
 import RouterRuleInfoComp from '@/views/Router/RouterRuleInfo';
+import ConvertInfo from '@/views/RouterPublished/Convert';
 export default {
-    components: { RouterRuleInfoComp },
+    components: { RouterRuleInfoComp, ConvertInfo },
     data() {
         return {
             info: null,
+            serviceProxyInfo: null,
         };
     },
     computed: {
@@ -136,6 +145,17 @@ export default {
                 },
             }).then(({ RouteRuleProxy = {} }) => {
                 this.info = RouteRuleProxy;
+                this.loadServiceProxyInfo();
+            });
+        },
+        loadServiceProxyInfo() {
+            const { GwId, ServiceId } = this.info;
+            if (!ServiceId) return;
+            return this.axios({
+                action: 'DescribeServiceProxyForPublishRoute',
+                params: { ServiceId, GwId },
+            }).then(({ EnvoyServiceProxy = {} }) => {
+                this.serviceProxyInfo = EnvoyServiceProxy || {};
             });
         },
     },
