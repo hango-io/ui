@@ -208,8 +208,6 @@ export default {
         handleSubmit() {
             const param = JSON.parse(JSON.stringify(this.form));
             param.ServiceId = this.current.ServiceId;
-            // 目前暂时写死，等后端将将相关校验去除，RegistryCenterAddr就不用传了
-            this.form.RegistryCenterType !== 'Kubernetes' ? param.RegistryCenterAddr = 'zookeeper.apigw-demo.svc.cluster.local' : '';
             return this.axios({
                 action: 'PublishService',
                 data: {
