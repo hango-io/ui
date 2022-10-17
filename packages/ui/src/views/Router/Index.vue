@@ -10,6 +10,7 @@
       <g-table-list
         :headers="headers"
         :load="getDataFromApi"
+        item-key="RouteRuleName"
         ref="tableRef"
         show-expand
       >
