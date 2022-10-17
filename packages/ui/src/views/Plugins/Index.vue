@@ -32,7 +32,7 @@
         <template v-slot:item.actions="{ item }">
             <ActionBtnComp
                 :color="item.BindingStatus !== 'enable' ? 'success' : 'warning'"
-                :icon="item.BindingStatus !== 'enable' ? 'mdi-check-circle' : 'mdi-do-not-disturb'"
+                :icon="item.BindingStatus !== 'enable' ? 'mdi-check-circle' : 'mdi-cancel'"
                 :tooltip="item.BindingStatus !== 'enable' ? '启用' : '禁用'"
                 @click="handleChangeStatus(item, item.BindingStatus !== 'enable')"
             ></ActionBtnComp>
