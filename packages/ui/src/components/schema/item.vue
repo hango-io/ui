@@ -10,34 +10,30 @@
         <template v-else-if="layoutType === 'checkbox'">
             <span>{{ layoutLabel }}</span>
             <div :class="$style.checkboxes">
-                <v-checkbox v-for="optionItem in layoutOptions" :key="optionItem.value" :label="optionItem.text" :value="optionItem.value" :disabled="optionItem.disabled" :error-messages="errors"
-                    v-model="selectedDatas">
-                </v-checkbox>
+                <v-checkbox
+                    v-for="optionItem in layoutOptions"
+                    :key="optionItem.value"
+                    :label="optionItem.text"
+                    :value="optionItem.value"
+                    :disabled="optionItem.disabled"
+                    :error-messages="errors"
+                    v-model="selectedDatas"
+                ></v-checkbox>
             </div>
         </template>
         <template v-else-if="layoutType === 'switch'">
             <!-- <span>{{ layoutLabel }}</span> -->
-            <v-switch
-                v-model="layout.data"
-                :error-messages="errors"
-                :label="layoutLabel"
-            >
-            </v-switch>
+            <v-switch v-model="layout.data" :error-messages="errors" :label="layoutLabel"></v-switch>
         </template>
         <template v-else-if="layoutType === 'select'">
-            <v-select
-                v-model="layout.data"
-                :items="layoutOptions"
-                :label="layoutLabel"
-                :error-messages="errors"
-                :hint="layout.description"
-            ></v-select>
+            <v-select v-model="layout.data" :items="layoutOptions" :label="layoutLabel" :error-messages="errors" :hint="layout.description"></v-select>
         </template>
         <template v-else-if="layoutType === 'multi_select'">
             <v-select
                 v-model="layout.data"
                 :items="layoutOptions"
-                multiple chips
+                multiple
+                chips
                 :label="layoutLabel"
                 :error-messages="errors"
                 :hint="layout.description"
@@ -125,6 +121,12 @@ export default {
                         return { MaxLength: rule.replace('MaxLength(', '').replace(')', '') };
                     } else if (/MinLength\(\d+\)/.test(rule)) {
                         return { MinLength: rule.replace('MinLength(', '').replace(')', '') };
+                    } else if (/FloatNumber\(\d+\)/.test(rule)) {
+                        return { FloatNumber: rule.replace('FloatNumber(', '').replace(')', '') };
+                    } else if (/MaxFloatNumber\((-?\d+)(\.\d+)?\)/.test(rule)) {
+                        return { MaxFloatNumber: rule.replace('MaxFloatNumber(', '').replace(')', '') };
+                    } else if (/MinFloatNumber\((-?\d+)(\.\d+)?\)/.test(rule)) {
+                        return { MinFloatNumber: rule.replace('MinFloatNumber(', '').replace(')', '') };
                     }
                 }
                 return rule;
