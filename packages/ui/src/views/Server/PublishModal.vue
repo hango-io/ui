@@ -1,31 +1,12 @@
 <template>
-<!-- TODO -->
-    <g-modal-form
-        :title="isEdit ? '发布更新' : '发布服务'"
-        visible
-        :submit="handleSubmit"
-        @close="handleClose"
-    >
-        <validation-provider
-            v-slot="{ errors }"
-            name="目标网关"
-            rules="required"
-        >
-            <g-gateway-select
-                v-model="form.GwId"
-                label="目标网关*"
-                :error-messages="errors"
-                @change="loadServiceAddressList"
-                required
-            ></g-gateway-select>
+    <!-- TODO -->
+    <g-modal-form :title="isEdit ? '发布更新' : '发布服务'" visible :submit="handleSubmit" @close="handleClose">
+        <validation-provider v-slot="{ errors }" name="目标网关" rules="required">
+            <g-gateway-select v-model="form.GwId" label="目标网关*" :error-messages="errors" @change="loadServiceAddressList" required></g-gateway-select>
         </validation-provider>
 
         <template v-if="form.GwId">
-            <validation-provider
-                v-slot="{ errors }"
-                name="发布方式"
-                rules="required"
-            >
+            <validation-provider v-slot="{ errors }" name="发布方式" rules="required">
                 <v-radio-group
                     label="发布方式*"
                     v-model="form.PublishType"
@@ -34,20 +15,11 @@
                     row
                     @change="loadServiceAddressList"
                 >
-                    <v-radio
-                        v-for="item in supportTypes"
-                        :key="item.value"
-                        :label="item.text"
-                        :value="item.value"
-                    ></v-radio>
+                    <v-radio v-for="item in supportTypes" :key="item.value" :label="item.text" :value="item.value"></v-radio>
                 </v-radio-group>
             </validation-provider>
             <template v-if="form.PublishType === 'DYNAMIC'">
-                <validation-provider
-                    v-slot="{ errors }"
-                    name="注册中心"
-                    rules="required"
-                >
+                <validation-provider v-slot="{ errors }" name="注册中心" rules="required">
                     <v-radio-group
                         label="注册中心*"
                         v-model="form.RegistryCenterType"
@@ -56,26 +28,11 @@
                         row
                         @change="loadServiceAddressList"
                     >
-                        <v-radio
-                            v-for="item in registryCenterTypes"
-                            :key="item.value"
-                            :label="item.text"
-                            :value="item.value"
-                        ></v-radio>
+                        <v-radio v-for="item in registryCenterTypeList" :key="item.value" :label="item.text" :value="item.value"></v-radio>
                     </v-radio-group>
                 </validation-provider>
-                <validation-provider
-                    v-slot="{ errors }"
-                    name="服务地址"
-                    rules="required"
-                >
-                    <v-select
-                        :items="registryCenterList"
-                        v-model="form.BackendService"
-                        label="服务地址*"
-                        :error-messages="errors"
-                        required
-                    ></v-select>
+                <validation-provider v-slot="{ errors }" name="服务地址" rules="required">
+                    <v-select :items="registryCenterList" v-model="form.BackendService" label="服务地址*" :error-messages="errors" required></v-select>
                 </validation-provider>
             </template>
             <template v-else-if="form.PublishType === 'STATIC'">
@@ -84,18 +41,13 @@
                     label="服务地址*"
                     returnType="string"
                     prefix="http://"
-                    v-model="form.BackendService">
-                </g-multi-validation-text-field>
+                    v-model="form.BackendService"
+                ></g-multi-validation-text-field>
             </template>
 
             <!-- 更多配置 -->
-             <v-switch
-                v-model="moreSwitch"
-                label="更多配置"
-            ></v-switch>
-            <MoreConfig v-model="form.TrafficPolicy"
-                v-show="moreSwitch"
-                :publishType="form.PublishType">
+            <v-switch v-model="moreSwitch" label="更多配置"></v-switch>
+            <MoreConfig v-model="form.TrafficPolicy" v-show="moreSwitch" :publishType="form.PublishType">
                 <g-label slot="title">更多配置</g-label>
             </MoreConfig>
 
@@ -103,7 +55,8 @@
                 v-if="!isDubboType"
                 v-model="form.Subsets"
                 :staticAddrList="form.BackendService.split(',')"
-                :publishType="form.PublishType">
+                :publishType="form.PublishType"
+            >
                 <g-label slot="title">版本配置</g-label>
             </VersionExpansionPanels>
         </template>
@@ -115,24 +68,30 @@ import MoreConfig from './MoreConfig';
 import VersionExpansionPanels from './VersionExpansionPanels';
 export const SUPPORT_TYPES = [
     {
-        text: '从注册中心同步', value: 'DYNAMIC',
+        text: '从注册中心同步',
+        value: 'DYNAMIC',
     },
     {
-        text: '静态地址', value: 'STATIC',
+        text: '静态地址',
+        value: 'STATIC',
     },
 ];
 
 export const REGISTRY_CENTER_TYPES = [
     {
-        text: 'K8S 注册中心', value: 'Kubernetes',
+        text: 'K8S 注册中心',
+        value: 'Kubernetes',
     },
     {
-        text: 'Zookeeper 注册中心', value: 'Zookeeper',
+        text: 'Zookeeper 注册中心',
+        value: 'Zookeeper',
     },
 ];
 export default {
     components: {
-        ValidationProvider, VersionExpansionPanels, MoreConfig,
+        ValidationProvider,
+        VersionExpansionPanels,
+        MoreConfig,
     },
     props: {
         current: Object,
@@ -144,10 +103,11 @@ export default {
     data: () => ({
         registryCenterList: [],
         GetRegistryCenterList: [],
+        registryCenterTypeList: [],
         moreSwitch: false,
         form: {
             GwId: '',
-            RegistryCenterType: 'Kubernetes',
+            RegistryCenterType: '',
             PublishType: 'DYNAMIC', // 'STATIC'
             // PublishProtocol: 'http',
             BackendService: '',
@@ -157,7 +117,7 @@ export default {
         current: {
             handler() {
                 // this.form.PublishProtocol = newValue.ServiceType;
-                this.isDubboType ? this.form.RegistryCenterType = 'Zookeeper' : '';
+                this.isDubboType ? (this.form.RegistryCenterType = 'Zookeeper') : '';
             },
             immediate: true,
             deep: true,
@@ -218,11 +178,23 @@ export default {
                 this.handleClose();
             });
         },
+        // 注册中心类型
+        loadRegistryCenterType() {
+            return this.axios({
+                action: 'DescribeRegistryTypes',
+                params: {
+                    ServiceType: this.current.ServiceType,
+                },
+            }).then(({ RegistryTypes = [] }) => {
+                this.registryCenterTypeList = RegistryTypes;
+            });
+        },
         handleClose() {
             this.$emit('close');
         },
     },
     created() {
+        this.loadRegistryCenterType();
     },
 };
 </script>

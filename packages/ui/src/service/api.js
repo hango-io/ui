@@ -360,4 +360,12 @@ export default {
             Version: '2021-10-30',
         },
     },
+    DescribeRegistryTypes: {
+        url: '/gdashboard',
+        method: 'get',
+        params: {
+            Action: 'DescribeRegistryTypes',
+            Version: '2019-09-01',
+        },
+    },
 };
