@@ -28,7 +28,7 @@
                         row
                         @change="loadServiceAddressList"
                     >
-                        <v-radio v-for="item in registryCenterTypeList" :key="item.value" :label="item.text" :value="item.value"></v-radio>
+                        <v-radio v-for="item in registryCenterTypeList" :key="item" :label="item" :value="item"></v-radio>
                     </v-radio-group>
                 </validation-provider>
                 <validation-provider v-slot="{ errors }" name="服务地址" rules="required">
