@@ -1,17 +1,7 @@
 <template>
     <v-navigation-drawer app permanent expand-on-hover clipped>
-
-        <v-list
-            dense
-            nav
-        >
-            <v-list-item
-                v-for="item in menus"
-                :key="item.title"
-                active-class="secondary white--text"
-                link
-                :to="item.to"
-            >
+        <v-list dense nav>
+            <v-list-item v-for="item in menus" :key="item.title" active-class="secondary white--text" link :to="item.to">
                 <v-list-item-icon>
                     <v-icon>{{ item.icon }}</v-icon>
                 </v-list-item-icon>
@@ -23,13 +13,7 @@
 
             <v-divider class="mb-1"></v-divider>
 
-            <v-list-item
-                v-for="item in globalMenus"
-                :key="item.title"
-                active-class="secondary white--text"
-                link
-                :to="item.to"
-            >
+            <v-list-item v-for="item in globalMenus" :key="item.title" active-class="secondary white--text" link :to="item.to">
                 <v-list-item-icon>
                     <v-icon>{{ item.icon }}</v-icon>
                 </v-list-item-icon>
@@ -58,6 +42,7 @@ export default {
             ],
             globalMenus: [
                 { title: '网关管理', icon: 'mdi-cog', to: { name: 'hango.manager' } },
+                { title: '虚拟网关管理', icon: 'mdi-message-text', to: { name: 'hango.virtualManager' } },
             ],
         };
     },
