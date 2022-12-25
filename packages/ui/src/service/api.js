@@ -368,4 +368,11 @@ export default {
             Version: '2019-09-01',
         },
     },
+    DescribeVirtualGateway: {
+        url: '/gdashboard',
+        method: 'post',
+        params: {
+            Action: 'DescribeVirtualGateway',
+        },
+    },
 };
