@@ -197,6 +197,26 @@ const routes = [
             ],
         },
     },
+    {
+        path: '/virtualManager/info',
+        name: 'hango.virtualManager.info',
+        component: () => import(/* webpackChunkName: "router" */ '../views/VirtualManager/Info.vue'),
+        meta: {
+            breadcrumbs: [
+                {
+                    text: '虚拟网关管理',
+                    disabled: false,
+                    exact: true,
+                    to: { name: 'hango.virtualManager' },
+                },
+                {
+                    text: '虚拟网关详情',
+                    disabled: true,
+                    // to: { name: 'hango.router.info' },
+                },
+            ],
+        },
+    },
     // {
     //     path: '/api',
     //     name: 'hango.api',

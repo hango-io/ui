@@ -6,6 +6,9 @@
                 <template #top>
                     <ActionBtnComp icon="mdi-plus" tooltip="创建虚拟网关" color="primary" @click="handleCreate()"></ActionBtnComp>
                 </template>
+                <template #item.Name="{ item }">
+                    <g-link :to="{ name: 'hango.virtualManager.info', query: { Id: item.RouteRuleId } }">{{ item.Name }}</g-link>
+                </template>
                 <template #item.actions="{ item }">
                     <ActionBtnComp color="primary" icon="mdi-pencil" tooltip="修改" @click="handleEdit(item)"></ActionBtnComp>
                     <ActionBtnComp color="error" icon="mdi-delete" tooltip="删除" @click="handleDelete(item)"></ActionBtnComp>
@@ -19,7 +22,7 @@
 import _ from 'lodash';
 import ActionBtnComp from '@/components/ActionBtn';
 const TABLE_HEADERS = [
-    { text: '虚拟网关名称', value: 'Name' },
+    { text: '虚拟网关名称', value: 'custom', name: 'Name' },
     { text: '类型', value: 'Type' },
     { text: '所属网关', value: 'GwName' },
     { text: '监听协议', value: 'Protocol' },
@@ -43,6 +46,13 @@ export default {
         handleCreate() {},
         handleEdit() {},
         handleDelete() {},
+        getDataFromApi() {
+            const action = Promise.resolve();
+            const list = [{ Name: 111, Type: 123 }];
+            return action.then(() => {
+                return { list, total: 10 };
+            });
+        },
     },
 };
 </script>
