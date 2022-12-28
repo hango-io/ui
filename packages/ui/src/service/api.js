@@ -381,6 +381,7 @@ export default {
         method: 'post',
         params: {
             Action: 'DescribeVirtualGateway',
+            Version: '2022-10-30',
         },
     },
 };

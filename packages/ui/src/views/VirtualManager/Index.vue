@@ -90,7 +90,7 @@ export default {
                 data: {
                     ...params,
                     Pattern: '',
-                    ProjectIdList: '',
+                    ProjectIdList: null,
                 },
             }).then(({ PluginBindingList = [], TotalCount = 0 }) => {
                 return { list: PluginBindingList, total: TotalCount };
