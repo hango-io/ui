@@ -384,4 +384,13 @@ export default {
             Version: '2022-10-30',
         },
     },
+    // 虚拟网关所属网关列表
+    DescribeAllGateway: {
+        url: '/gdashboard',
+        method: 'get',
+        params: {
+            Action: 'DescribeAllGateway',
+            Version: '2022-10-30',
+        },
+    },
 };
