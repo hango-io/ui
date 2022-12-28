@@ -51,6 +51,14 @@ export default {
             Version: '2018-08-09',
         },
     },
+    DescribeGatewayByNamePaged: {
+        url: '/gdashboard',
+        method: 'get',
+        params: {
+            Action: 'DescribeGatewayByNamePaged',
+            Version: '2022-10-30',
+        },
+    },
     CreateService: {
         url: '/gdashboard',
         method: 'post',

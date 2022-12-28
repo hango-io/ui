@@ -20,6 +20,9 @@
                         @click="handleCreate()"
                     ></ActionBtnComp>
                 </template>
+                <template #item.Name="{ item }">
+                    <g-link :to="{ name: 'hango.virtualManager.info', query: { Id: item.RouteRuleId } }">{{ item.Name }}</g-link>
+                </template>
                 <template #item.actions="{ item }">
                     <ActionBtnComp
                         color="primary"
@@ -49,7 +52,7 @@ import _ from 'lodash';
 import ActionBtnComp from '@/components/ActionBtn';
 import CreateModalComp from './CreateModal';
 const TABLE_HEADERS = [
-    { text: '虚拟网关名称', value: 'Name' },
+    { text: '虚拟网关名称', value: 'custom', name: 'Name' },
     { text: '类型', value: 'Type' },
     { text: '所属网关', value: 'GwName' },
     { text: '监听协议', value: 'Protocol' },
