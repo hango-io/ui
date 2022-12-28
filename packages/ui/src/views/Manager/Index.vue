@@ -1,64 +1,45 @@
 <template>
-  <v-container fluid>
-    <v-breadcrumbs
-        class="pl-3"
-        v-if="$route.meta && $route.meta.breadcrumbs"
-        large
-        :items="$route.meta.breadcrumbs"
-    ></v-breadcrumbs>
-    <div>
-      <g-table-list
-        :headers="headers"
-        :load="getDataFromApi"
-        ref="tableRef"
-      >
-        <template #top>
-            <ActionBtnComp
-                icon="mdi-plus"
-                tooltip="创建网关"
-                color="primary"
-                @click="handleCreate()"
-            ></ActionBtnComp>
-        </template>
-        <template #item.VirtualHostList="{ item }">
-            <v-tooltip top min-width="320">
-                <template v-slot:activator="{ on, attrs }">
-                    <span>{{ Array.isArray(item.VirtualHostList[0].HostList) && item.VirtualHostList[0].HostList[0] || '-' }}</span>
-                    <v-btn
-                        v-if="Array.isArray(item.VirtualHostList[0].HostList) && item.VirtualHostList[0].HostList.length > 1"
-                        class="ml-2"
-                        style="vertical-align: bottom;"
-                        x-small
-                        text
-                        color="primary"
-                        v-bind="{ ...attrs, ...$attrs }"
-                        v-on="{ ...on, ...$listeners }"
-                    >更多</v-btn>
+    <v-container fluid>
+        <v-breadcrumbs class="pl-3" v-if="$route.meta && $route.meta.breadcrumbs" large :items="$route.meta.breadcrumbs"></v-breadcrumbs>
+        <div>
+            <g-table-list :headers="headers" :load="getDataFromApi" ref="tableRef">
+                <template #top>
+                    <ActionBtnComp icon="mdi-plus" tooltip="创建网关" color="primary" @click="handleCreate()"></ActionBtnComp>
                 </template>
-                <div v-if="Array.isArray(item.VirtualHostList[0].HostList) && item.VirtualHostList[0].HostList.length > 1">
-                    <div v-for="(host, i) in item.VirtualHostList[0].HostList" :key="i">{{ host || '-' }}</div>
-                </div>
-            </v-tooltip>
-        </template>
-        <template #item.actions="{ item }">
-            <ActionBtnComp
-                color="primary"
-                icon="mdi-pencil"
-                tooltip="修改"
-                @click="handleEdit(item)"
-            ></ActionBtnComp>
-            <!-- <ActionBtnComp
+                <template #item.VirtualHostList="{ item }">
+                    <v-tooltip top min-width="320">
+                        <template v-slot:activator="{ on, attrs }">
+                            <span>{{ Array.isArray(item.VirtualHostList[0].HostList) && item.VirtualHostList[0].HostList[0] || '-' }}</span>
+                            <v-btn
+                                v-if="Array.isArray(item.VirtualHostList[0].HostList) && item.VirtualHostList[0].HostList.length > 1"
+                                class="ml-2"
+                                style="vertical-align: bottom;"
+                                x-small
+                                text
+                                color="primary"
+                                v-bind="{ ...attrs, ...$attrs }"
+                                v-on="{ ...on, ...$listeners }"
+                            >更多</v-btn>
+                        </template>
+                        <div v-if="Array.isArray(item.VirtualHostList[0].HostList) && item.VirtualHostList[0].HostList.length > 1">
+                            <div v-for="(host, i) in item.VirtualHostList[0].HostList" :key="i">{{ host || '-' }}</div>
+                        </div>
+                    </v-tooltip>
+                </template>
+                <template #item.actions="{ item }">
+                    <ActionBtnComp color="primary" icon="mdi-pencil" tooltip="修改" @click="handleEdit(item)"></ActionBtnComp>
+                    <!-- <ActionBtnComp
                 color="error"
                 icon="mdi-delete"
                 tooltip="删除"
                 @click="handleDelete(item)"
-            ></ActionBtnComp> -->
-        </template>
-      </g-table-list>
-    </div>
-    <CreateModalComp v-if="createVisible" :current="current" @close="handleClose"/>
-    <CreateModalComp v-if="editVisible" :current="current" type="edit" @close="handleClose"/>
-  </v-container>
+                    ></ActionBtnComp>-->
+                </template>
+            </g-table-list>
+        </div>
+        <CreateModalComp v-if="createVisible" :current="current" @close="handleClose" />
+        <CreateModalComp v-if="editVisible" :current="current" type="edit" @close="handleClose" />
+    </v-container>
 </template>
 
 <script>
@@ -93,7 +74,7 @@ export default {
         },
         getDataFromApi(params) {
             return this.axios({
-                action: 'DescribeGatewayListForGatewayTab',
+                action: 'DescribeGatewayByNamePaged',
                 params: {
                     ...params,
                 },
@@ -123,10 +104,7 @@ export default {
                     return this.axios({
                         action: 'DeleteService',
                         params: {
-                            ..._.pick(item, [
-                                'RouteRuleId',
-                                'GwId',
-                            ]),
+                            ..._.pick(item, [ 'RouteRuleId', 'GwId' ]),
                         },
                     }).then(() => {
                         this.$notify.success('删除成功');
