@@ -44,9 +44,10 @@
 
 <script>
 const TABLE_HEADERS = [
-    { text: '网关名称', value: 'GwName' },
-    { text: '网关地址', value: 'GwAddr' },
-    { text: '域名列表', value: 'custom', name: 'VirtualHostList' },
+    { text: '网关名称', value: 'Name' },
+    { text: '网关地址', value: 'ConfAddr' },
+    { text: 'ApiPlane地址', value: 'ApiPlaneAddr' },
+    // { text: '域名列表', value: 'custom', name: 'VirtualHostList' },
     { text: '备注信息', value: 'Description' },
     { text: '操作', value: 'custom', name: 'actions', width: 120 },
 ];
@@ -78,8 +79,8 @@ export default {
                 params: {
                     ...params,
                 },
-            }).then(({ GatewayInfos = [], GatewayCount = 0 }) => {
-                return { list: GatewayInfos, total: GatewayCount };
+            }).then(({ Result = [], Total = 0 }) => {
+                return { list: Result, total: Total };
             });
         },
         handleClose() {

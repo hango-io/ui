@@ -184,7 +184,7 @@ export default {
         method: 'post',
         params: {
             Action: 'CreateGateway',
-            Version: '2018-08-09',
+            Version: '2022-10-30',
         },
     },
     UpdateGateway: {
@@ -192,7 +192,7 @@ export default {
         method: 'post',
         params: {
             Action: 'UpdateGateway',
-            Version: '2018-08-09',
+            Version: '2022-10-30',
         },
     },
     DescribePluginInfoList: {
