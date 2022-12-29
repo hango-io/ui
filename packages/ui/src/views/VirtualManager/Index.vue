@@ -1,49 +1,21 @@
 <template>
     <v-container fluid>
-        <v-breadcrumbs
-            class="pl-3"
-            v-if="$route.meta && $route.meta.breadcrumbs"
-            large
-            :items="$route.meta.breadcrumbs"
-        ></v-breadcrumbs>
+        <v-breadcrumbs class="pl-3" v-if="$route.meta && $route.meta.breadcrumbs" large :items="$route.meta.breadcrumbs"></v-breadcrumbs>
         <div>
-            <g-table-list
-                :headers="headers"
-                :load="getDataFromApi"
-                ref="tableRef"
-            >
+            <g-table-list :headers="headers" :load="getDataFromApi" ref="tableRef">
                 <template #top>
-                    <ActionBtnComp
-                        icon="mdi-plus"
-                        tooltip="创建虚拟网关"
-                        color="primary"
-                        @click="handleCreate()"
-                    ></ActionBtnComp>
+                    <ActionBtnComp icon="mdi-plus" tooltip="创建虚拟网关" color="primary" @click="handleCreate()"></ActionBtnComp>
                 </template>
                 <template #item.Name="{ item }">
                     <g-link :to="{ name: 'hango.virtualManager.info', query: { Id: item.RouteRuleId } }">{{ item.Name }}</g-link>
                 </template>
                 <template #item.actions="{ item }">
-                    <ActionBtnComp
-                        color="primary"
-                        icon="mdi-pencil"
-                        tooltip="修改"
-                        @click="handleEdit(item)"
-                    ></ActionBtnComp>
-                    <ActionBtnComp
-                        color="error"
-                        icon="mdi-delete"
-                        tooltip="删除"
-                        @click="handleDelete(item)"
-                    ></ActionBtnComp>
+                    <ActionBtnComp color="primary" icon="mdi-pencil" tooltip="修改" @click="handleEdit(item)"></ActionBtnComp>
+                    <ActionBtnComp color="error" icon="mdi-delete" tooltip="删除" @click="handleDelete(item)"></ActionBtnComp>
                 </template>
             </g-table-list>
         </div>
-        <CreateModalComp
-            v-if="createVisible"
-            :current="current"
-            @close="handleClose"
-        />
+        <CreateModalComp v-if="createVisible" :current="current" @close="handleClose" />
     </v-container>
 </template>
 

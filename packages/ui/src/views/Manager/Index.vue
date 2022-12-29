@@ -44,9 +44,10 @@
 
 <script>
 const TABLE_HEADERS = [
-    { text: '网关名称', value: 'Name' },
-    { text: '网关地址', value: 'ConfAddr' },
+    { text: '网关名称', value: 'GwName' },
+    // { text: '网关地址', value: 'ConfAddr' },
     { text: 'ApiPlane地址', value: 'ApiPlaneAddr' },
+    { text: '网关集群名称', value: 'GwClusterName' },
     // { text: '域名列表', value: 'custom', name: 'VirtualHostList' },
     { text: '备注信息', value: 'Description' },
     { text: '操作', value: 'custom', name: 'actions', width: 120 },
