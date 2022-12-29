@@ -39,11 +39,8 @@
                 </template>
             </g-table-list>
         </div>
-        <CreateModalComp
-            v-if="createVisible"
-            :current="current"
-            @close="handleClose"
-        />
+        <CreateModalComp v-if="createVisible" :current="current" @close="handleClose" />
+        <CreateModalComp v-if="editVisible" :current="current" type="edit" @close="handleClose" />
     </v-container>
 </template>
 
@@ -52,8 +49,8 @@ import _ from 'lodash';
 import ActionBtnComp from '@/components/ActionBtn';
 import CreateModalComp from './CreateModal';
 const TABLE_HEADERS = [
-    { text: '虚拟网关名称', value: 'custom', name: 'Name' },
-    { text: '类型', value: 'Type' },
+    { text: '虚拟网关名称', value: 'Name' },
+    { text: '类型', value: 'GwType' },
     { text: '所属网关', value: 'GwName' },
     { text: '监听协议', value: 'Protocol' },
     { text: '监听端口', value: 'Port' },
@@ -71,18 +68,27 @@ export default {
                 };
             }),
             createVisible: false,
+            editVisible: false,
         };
     },
     methods: {
+        refresh() {
+            this.$refs.tableRef && this.$refs.tableRef.refresh();
+        },
         handleCreate() {
             this.current = null;
             this.createVisible = true;
         },
         handleClose() {
             this.createVisible = false;
+            this.editVisible = false;
             this.current = null;
+            this.refresh();
         },
-        handleEdit() {},
+        handleEdit(item) {
+            this.current = item;
+            this.editVisible = true;
+        },
         handleDelete() {},
         getDataFromApi(params = {}) {
             return this.axios({
@@ -92,8 +98,8 @@ export default {
                     Pattern: '',
                     ProjectIdList: null,
                 },
-            }).then(({ PluginBindingList = [], TotalCount = 0 }) => {
-                return { list: PluginBindingList, total: TotalCount };
+            }).then(({ Result = [], TotalCount = 0 }) => {
+                return { list: Result, total: TotalCount };
             });
         },
     },

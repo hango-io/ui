@@ -131,15 +131,15 @@ export default {
     },
     methods: {
         handleSubmit() {
-            // return this.axios({
-            //     action: this.isEdit ? 'UpdateGateway' : 'CreateGateway',
-            //     data: {
-            //         ...this.form,
-            //     },
-            // }).then(() => {
-            //     this.$notify.success(this.isEdit ? '更新成功' : '创建成功');
-            //     this.handleClose();
-            // });
+            return this.axios({
+                action: this.isEdit ? 'UpdateVirtualGateway' : 'CreateVirtualGateway',
+                data: {
+                    ...this.form,
+                },
+            }).then(() => {
+                this.$notify.success(this.isEdit ? '虚拟网关更新成功' : '虚拟网关创建成功');
+                this.handleClose();
+            });
         },
         handleClose() {
             this.$emit('close');
@@ -150,11 +150,11 @@ export default {
                 params: {
                     ...params,
                 },
-            }).then(({ GatewayInfos = [] }) => {
-                this.gwList = GatewayInfos.map(item => {
+            }).then(({ Result = [] }) => {
+                this.gwList = Result.map(item => {
                     return {
                         ...item,
-                        text: item.GwName,
+                        text: item.Name,
                         value: item.GwId,
                     };
                 });

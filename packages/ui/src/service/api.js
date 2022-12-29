@@ -393,4 +393,20 @@ export default {
             Version: '2022-10-30',
         },
     },
+    CreateVirtualGateway: {
+        url: '/gdashboard',
+        method: 'post',
+        params: {
+            Action: 'CreateVirtualGateway',
+            Version: '2022-10-30',
+        },
+    },
+    UpdateVirtualGateway: {
+        url: '/gdashboard',
+        method: 'post',
+        params: {
+            Action: 'UpdateVirtualGateway',
+            Version: '2022-10-30',
+        },
+    },
 };
