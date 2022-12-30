@@ -27,6 +27,7 @@
         label="虚拟网关标识*"
         :error-messages="errors"
         required
+        :disabled="isEdit"
       ></v-text-field>
     </validation-provider>
     <validation-provider v-slot="{ errors }" name="类型" rules="required">
@@ -36,6 +37,7 @@
         label="类型*"
         :error-messages="errors"
         required
+        :disabled="isEdit"
       ></v-select>
     </validation-provider>
     <validation-provider v-slot="{ errors }" name="所属网关" rules="required">
@@ -45,6 +47,7 @@
         :items="gwList"
         :error-messages="errors"
         required
+        :disabled="isEdit"
       ></v-select>
     </validation-provider>
     <validation-provider v-slot="{ errors }" name="监听协议" rules="required">
@@ -54,6 +57,7 @@
         :items="protocolList"
         :error-messages="errors"
         required
+        :disabled="isEdit"
       ></v-select>
     </validation-provider>
     <validation-provider v-slot="{ errors }" name="监听端口" rules="required">
@@ -62,6 +66,7 @@
         label="监听端口*"
         :error-messages="errors"
         required
+        :disabled="isEdit"
       ></v-text-field>
     </validation-provider>
     <validation-provider v-slot="{ errors }" name="访问地址">
@@ -129,17 +134,32 @@ export default {
             });
         },
     },
+    watch: {
+        current: {
+            handler(newVal) {
+                if (newVal && this.isEdit) {
+                    this.load();
+                }
+            },
+            immediate: true,
+            deep: true,
+        },
+    },
     methods: {
+        load() {
+            this.form = JSON.parse(JSON.stringify(this.current));
+        },
         handleSubmit() {
-            // return this.axios({
-            //     action: this.isEdit ? 'UpdateGateway' : 'CreateGateway',
-            //     data: {
-            //         ...this.form,
-            //     },
-            // }).then(() => {
-            //     this.$notify.success(this.isEdit ? '更新成功' : '创建成功');
-            //     this.handleClose();
-            // });
+            const params = JSON.parse(JSON.stringify(this.form));
+            return this.axios({
+                action: this.isEdit ? 'UpdateVirtualGateway' : 'CreateVirtualGateway',
+                data: {
+                    ...params,
+                },
+            }).then(() => {
+                this.$notify.success(this.isEdit ? '虚拟网关更新成功' : '虚拟网关创建成功');
+                this.handleClose();
+            });
         },
         handleClose() {
             this.$emit('close');
@@ -150,11 +170,11 @@ export default {
                 params: {
                     ...params,
                 },
-            }).then(({ GatewayInfos = [] }) => {
-                this.gwList = GatewayInfos.map(item => {
+            }).then(({ Result = [] }) => {
+                this.gwList = Result.map(item => {
                     return {
                         ...item,
-                        text: item.GwName,
+                        text: item.Name,
                         value: item.GwId,
                     };
                 });
@@ -162,13 +182,6 @@ export default {
         },
     },
     created() {
-        if (this.isEdit) {
-            this.form = JSON.parse(
-                JSON.stringify(
-                    _.pick(this.current, [ 'GwId', ...Object.keys(TEMPLATE_MODEL) ])
-                )
-            );
-        }
         this.getGwList();
     },
 };

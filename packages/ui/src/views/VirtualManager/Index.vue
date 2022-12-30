@@ -1,22 +1,58 @@
 <template>
-    <v-container fluid>
-        <v-breadcrumbs class="pl-3" v-if="$route.meta && $route.meta.breadcrumbs" large :items="$route.meta.breadcrumbs"></v-breadcrumbs>
-        <div>
-            <g-table-list :headers="headers" :load="getDataFromApi" ref="tableRef">
-                <template #top>
-                    <ActionBtnComp icon="mdi-plus" tooltip="创建虚拟网关" color="primary" @click="handleCreate()"></ActionBtnComp>
-                </template>
-                <template #item.Name="{ item }">
-                    <g-link :to="{ name: 'hango.virtualManager.info', query: { Id: item.RouteRuleId } }">{{ item.Name }}</g-link>
-                </template>
-                <template #item.actions="{ item }">
-                    <ActionBtnComp color="primary" icon="mdi-pencil" tooltip="修改" @click="handleEdit(item)"></ActionBtnComp>
-                    <ActionBtnComp color="error" icon="mdi-delete" tooltip="删除" @click="handleDelete(item)"></ActionBtnComp>
-                </template>
-            </g-table-list>
-        </div>
-        <CreateModalComp v-if="createVisible" :current="current" @close="handleClose" />
-    </v-container>
+  <v-container fluid>
+    <v-breadcrumbs
+      class="pl-3"
+      v-if="$route.meta && $route.meta.breadcrumbs"
+      large
+      :items="$route.meta.breadcrumbs"
+    ></v-breadcrumbs>
+    <div>
+      <g-table-list :headers="headers" :load="getDataFromApi" ref="tableRef">
+        <template #top>
+          <ActionBtnComp
+            icon="mdi-plus"
+            tooltip="创建虚拟网关"
+            color="primary"
+            @click="handleCreate()"
+          ></ActionBtnComp>
+        </template>
+        <template #item.Name="{ item }">
+          <g-link
+            :to="{
+              name: 'hango.virtualManager.info',
+              query: { Id: item.RouteRuleId },
+            }"
+            >{{ item.Name }}</g-link
+          >
+        </template>
+        <template #item.actions="{ item }">
+          <ActionBtnComp
+            color="primary"
+            icon="mdi-pencil"
+            tooltip="修改"
+            @click="handleEdit(item)"
+          ></ActionBtnComp>
+          <ActionBtnComp
+            color="error"
+            icon="mdi-delete"
+            tooltip="删除"
+            @click="handleDelete(item)"
+          ></ActionBtnComp>
+        </template>
+      </g-table-list>
+    </div>
+    <CreateModalComp
+      v-if="createVisible"
+      :current="current"
+      @close="handleClose"
+    />
+    <CreateModalComp
+      v-if="editVisible"
+      :current="current"
+      type="edit"
+      @close="handleClose"
+    />
+  </v-container>
 </template>
 
 <script>
@@ -43,20 +79,28 @@ export default {
                 };
             }),
             createVisible: false,
+            editVisible: false,
         };
     },
     methods: {
+        refresh() {
+            this.$refs.tableRef && this.$refs.tableRef.refresh();
+        },
         handleCreate() {
             this.current = null;
             this.createVisible = true;
         },
         handleClose() {
             this.createVisible = false;
+            this.editVisible = false;
             this.current = null;
+            this.refresh();
         },
-        handleEdit() {},
-        handleDelete() {},
-        getDataFromApi(params = {}) {
+        handleEdit(item) {
+            this.current = item;
+            this.editVisible = true;
+        },
+        getDataFromApi(params) {
             return this.axios({
                 action: 'DescribeVirtualGateway',
                 data: {
@@ -64,8 +108,25 @@ export default {
                     Pattern: '',
                     ProjectIdList: null,
                 },
-            }).then(({ PluginBindingList = [], TotalCount = 0 }) => {
-                return { list: PluginBindingList, total: TotalCount };
+            }).then(({ Result = [], Total = 0 }) => {
+                return { list: Result, total: Total };
+            });
+        },
+        handleDelete(item) {
+            this.$confirm({
+                title: '删除确认提示',
+                message: '警告，是否删除该虚拟网关?',
+                ok: () => {
+                    return this.axios({
+                        action: 'DeleteVirtualGateway',
+                        params: {
+                            ..._.pick(item, [ 'VirtualGwId' ]),
+                        },
+                    }).then(() => {
+                        this.$notify.success('删除成功');
+                        this.refresh();
+                    });
+                },
             });
         },
     },

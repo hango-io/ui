@@ -393,4 +393,29 @@ export default {
             Version: '2022-10-30',
         },
     },
+    CreateVirtualGateway: {
+        url: '/gdashboard',
+        method: 'post',
+        params: {
+            Action: 'CreateVirtualGateway',
+            Version: '2022-10-30',
+        },
+    },
+    UpdateVirtualGateway: {
+        url: '/gdashboard',
+        method: 'post',
+        params: {
+            Action: 'UpdateVirtualGateway',
+            Version: '2022-10-30',
+        },
+    },
+    // 删除虚拟网关
+    DeleteVirtualGateway: {
+        url: '/gdashboard',
+        method: 'get',
+        params: {
+            Action: 'DeleteVirtualGateway',
+            Version: '2022-10-30',
+        },
+    },
 };
