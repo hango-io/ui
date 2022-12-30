@@ -409,4 +409,13 @@ export default {
             Version: '2022-10-30',
         },
     },
+    // 删除虚拟网关
+    DeleteVirtualGateway: {
+        url: '/gdashboard',
+        method: 'get',
+        params: {
+            Action: 'DeleteVirtualGateway',
+            Version: '2022-10-30',
+        },
+    },
 };
