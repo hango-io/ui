@@ -35,7 +35,7 @@ export default {
                     return {
                         ...item,
                         text: item.GwName,
-                        value: item.GwId,
+                        value: item.VirtualGwId,
                     };
                 });
             });

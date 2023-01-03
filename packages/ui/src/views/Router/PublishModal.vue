@@ -215,22 +215,22 @@ export default {
             this.$emit('close');
         },
         handleGatewaySelect() {
-            const GwIds = this.form.GwId;
+            const VirtualGwId = this.form.GwId;
             const ServiceId = this.current.ServiceId;
             this.serviceProxyInfo = null;
-            if (!GwIds) return;
+            if (!VirtualGwId) return;
             return this.axios({
                 action: 'DescribeServiceProxyForPublishRoute',
                 params: {
-                    GwIds,
+                    VirtualGwId,
                     ServiceId,
                 },
-            }).then(({ EnvoyServiceProxy = {} } = {}) => {
-                this.serviceProxyInfo = EnvoyServiceProxy;
+            }).then(({ Result = {} } = {}) => {
+                this.serviceProxyInfo = Result;
                 this.form.DestinationServices = [
                     {
-                        BackendService: EnvoyServiceProxy.BackendService,
-                        Port: EnvoyServiceProxy.Port ? EnvoyServiceProxy.Port[0] : undefined,
+                        BackendService: Result.BackendService,
+                        Port: Result.Port ? Result.Port[0] : undefined,
                         Weight: 100,
                         ServiceId,
                     },
