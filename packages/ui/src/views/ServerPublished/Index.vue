@@ -93,7 +93,7 @@ const TABLE_HEADERS = [
     { text: '服务名称', value: 'custom', name: 'ServiceName' },
     { text: '服务标识', value: 'custom', name: 'ServiceTag' },
     { text: '发布信息', value: 'custom', name: 'PublishType' },
-    { text: '所属网关', value: 'GwName' },
+    { text: '所属网关', value: 'VirtualGwName' },
     { text: '发布时间', value: 'UpdateTime' },
     { text: '操作', value: 'custom', name: 'actions', width: 180 },
 ];
@@ -147,6 +147,7 @@ export default {
             this.current = item;
         },
         handleDelete(item) {
+            console.log(item);
             this.$confirm({
                 title: '操作确认提示',
                 message: '下线操作将会导致服务不可用，请谨慎操作！',
@@ -156,7 +157,7 @@ export default {
                         params: {
                             ..._.pick(item, [
                                 'ServiceId',
-                                'GwId',
+                                'VirtualGwId',
                                 'BackendService',
                                 'PublishType',
                             ]),
