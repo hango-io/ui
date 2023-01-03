@@ -1,9 +1,5 @@
 <template>
-    <v-select
-        :items="items"
-        v-bind="$attrs"
-        v-on="$listeners"
-    ></v-select>
+    <v-select :items="items" v-bind="$attrs" v-on="$listeners"></v-select>
 </template>
 
 <script>
@@ -17,17 +13,17 @@ export default {
     methods: {
         load() {
             return this.axios({
-                action: 'DescribeGatewayListForGatewayTab',
-                params: {
+                action: 'DescribeVirtualGateway',
+                data: {
                     Limit: 1000,
                     Offset: 0,
                 },
-            }).then(({ GatewayInfos = [] }) => {
-                this.items = GatewayInfos.map(item => {
+            }).then(({ Result = [] }) => {
+                this.items = Result.map(item => {
                     return {
                         ...item,
-                        text: item.GwName,
-                        value: item.GwId,
+                        text: item.Name,
+                        value: item.VirtualGwId,
                     };
                 });
             });

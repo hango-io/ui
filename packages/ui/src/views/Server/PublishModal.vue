@@ -2,10 +2,10 @@
     <!-- TODO -->
     <g-modal-form :title="isEdit ? '发布更新' : '发布服务'" visible :submit="handleSubmit" @close="handleClose">
         <validation-provider v-slot="{ errors }" name="目标网关" rules="required">
-            <g-gateway-select v-model="form.GwId" label="目标网关*" :error-messages="errors" @change="loadServiceAddressList" required></g-gateway-select>
+            <g-gateway-select v-model="form.VirtualGwId" label="目标网关*" :error-messages="errors" @change="handleChange" required></g-gateway-select>
         </validation-provider>
 
-        <template v-if="form.GwId">
+        <template v-if="form.VirtualGwId">
             <validation-provider v-slot="{ errors }" name="发布方式" rules="required">
                 <v-radio-group
                     label="发布方式*"
@@ -106,7 +106,7 @@ export default {
         registryCenterTypeList: [],
         moreSwitch: false,
         form: {
-            GwId: '',
+            VirtualGwId: '',
             RegistryCenterType: '',
             PublishType: 'DYNAMIC', // 'STATIC'
             // PublishProtocol: 'http',
@@ -152,13 +152,13 @@ export default {
     methods: {
         loadServiceAddressList() {
             this.registryCenterList = [];
-            const GwId = this.form.GwId;
-            if (!GwId) return;
+            const VirtualGwId = this.form.VirtualGwId;
+            if (!VirtualGwId) return;
             const RegistryCenterType = this.form.RegistryCenterType;
             return this.axios({
                 action: 'DescribeServiceListByGw',
                 params: {
-                    GwId,
+                    VirtualGwId,
                     RegistryCenterType,
                 },
             }).then(({ ServiceList = [] } = {}) => {
@@ -184,17 +184,19 @@ export default {
                 action: 'DescribeRegistryTypes',
                 params: {
                     ServiceType: this.current.ServiceType,
+                    VirtualGwId: this.form.VirtualGwId,
                 },
             }).then(({ RegistryTypes = [] }) => {
                 this.registryCenterTypeList = RegistryTypes;
             });
         },
+        handleChange() {
+            this.loadServiceAddressList();
+            this.loadRegistryCenterType();
+        },
         handleClose() {
             this.$emit('close');
         },
-    },
-    created() {
-        this.loadRegistryCenterType();
     },
 };
 </script>
