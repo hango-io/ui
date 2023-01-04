@@ -20,10 +20,13 @@
           <g-link
             :to="{
               name: 'hango.virtualManager.info',
-              query: { Id: item.RouteRuleId },
+              query: { Id: item.RouteRuleId,VirtualGwId:item.VirtualGwId},
             }"
             >{{ item.Name }}</g-link
           >
+        </template>
+        <template #item.Type="{ item }">
+          {{ item.Type | apiType }}
         </template>
         <template #item.actions="{ item }">
           <ActionBtnComp
@@ -61,7 +64,7 @@ import ActionBtnComp from '@/components/ActionBtn';
 import CreateModalComp from './CreateModal';
 const TABLE_HEADERS = [
     { text: '虚拟网关名称', value: 'custom', name: 'Name' },
-    { text: '类型', value: 'Type' },
+    { text: '类型', value: 'custom', name: 'Type' },
     { text: '所属网关', value: 'GwName' },
     { text: '监听协议', value: 'Protocol' },
     { text: '监听端口', value: 'Port' },
@@ -81,6 +84,26 @@ export default {
             createVisible: false,
             editVisible: false,
         };
+    },
+    filters: {
+        apiType(val) {
+            switch (val) {
+                case 'ApiGateway':
+                    return 'API网关';
+                case 'LoadBalance':
+                    return '负载均衡';
+                case 'KubernetesGateway':
+                    return 'Kubernetes Gateway';
+                case 'KubernetesIngress':
+                    return 'Kubernetes Ingress';
+                case 'ServerlessGateway':
+                    return 'Serverless网关';
+                case 'NetworkProxy':
+                    return '通用网关';
+                default:
+                    return '-';
+            }
+        },
     },
     methods: {
         refresh() {

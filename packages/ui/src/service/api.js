@@ -418,4 +418,39 @@ export default {
             Version: '2022-10-30',
         },
     },
+    // 获取虚拟网关详情
+    DescribeVirtualGatewayById: {
+        url: '/gdashboard',
+        method: 'get',
+        params: {
+            Action: 'DescribeVirtualGatewayById',
+            Version: '2022-10-30',
+        },
+    },
+    // 查询K8s Gateway
+    DescribeKubernetesGateway: {
+        url: 'hango/v1/virtualGateway',
+        method: 'get',
+        params: {
+            Action: 'DescribeKubernetesGateway',
+        },
+    },
+    // 查询Kubernetes Gateway Yaml
+    DescribeKubernetesGatewayYaml: {
+        url: 'hango/v1/virtualGateway',
+        method: 'get',
+        params: {
+            Action: 'DescribeKubernetesGatewayYaml',
+            Version: '',
+        },
+    },
+    // 查询K8s Httproute列表
+    DescribeHTTPRoute: {
+        url: 'hango/v1/virtualGateway',
+        method: 'get',
+        params: {
+            Action: 'DescribeHTTPRoute',
+            Version: '',
+        },
+    },
 };
