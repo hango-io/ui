@@ -2,7 +2,10 @@
     <v-card
         class="mx-auto mb-4"
     >
-        <v-card-title v-if="!!title">{{ title }}</v-card-title>
+        <v-card-title v-if="!!title" :class="$style.tit">
+            {{ title }}
+            <slot name="extra"></slot>
+        </v-card-title>
         <slot>
             <v-row v-for="(row, rIndex) in _list" :key="rIndex">
                 <v-col v-for="(col, cIndex) in row" :key="cIndex"
@@ -46,3 +49,8 @@ export default {
     },
 };
 </script>
+<style lang="scss" module>
+.tit{
+    justify-content: space-between;
+}
+</style>

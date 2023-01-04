@@ -1,6 +1,6 @@
 <template>
   <g-modal-form
-    title="创建网关"
+    title="创建虚拟网关"
     visible
     :submit="handleSubmit"
     @close="handleClose"
@@ -14,6 +14,7 @@
         v-model="form.Name"
         label="虚拟网关名称*"
         :error-messages="errors"
+        hint="只支持字母、中文、数字、下划线、中划线或‘.’组成"
         required
       ></v-text-field>
     </validation-provider>
@@ -28,6 +29,7 @@
         :error-messages="errors"
         required
         :disabled="isEdit"
+        hint="最小两位,只支持由小写字母数字字符、“-”组成,必须以字母数字字符开头、结尾"
       ></v-text-field>
     </validation-provider>
     <validation-provider v-slot="{ errors }" name="类型" rules="required">
@@ -67,6 +69,7 @@
         :error-messages="errors"
         required
         :disabled="isEdit"
+        hint="请输入80-65535间的端口号,15000-20000为平台预留端口"
       ></v-text-field>
     </validation-provider>
     <validation-provider v-slot="{ errors }" name="访问地址">
@@ -75,6 +78,7 @@
         label="访问地址"
         :error-messages="errors"
         required
+        hint="请输入http://或者https://开头的网关地址"
       ></v-text-field>
     </validation-provider>
     <validation-provider v-slot="{ errors }" name="备注信息">
