@@ -13,7 +13,7 @@
         ref="tableRef"
       >
         <template #item.RouteRuleName="{ item }">
-            <g-link :to="{ name: 'hango.published.router.info', query: { Id: item.RouteRuleId } }">{{ item.RouteRuleName }}</g-link>
+            <g-link :to="{ name: 'hango.published.router.info', query: { Id: item.Id } }">{{ item.RouteRuleName }}</g-link>
         </template>
         <template #item.routeRuleInfo="{ item }">
             <v-tooltip bottom color="rgba(0,0,0,0)">
