@@ -453,4 +453,22 @@ export default {
             Version: '',
         },
     },
+    // 查询虚拟网关-插件配置
+    DescribePluginManager: {
+        url: '/gdashboard',
+        method: 'get',
+        params: {
+            Action: 'DescribePluginManager',
+            Version: '2019-09-01',
+        },
+    },
+    // 更新插件
+    UpdatePluginManager: {
+        url: '/gdashboard',
+        method: 'post',
+        params: {
+            Action: 'UpdatePluginManager',
+            Version: '2019-09-01',
+        },
+    },
 };
