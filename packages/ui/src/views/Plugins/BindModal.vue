@@ -35,7 +35,9 @@ export default {
     props: {
         gwId: [ String, Number ],
         routeId: [ String, Number ],
+        DomainId: [ String, Number ],
         current: Object,
+        scope: String,
         type: {
             type: String,
             default: 'add',
@@ -57,7 +59,7 @@ export default {
             return this.current.PluginType;
         },
         GwId() {
-            return this.current && this.current.GwId || this.gwId;
+            return this.current && this.current.VirtualGwId || this.gwId;
         },
         RouteId() {
             return this.PluginBindingInfo && this.PluginBindingInfo.BindingObjectId || this.routeId;
@@ -79,7 +81,7 @@ export default {
             return this.axios({
                 action: 'DescribeBindingPlugin',
                 params: {
-                    GwId: this.GwId,
+                    VirtualGwId: this.GwId,
                     PluginBindingInfoId: this.PluginBindingInfoId,
                 },
             }).then(({ PluginBindingInfo = {} } = {}) => {
@@ -92,7 +94,7 @@ export default {
             return this.axios({
                 action: 'DescribePluginInfo',
                 params: {
-                    GwId: this.GwId,
+                    VirtualGwId: this.GwId,
                     PluginType: this.PluginType,
                 },
             }).then(({ PluginInfo = {} } = {}) => {
@@ -117,9 +119,9 @@ export default {
                     action = this.axios({
                         action: 'BindingPlugin',
                         data: {
-                            BindingObjectId: this.RouteId,
-                            BindingObjectType: 'routeRule',
-                            GwId: this.GwId,
+                            BindingObjectId: this.RouteId || this.DomainId,
+                            BindingObjectType: this.scope,
+                            VirtualGwId: this.GwId,
                             PluginConfiguration: JSON.stringify(config),
                             PluginType: this.PluginType,
                         },

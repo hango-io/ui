@@ -1,7 +1,26 @@
 <template>
     <v-container fluid>
         <v-breadcrumbs class="pl-3" v-if="$route.meta && $route.meta.breadcrumbs" large :items="$route.meta.breadcrumbs"></v-breadcrumbs>
-        <div>
+        <div :class="$style.menu">
+            <v-timeline :reverse="false" dense>
+                <v-timeline-item
+                    fill-dot
+                    v-for="(item, index) in menuList"
+                    :key="index"
+                    small
+                    :color="item.color">
+                    <v-alert
+                        @click="linkTo(item)"
+                        style="cursor: pointer"
+                        :value="true"
+                        :color="item.color"
+                        class="white--text">
+                        {{item.text}}
+                    </v-alert>
+                </v-timeline-item>
+            </v-timeline>
+        </div>
+        <div style="width:80%">
             <v-card class="mx-auto mb-4">
                 <v-list-item two-line>
                     <v-list-item-avatar tile size="54">
@@ -30,64 +49,56 @@
                     </v-list-item-content>
                 </v-list-item>
             </v-card>
-            <v-row>
+            <v-row id="baseInfo">
                 <!-- 基础信息 -->
                 <v-col>
                     <g-info-card title="基础信息" :list="basicInfoList"></g-info-card>
                 </v-col>
             </v-row>
-            <v-row>
-                <!-- 域名管理 -->
-                <v-col>
-                    <g-info-card title="域名管理">
-                        <template #extra>
-                            <v-icon color="secondary" @click="editDomain">mdi-plus</v-icon>
-                        </template>
-                        <g-table-list :headers="domainheaders" :load="getDomainFromApi" hide-default-footer></g-table-list>
-                    </g-info-card>
-                </v-col>
-            </v-row>
             <template v-if="info.Type =='KubernetesGateway'">
-                <v-row>
+                <v-row id="Gateway">
                     <!-- gateway -->
                     <v-col>
                         <g-info-card title="Gateway">
                             <template #extra>
                                 <div :class="$style.color" @click="openYaml">查看yaml</div>
                             </template>
-                            <g-table-list :headers="headers" :load="getDataFromApi" hide-default-footer>
+                            <g-table-list ref="gatewayList" :headers="headers" :load="getDataFromApi" hide-default-footer>
                                 <template #header>
                                     <div class="ml-4">{{ "" }}</div>
                                 </template>
                                 <template #item.pluginBindingDtos="{ item }">
-                                    <template v-if="item.pluginBindingDtos.length > 0">
+                                    <template>
                                         <v-chip
                                             class="mr-2"
                                             x-small
                                             color="primary"
                                             label
+                                            close
+                                            @click:close="deletePlugin(value)"
+                                            @click="openPlugin(value, false)"
                                             v-for="value in item.pluginBindingDtos"
                                             :key="value.PluginBindingInfoId"
                                         >{{ value.PluginName || "-" }}</v-chip>
                                     </template>
-                                    <template v-else>{{ "-" }}</template>
+                                    <v-icon color="secondary" @click="openPlugin(item, true)">mdi-plus</v-icon>
                                 </template>
                             </g-table-list>
                         </g-info-card>
                     </v-col>
                 </v-row>
-                <v-row>
+                <v-row id="httpRoute">
                     <!-- http route -->
                     <v-col>
                         <g-info-card title="HTTP Route">
                             <template #extra>
-                                <v-icon color="secondary" @click="getHttpFromApi">mdi-reload</v-icon>
+                                <v-icon color="secondary" @click="httpRefresh">mdi-reload</v-icon>
                             </template>
-                            <g-info-card :title="`HTTP Route Name:'${routeName}`">
+                            <g-info-card :title="`HTTP Route Name:${routeName}`">
                                 <template #extra>
                                     <div class="mr-4" :class="$style.color">{{ "查看yaml" }}</div>
                                 </template>
-                                <g-table-list :headers="httpheaders" :load="getHttpFromApi" hide-default-footer>
+                                <g-table-list ref="httpList" :headers="httpheaders" :load="getHttpFromApi" hide-default-footer>
                                     <template #header>
                                         <div class="ml-4">{{`Host:${routeHosts}`}}</div>
                                     </template>
@@ -148,11 +159,11 @@
                     </v-col>
                 </v-row>
             </template>
-            <v-row>
+            <v-row id="pluginManager">
                 <!-- 插件配置 -->
                 <v-col>
                     <g-info-card title="插件配置">
-                        <g-table-list :headers="pluginheaders" :load="getPluginFromApi" hide-default-footer>
+                        <g-table-list ref="pluginList" :headers="pluginheaders" :load="getPluginFromApi" hide-default-footer>
                             <template #header>
                                 <div class="ml-4"></div>
                             </template>
@@ -176,10 +187,15 @@
       v-bind="$attrs"
     >
         </v-dialog>-->
+        <pluginModal scope="host" :DomainId="DomainId" :VirtualGwId="VirtualGwId" v-if="pluginVisible" @close="handlePluginClose"></pluginModal>
+        <BindModalComp scope="routeRule" :DomainId="DomainId" v-if="editPluginVisible" type="edit" :current="current" @close="handlePluginClose"></BindModalComp>
     </v-container>
 </template>
 
 <script>
+import pluginModal from '../Plugins/CreateModal.vue';
+import BindModalComp from '../Plugins/BindModal.vue';
+import _ from 'lodash';
 const TABLE_HEADERS = [
     { text: 'Hostname', value: 'Hostname' },
     { text: 'Plugin', value: 'custom', name: 'pluginBindingDtos' },
@@ -194,7 +210,32 @@ const PLUGIN_HEADERS = [
     { text: '状态', value: 'custom', name: 'Enable' },
     { text: '操作', value: 'custom', name: 'actions', width: 120 },
 ];
+const MENU_LIST = [
+    {
+        id: 'baseInfo',
+        text: '基础信息',
+        icon: 'mdi-card-bulleted',
+        color: '#00a3a3',
+        type: [ 'ApiGateway', 'LoadBalance', 'KubernetesGateway', 'KubernetesIngress', 'ServerlessGateway', 'NetworkProxy' ],
+    },
+    { id: 'Gateway', text: 'Gateway', icon: 'mdi-comment-edit', color: '#00a3a3', type: [ 'KubernetesGateway' ] },
+    {
+        id: 'httpRoute',
+        text: 'HTTP Route',
+        icon: 'mdi-folder-network',
+        color: '#00a3a3',
+        type: [ 'KubernetesGateway' ],
+    },
+    {
+        id: 'pluginManager',
+        text: '插件配置',
+        icon: 'mdi-brightness-5',
+        color: '#00a3a3',
+        type: [ 'ApiGateway', 'LoadBalance', 'KubernetesGateway', 'KubernetesIngress', 'ServerlessGateway', 'NetworkProxy' ],
+    },
+];
 export default {
+    components: { pluginModal, BindModalComp },
     data() {
         return {
             info: {
@@ -232,10 +273,14 @@ export default {
                     sortable: false,
                 };
             }),
-            domainheaders: {},
             httpList: [],
             pluginList: [],
+            current: {},
+            DomainId: '',
             visible: false,
+            pluginVisible: false,
+            editPluginVisible: false,
+            show: false,
         };
     },
     filters: {
@@ -246,6 +291,10 @@ export default {
         },
     },
     computed: {
+        menuList() {
+            // return [];
+            return MENU_LIST.filter(item => item.type.includes(this.info.Type));
+        },
         VirtualGwId() {
             if (this.$route.query) {
                 return this.$route.query.VirtualGwId;
@@ -315,6 +364,8 @@ export default {
             });
         },
         getDataFromApi(params) {
+            this.show = false;
+            console.log(this.show);
             return this.axios({
                 action: 'DescribeKubernetesGateway',
                 params: {
@@ -322,6 +373,8 @@ export default {
                     VirtualGatewayId: this.VirtualGwId,
                 },
             }).then(({ Result = [] }) => {
+                this.show = true;
+                console.log(this.show);
                 return { list: Result, total: Result.length };
             });
         },
@@ -349,7 +402,6 @@ export default {
                 return { list: Result, total: Result.length };
             });
         },
-        getDomainFromApi(params) {},
         openYaml(params) {
             this.visible = true;
             return this.axios({
@@ -371,19 +423,58 @@ export default {
                 ok: () => {
                     return this.axios({
                         action: 'UpdatePluginManager',
-                        data: {
+                        params: {
                             VirtualGwId: this.VirtualGwId,
                             Name,
                             Enable,
                         },
                     }).then(() => {
                         this.$notify.success(`${Enable ? '启用' : '禁用'}成功!`);
-                        this.getPluginFromApi();
+                        this.$refs.pluginList.refresh();
                     });
                 },
             });
         },
         editDomain() {},
+        openPlugin(item, flag) {
+            if (flag) {
+                this.pluginVisible = true;
+                this.DomainId = item.DomainId;
+            } else {
+                this.current = item;
+                this.editPluginVisible = true;
+            }
+        },
+        handlePluginClose() {
+            this.pluginVisible = false;
+            this.editPluginVisible = false;
+            this.$refs.gatewayList.refresh();
+        },
+        linkTo(item) {
+            document.getElementById(item.id).scrollIntoView();
+        },
+        deletePlugin(item) {
+            this.$confirm({
+                title: '删除确认提示',
+                message: '警告，是否删除该插件?',
+                ok: () => {
+                    return this.axios({
+                        action: 'UnbindingPlugin',
+                        params: {
+                            ..._.pick(item, [
+                                'PluginBindingInfoId',
+                            ]),
+                        },
+                    }).then(() => {
+                        this.$notify.success('删除成功');
+                        this.$refs.gatewayList.refresh();
+                    });
+                },
+            });
+        },
+        httpRefresh() {
+            this.$refs.httpList.refresh();
+        },
     },
     created() {
         this.load();
@@ -397,5 +488,11 @@ export default {
 }
 .color {
     color: #00a3a3;
+}
+.menu {
+    position: fixed;
+    z-index: 1;
+    right: 12px;
+    width: 20%;
 }
 </style>

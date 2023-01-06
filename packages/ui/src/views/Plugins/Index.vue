@@ -51,8 +51,8 @@
         </template>
       </g-table-list>
     </div>
-    <CreateModalComp v-if="createVisible" :current="current" @close="handleClose"/>
-    <BindModalComp v-if="editVisible" type="edit" :current="current" @close="handleClose"></BindModalComp>
+    <CreateModalComp scope="routeRule" v-if="createVisible" :current="current" @close="handleClose"/>
+    <BindModalComp scope="routeRule" v-if="editVisible" type="edit" :current="current" @close="handleClose"></BindModalComp>
   </v-container>
 </template>
 

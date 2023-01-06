@@ -88,6 +88,7 @@ export default {
             this.loading = true;
             this.list = [];
             return this.load(params).then(res => {
+                console.log('son', res.list);
                 this.list = res.list || res.List || res.Result || [];
                 this.total = res.total || res.Total || res.TotalCount || 0;
                 this.loading = false;
