@@ -77,8 +77,10 @@
         <v-text-field
           :error-messages="errors"
           :key="index"
+          @click:append="appendIconCallback(index)"
           v-model="item.value"
-          label="域名列表"
+          :label="`域名列表${index+1}`"
+          append-icon="mdi-delete"
           hint="请输入域名">
         </v-text-field>
       </template>
@@ -114,7 +116,6 @@ const TEMPLATE_MODEL = {
     VirtualHostList: [],
     Description: '',
 };
-import _ from 'lodash';
 import { ValidationProvider } from 'vee-validate';
 export default {
     components: {
@@ -155,7 +156,12 @@ export default {
         current: {
             handler(newVal) {
                 if (newVal && this.isEdit) {
+                    const arr = [];
+                    this.current.VirtualHostList.forEach((item, index) => {
+                        this.$set(arr, index, { value: item });
+                    });
                     this.load();
+                    this.form.VirtualHostList = arr;
                 }
             },
             immediate: true,
@@ -168,16 +174,17 @@ export default {
         },
         handleSubmit() {
             const params = JSON.parse(JSON.stringify(this.form));
-            console.log(params);
-            // return this.axios({
-            //     action: this.isEdit ? 'UpdateVirtualGateway' : 'CreateVirtualGateway',
-            //     data: {
-            //         ...params,
-            //     },
-            // }).then(() => {
-            //     this.$notify.success(this.isEdit ? '虚拟网关更新成功' : '虚拟网关创建成功');
-            //     this.handleClose();
-            // });
+            // 给后端传值做特殊处理
+            params.VirtualHostList = this.form.VirtualHostList.map(item => item.value);
+            return this.axios({
+                action: this.isEdit ? 'UpdateVirtualGateway' : 'CreateVirtualGateway',
+                data: {
+                    ...params,
+                },
+            }).then(() => {
+                this.$notify.success(this.isEdit ? '虚拟网关更新成功' : '虚拟网关创建成功');
+                this.handleClose();
+            });
         },
         handleClose() {
             this.$emit('close');
@@ -197,6 +204,9 @@ export default {
                     };
                 });
             });
+        },
+        appendIconCallback(index) {
+            this.form.VirtualHostList.splice(index, 1);
         },
     },
     created() {

@@ -135,62 +135,6 @@
                                         </tbody>
                                         </template>
                                     </v-simple-table>
-                                    <!-- <g-table-list ref="httpList" :headers="httpheaders" :load="getHttpFromApi" hide-default-footer>
-                                        <template #header>
-                                            <div class="ml-4">{{`Host:${routeHosts}`}}</div>
-                                        </template>
-                                        <template #item.matches="{ item }">
-                                            <div v-for="(data, index) in item.rules" :key="index">
-                                                <template v-if="data.matches.length > 0">
-                                                    <div v-for="(match, index) in data.matches" :key="index">
-                                                        <v-chip
-                                                            class="mr-2"
-                                                            x-small
-                                                            color="green"
-                                                            text-color="white"
-                                                            label
-                                                        >{{ match.type | type }}</v-chip>
-                                                        <v-tooltip top>
-                                                            <template v-slot:activator="{ on, attrs }">
-                                                                <v-chip class="mr-2" x-small label v-bind="attrs" v-on="on">{{ match.value }}</v-chip>
-                                                            </template>
-                                                            <span>{{ match.value }}</span>
-                                                        </v-tooltip>
-                                                        <v-tooltip top>
-                                                            <template v-slot:activator="{ on, attrs }">
-                                                                <v-icon v-bind="attrs" v-on="on" color="blue">mdi-dots-horizontal</v-icon>
-                                                            </template>
-                                                            <span>详细路由信息请查看yaml</span>
-                                                        </v-tooltip>
-                                                    </div>
-                                                </template>
-                                                <template v-else>{{ "-" }}</template>
-                                            </div>
-                                        </template>
-                                        <template #item.backendRefs="{ item }">
-                                            <div v-for="(data, index) in item.rules" :key="index">
-                                                <span
-                                                    v-for="(backend, index) in data.backendRefs"
-                                                    :key="index"
-                                                >{{ backend.name || "-" }}:{{ backend.port || "-" }}</span>
-                                            </div>
-                                        </template>
-                                        <template #item.filters="{ item }">
-                                            <div v-for="(data, index) in item.rules" :key="index">
-                                                <template v-if="data.filters.length > 0">
-                                                    <v-chip
-                                                        class="mr-2"
-                                                        x-small
-                                                        color="primary"
-                                                        label
-                                                        v-for="(filter, index) in data.filters"
-                                                        :key="index"
-                                                    >{{ filter.type || "-" }}</v-chip>
-                                                </template>
-                                                <template v-else>{{ "-" }}</template>
-                                            </div>
-                                        </template>
-                                    </g-table-list> -->
                                 </g-info-card>
                             </template>
                         </g-info-card>
