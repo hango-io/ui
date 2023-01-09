@@ -72,6 +72,18 @@
         hint="请输入80-65535间的端口号,15000-20000为平台预留端口"
       ></v-text-field>
     </validation-provider>
+    <validation-provider v-slot="{ errors }" name="域名列表">
+      <template v-for="(item, index) in form.VirtualHostList">
+        <v-text-field
+          :error-messages="errors"
+          :key="index"
+          v-model="item.value"
+          label="域名列表"
+          hint="请输入域名">
+        </v-text-field>
+      </template>
+      <v-btn block color="primary" @click="() => form.VirtualHostList.push({ value: '' })">添加一个域名</v-btn>
+    </validation-provider>
     <validation-provider v-slot="{ errors }" name="访问地址">
       <v-text-field
         v-model="form.Addr"
@@ -99,6 +111,7 @@ const TEMPLATE_MODEL = {
     Protocol: '',
     Port: '',
     Addr: '',
+    VirtualHostList: [],
     Description: '',
 };
 import _ from 'lodash';
@@ -155,15 +168,16 @@ export default {
         },
         handleSubmit() {
             const params = JSON.parse(JSON.stringify(this.form));
-            return this.axios({
-                action: this.isEdit ? 'UpdateVirtualGateway' : 'CreateVirtualGateway',
-                data: {
-                    ...params,
-                },
-            }).then(() => {
-                this.$notify.success(this.isEdit ? '虚拟网关更新成功' : '虚拟网关创建成功');
-                this.handleClose();
-            });
+            console.log(params);
+            // return this.axios({
+            //     action: this.isEdit ? 'UpdateVirtualGateway' : 'CreateVirtualGateway',
+            //     data: {
+            //         ...params,
+            //     },
+            // }).then(() => {
+            //     this.$notify.success(this.isEdit ? '虚拟网关更新成功' : '虚拟网关创建成功');
+            //     this.handleClose();
+            // });
         },
         handleClose() {
             this.$emit('close');

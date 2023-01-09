@@ -8,7 +8,12 @@
     ></v-breadcrumbs>
     <div>
       <g-table-list :headers="headers" :load="getDataFromApi" ref="tableRef">
-        <template #top>
+        <template #header>
+          <ActionBtnComp
+              icon="mdi-refresh"
+              tooltip="刷新"
+              @click="refreshTable()"
+          ></ActionBtnComp>
           <ActionBtnComp
             icon="mdi-plus"
             tooltip="创建虚拟网关"
@@ -108,6 +113,11 @@ export default {
     methods: {
         refresh() {
             this.$refs.tableRef && this.$refs.tableRef.refresh();
+        },
+        refreshTable() {
+            return this.axios({
+                action: 'RefreshKubernetesGateway',
+            }).then(() => this.refresh());
         },
         handleCreate() {
             this.current = null;

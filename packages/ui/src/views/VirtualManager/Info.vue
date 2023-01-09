@@ -61,7 +61,7 @@
                     <v-col>
                         <g-info-card title="Gateway">
                             <template #extra>
-                                <div :class="$style.color" @click="openYaml">查看yaml</div>
+                                <div :class="$style.color" @click="openYamlGateway">查看yaml</div>
                             </template>
                             <g-table-list ref="gatewayList" :headers="headers" :load="getDataFromApi" hide-default-footer>
                                 <template #header>
@@ -92,69 +92,107 @@
                     <v-col>
                         <g-info-card title="HTTP Route">
                             <template #extra>
-                                <v-icon color="secondary" @click="httpRefresh">mdi-reload</v-icon>
+                                <v-icon color="secondary" @click="getHttpFromApi">mdi-reload</v-icon>
                             </template>
-                            <g-info-card :title="`HTTP Route Name:${routeName}`">
-                                <template #extra>
-                                    <div class="mr-4" :class="$style.color">{{ "查看yaml" }}</div>
-                                </template>
-                                <g-table-list ref="httpList" :headers="httpheaders" :load="getHttpFromApi" hide-default-footer>
-                                    <template #header>
-                                        <div class="ml-4">{{`Host:${routeHosts}`}}</div>
+                            <template v-for="(item, index) in httpList">
+                                <g-info-card :key="index" :title="`HTTP Route Name:${item.routeName}`">
+                                    <template #extra>
+                                        <div class="mr-4" :class="$style.color" @click="openYamlHttp(item.yamlStr)">{{ "查看yaml" }}</div>
                                     </template>
-                                    <template #item.matches="{ item }">
-                                        <div v-for="(data, index) in item.rules" :key="index">
-                                            <template v-if="data.matches.length > 0">
-                                                <div v-for="(match, index) in data.matches" :key="index">
+                                    <v-simple-table>
+                                        <template v-slot:default>
+                                        <thead>
+                                            <tr>
+                                                <th class="text-left">
+                                                    rule match
+                                                </th>
+                                                <th class="text-left">
+                                                    backend
+                                                </th>
+                                                <th class="text-left">
+                                                    filter
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="cell in item.rules" :key="cell.index">
+                                                <td>
+                                                    <div v-for="(tag, index) in cell.matches" :key="index">
+                                                        <v-chip  class="mr-2" x-small color="success" label>{{tag.type | type}}</v-chip>
+                                                        <v-chip  class="mr-2" x-small color="primary" label>{{tag.value}}</v-chip>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        v-for="(backend, index) in cell.backendRefs"
+                                                        :key="index"
+                                                    >{{backend.name || '-'}}:{{backend.port || '-'}}</span>
+                                                </td>
+                                                <td>
+                                                    <v-chip  class="mr-2" x-small color="primary" label v-for="(filter, index) in cell.filters" :key="index">{{filter.type}}</v-chip>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        </template>
+                                    </v-simple-table>
+                                    <!-- <g-table-list ref="httpList" :headers="httpheaders" :load="getHttpFromApi" hide-default-footer>
+                                        <template #header>
+                                            <div class="ml-4">{{`Host:${routeHosts}`}}</div>
+                                        </template>
+                                        <template #item.matches="{ item }">
+                                            <div v-for="(data, index) in item.rules" :key="index">
+                                                <template v-if="data.matches.length > 0">
+                                                    <div v-for="(match, index) in data.matches" :key="index">
+                                                        <v-chip
+                                                            class="mr-2"
+                                                            x-small
+                                                            color="green"
+                                                            text-color="white"
+                                                            label
+                                                        >{{ match.type | type }}</v-chip>
+                                                        <v-tooltip top>
+                                                            <template v-slot:activator="{ on, attrs }">
+                                                                <v-chip class="mr-2" x-small label v-bind="attrs" v-on="on">{{ match.value }}</v-chip>
+                                                            </template>
+                                                            <span>{{ match.value }}</span>
+                                                        </v-tooltip>
+                                                        <v-tooltip top>
+                                                            <template v-slot:activator="{ on, attrs }">
+                                                                <v-icon v-bind="attrs" v-on="on" color="blue">mdi-dots-horizontal</v-icon>
+                                                            </template>
+                                                            <span>详细路由信息请查看yaml</span>
+                                                        </v-tooltip>
+                                                    </div>
+                                                </template>
+                                                <template v-else>{{ "-" }}</template>
+                                            </div>
+                                        </template>
+                                        <template #item.backendRefs="{ item }">
+                                            <div v-for="(data, index) in item.rules" :key="index">
+                                                <span
+                                                    v-for="(backend, index) in data.backendRefs"
+                                                    :key="index"
+                                                >{{ backend.name || "-" }}:{{ backend.port || "-" }}</span>
+                                            </div>
+                                        </template>
+                                        <template #item.filters="{ item }">
+                                            <div v-for="(data, index) in item.rules" :key="index">
+                                                <template v-if="data.filters.length > 0">
                                                     <v-chip
                                                         class="mr-2"
                                                         x-small
-                                                        color="green"
-                                                        text-color="white"
+                                                        color="primary"
                                                         label
-                                                    >{{ match.type | type }}</v-chip>
-                                                    <v-tooltip top>
-                                                        <template v-slot:activator="{ on, attrs }">
-                                                            <v-chip class="mr-2" x-small label v-bind="attrs" v-on="on">{{ match.value }}</v-chip>
-                                                        </template>
-                                                        <span>{{ match.value }}</span>
-                                                    </v-tooltip>
-                                                    <v-tooltip top>
-                                                        <template v-slot:activator="{ on, attrs }">
-                                                            <v-icon v-bind="attrs" v-on="on" color="blue">mdi-dots-horizontal</v-icon>
-                                                        </template>
-                                                        <span>详细路由信息请查看yaml</span>
-                                                    </v-tooltip>
-                                                </div>
-                                            </template>
-                                            <template v-else>{{ "-" }}</template>
-                                        </div>
-                                    </template>
-                                    <template #item.backendRefs="{ item }">
-                                        <div v-for="(data, index) in item.rules" :key="index">
-                                            <span
-                                                v-for="(backend, index) in data.backendRefs"
-                                                :key="index"
-                                            >{{ backend.name || "-" }}:{{ backend.port || "-" }}</span>
-                                        </div>
-                                    </template>
-                                    <template #item.filters="{ item }">
-                                        <div v-for="(data, index) in item.rules" :key="index">
-                                            <template v-if="data.filters.length > 0">
-                                                <v-chip
-                                                    class="mr-2"
-                                                    x-small
-                                                    color="primary"
-                                                    label
-                                                    v-for="(filter, index) in data.filters"
-                                                    :key="index"
-                                                >{{ filter.type || "-" }}</v-chip>
-                                            </template>
-                                            <template v-else>{{ "-" }}</template>
-                                        </div>
-                                    </template>
-                                </g-table-list>
-                            </g-info-card>
+                                                        v-for="(filter, index) in data.filters"
+                                                        :key="index"
+                                                    >{{ filter.type || "-" }}</v-chip>
+                                                </template>
+                                                <template v-else>{{ "-" }}</template>
+                                            </div>
+                                        </template>
+                                    </g-table-list> -->
+                                </g-info-card>
+                            </template>
                         </g-info-card>
                     </v-col>
                 </v-row>
@@ -179,14 +217,9 @@
                 </v-col>
             </v-row>
         </div>
-        <!-- <v-dialog
-      :value="visible"
-      @input="handleClose"
-      persistent
-      :max-width="maxWidth"
-      v-bind="$attrs"
-    >
-        </v-dialog>-->
+        <g-modal-form :visible="yamlVisible" title="Yaml" :submit="() => yamlVisible=false" @close="yamlVisible=false">
+            <codemirror ref="cmLint" v-model="yamlCode" :options="cmOptions"></codemirror>
+        </g-modal-form>
         <pluginModal scope="host" :DomainId="DomainId" :VirtualGwId="VirtualGwId" v-if="pluginVisible" @close="handlePluginClose"></pluginModal>
         <BindModalComp scope="routeRule" :DomainId="DomainId" v-if="editPluginVisible" type="edit" :current="current" @close="handlePluginClose"></BindModalComp>
     </v-container>
@@ -195,6 +228,8 @@
 <script>
 import pluginModal from '../Plugins/CreateModal.vue';
 import BindModalComp from '../Plugins/BindModal.vue';
+import { codemirror } from 'vue-codemirror'; // 引入组件
+import 'codemirror/lib/codemirror.css';
 import _ from 'lodash';
 const TABLE_HEADERS = [
     { text: 'Hostname', value: 'Hostname' },
@@ -235,7 +270,7 @@ const MENU_LIST = [
     },
 ];
 export default {
-    components: { pluginModal, BindModalComp },
+    components: { pluginModal, BindModalComp, codemirror },
     data() {
         return {
             info: {
@@ -274,13 +309,29 @@ export default {
                 };
             }),
             httpList: [],
-            pluginList: [],
             current: {},
             DomainId: '',
-            visible: false,
+            yamlCode: '',
+            cmOptions: {
+                value: '', // 编辑器的起始值。可以是字符串，也可以是文档对象。
+                mode: 'text/x-hive', // 第一个将模式名称映射到它们的构造函数，第二个将MIME类型映射到模式规范。
+                theme: 'liquibyte', // 编辑器样式的主题
+                indentWithTabs: true, // 在缩进时，是否tabSize 应该用N个制表符替换前N *个空格。默认值为false。
+                smartIndent: true, // 是否使用模式提供的上下文相关缩进（或者只是缩进与之前的行相同）。默认为true。
+                lineNumbers: true, // 是否在编辑器左侧显示行号。
+                matchBrackets: true, // 括号匹配
+                autofocus: true, // 可用于使CodeMirror将焦点集中在初始化上
+                extraKeys: { 'Ctrl-Space': 'autocomplete' }, // 按键配置
+                hintOptions: {
+                    tables: {
+                        users: [ 'name', 'score', 'birthDate' ],
+                        countries: [ 'name', 'population', 'size' ],
+                    },
+                },
+            },
+            yamlVisible: false,
             pluginVisible: false,
             editPluginVisible: false,
-            show: false,
         };
     },
     filters: {
@@ -364,8 +415,6 @@ export default {
             });
         },
         getDataFromApi(params) {
-            this.show = false;
-            console.log(this.show);
             return this.axios({
                 action: 'DescribeKubernetesGateway',
                 params: {
@@ -373,8 +422,6 @@ export default {
                     VirtualGatewayId: this.VirtualGwId,
                 },
             }).then(({ Result = [] }) => {
-                this.show = true;
-                console.log(this.show);
                 return { list: Result, total: Result.length };
             });
         },
@@ -398,22 +445,25 @@ export default {
                     VirtualGwId: this.VirtualGwId,
                 },
             }).then(({ Result = [] }) => {
-                this.pluginList = Result;
                 return { list: Result, total: Result.length };
             });
         },
-        openYaml(params) {
-            this.visible = true;
+        openYamlGateway(params) {
             return this.axios({
                 action: 'DescribeKubernetesGatewayYaml',
                 params: {
                     ...params,
                     VirtualGatewayId: this.VirtualGwId,
                 },
-            }).then(({ Result = [] }) => {
-                this.visible = false;
-                console.log(Result);
+            }).then(({ Result = '' }) => {
+                this.yamlVisible = true;
+                this.yamlCode = Result;
             });
+        },
+        openYamlHttp(val) {
+            this.yamlVisible = false;
+            this.yamlCode = val;
+            this.yamlVisible = true;
         },
         handleEnabled(item) {
             const { DisplayName, Enable, Name } = item;
@@ -435,7 +485,6 @@ export default {
                 },
             });
         },
-        editDomain() {},
         openPlugin(item, flag) {
             if (flag) {
                 this.pluginVisible = true;
@@ -476,8 +525,9 @@ export default {
             this.$refs.httpList.refresh();
         },
     },
-    created() {
-        this.load();
+    async created() {
+        await this.load();
+        await this.getHttpFromApi();
     },
 };
 </script>
@@ -488,6 +538,7 @@ export default {
 }
 .color {
     color: #00a3a3;
+    cursor: pointer;
 }
 .menu {
     position: fixed;

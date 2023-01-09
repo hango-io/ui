@@ -471,4 +471,13 @@ export default {
             Version: '2019-09-01',
         },
     },
+    // 虚拟网关刷新
+    RefreshKubernetesGateway: {
+        url: '/hango/v1/virtualGateway',
+        method: 'get',
+        params: {
+            Action: 'RefreshKubernetesGateway',
+            Version: '',
+        },
+    },
 };

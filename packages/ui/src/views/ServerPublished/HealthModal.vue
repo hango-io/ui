@@ -269,7 +269,7 @@ export default {
             return this.type === 'edit';
         },
         GwId() {
-            return this.current && this.current.GwId;
+            return this.current && this.current.VirtualGwId;
         },
         ServiceId() {
             return this.current && this.current.ServiceId;
@@ -283,7 +283,7 @@ export default {
             chain = chain.then(() => this.axios({
                 action: 'DescribeHealthCheckRule',
                 params: {
-                    GwId: this.GwId,
+                    VirtualGwId: this.GwId,
                     ServiceId: this.ServiceId,
                 },
             }));
@@ -310,7 +310,7 @@ export default {
                 action: 'UpdateHealthCheckRule',
                 data: {
                     ...Object.assign(param, {
-                        GwId: this.GwId,
+                        VirtualGwId: this.GwId,
                         ServiceId: this.ServiceId,
                     }),
                 },
