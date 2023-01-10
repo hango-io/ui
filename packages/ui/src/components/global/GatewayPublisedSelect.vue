@@ -34,7 +34,7 @@ export default {
                 this.items = GatewayInfos.map(item => {
                     return {
                         ...item,
-                        text: item.GwName,
+                        text: item.Name,
                         value: item.VirtualGwId,
                     };
                 });
