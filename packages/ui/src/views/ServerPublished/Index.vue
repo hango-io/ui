@@ -65,7 +65,7 @@
             ></ActionBtnComp> -->
             <ActionBtnComp
                 color="error"
-                icon="mdi-delete"
+                icon="mdi-publish-off"
                 tooltip="下线"
                 @click="handleDelete(item)"
             ></ActionBtnComp>

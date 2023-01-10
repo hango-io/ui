@@ -79,7 +79,7 @@
             ></ActionBtnComp> -->
             <ActionBtnComp
                 color="error"
-                icon="mdi-delete"
+                icon="mdi-publish-off"
                 tooltip="下线"
                 @click="handleDelete(item)"
             ></ActionBtnComp>
@@ -168,7 +168,7 @@ export default {
                         params: {
                             ..._.pick(item, [
                                 'RouteRuleId',
-                                'GwId',
+                                'VirtualGwId',
                             ]),
                         },
                     }).then(() => {
