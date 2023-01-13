@@ -1,7 +1,7 @@
 <template>
     <g-modal-form title="创建网关" visible :submit="handleSubmit" @close="handleClose">
         <validation-provider v-slot="{ errors }" name="网关名称" rules="required">
-            <v-text-field v-model="form.GwName" label="网关名称*" :error-messages="errors" required></v-text-field>
+            <v-text-field v-model="form.Name" label="网关名称*" :error-messages="errors" required></v-text-field>
         </validation-provider>
         <!-- <validation-provider
             v-slot="{ errors }"
@@ -16,7 +16,7 @@
             ></v-text-field>
         </validation-provider>-->
         <validation-provider v-slot="{ errors }" name="ApiPlane 地址" rules="required">
-            <v-text-field v-model="form.ApiPlaneAddr" label="ApiPlane 地址*" :error-messages="errors" required></v-text-field>
+            <v-text-field v-model="form.ConfAddr" label="ApiPlane 地址*" :error-messages="errors" required></v-text-field>
         </validation-provider>
         <validation-provider v-slot="{ errors }" name="网关集群名称" rules="required">
             <v-text-field v-model="form.GwClusterName" label="网关集群名称*" :error-messages="errors" required></v-text-field>
@@ -43,12 +43,14 @@
 </template>
 <script>
 const TEMPLATE_MODEL = {
-    GwName: '',
+    Name: '',
+    EnvId: 'abc',
+    svcType: 'ClusterIP',
     // GwAddr: '',
     Description: '',
     ProjectIds: [ 1 ], // 默认 1
-    GwType: 'envoy',
-    ApiPlaneAddr: '',
+    Type: 'envoy',
+    ConfAddr: '',
     GwClusterName: '',
     // VirtualHostList: [{ ProjectId: 1, HostList: [''], BindType: 'host' }],
     // HostList: [ '' ],
