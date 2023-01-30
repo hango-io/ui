@@ -221,7 +221,7 @@ export default {
             this.serviceProxyInfo = null;
             if (!VirtualGwId) return;
             return this.axios({
-                action: 'DescribeServiceProxyForPublishRoute',
+                action: 'DescribeServiceProxy',
                 params: {
                     VirtualGwId,
                     ServiceId,

@@ -157,6 +157,7 @@ export default {
             handler(newVal) {
                 if (newVal && this.isEdit) {
                     const arr = [];
+                    console.log(this.current);
                     this.current.VirtualHostList.forEach((item, index) => {
                         this.$set(arr, index, { value: item });
                     });
@@ -171,6 +172,7 @@ export default {
     methods: {
         load() {
             this.form = JSON.parse(JSON.stringify(this.current));
+            console.log(this.current);
         },
         handleSubmit() {
             const params = JSON.parse(JSON.stringify(this.form));
