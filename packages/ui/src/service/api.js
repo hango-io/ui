@@ -399,6 +399,7 @@ export default {
         params: {
             Action: 'CreateVirtualGateway',
             Version: '2022-10-30',
+            IsHangoEnv: true,
         },
     },
     UpdateVirtualGateway: {
@@ -407,6 +408,7 @@ export default {
         params: {
             Action: 'UpdateVirtualGateway',
             Version: '2022-10-30',
+            IsHangoEnv: true,
         },
     },
     // 删除虚拟网关
@@ -416,6 +418,7 @@ export default {
         params: {
             Action: 'DeleteVirtualGateway',
             Version: '2022-10-30',
+            IsHangoEnv: true,
         },
     },
     // 获取虚拟网关详情
@@ -429,7 +432,7 @@ export default {
     },
     // 查询K8s Gateway
     DescribeKubernetesGateway: {
-        url: 'hango/v1/virtualGateway',
+        url: '/v1/virtualGateway',
         method: 'get',
         params: {
             Action: 'DescribeKubernetesGateway',
@@ -437,7 +440,7 @@ export default {
     },
     // 查询Kubernetes Gateway Yaml
     DescribeKubernetesGatewayYaml: {
-        url: 'hango/v1/virtualGateway',
+        url: '/v1/virtualGateway',
         method: 'get',
         params: {
             Action: 'DescribeKubernetesGatewayYaml',
@@ -446,7 +449,7 @@ export default {
     },
     // 查询K8s Httproute列表
     DescribeHTTPRoute: {
-        url: 'hango/v1/virtualGateway',
+        url: '/v1/virtualGateway',
         method: 'get',
         params: {
             Action: 'DescribeHTTPRoute',
@@ -473,7 +476,7 @@ export default {
     },
     // 虚拟网关刷新
     RefreshKubernetesGateway: {
-        url: '/hango/v1/virtualGateway',
+        url: '/v1/virtualGateway',
         method: 'get',
         params: {
             Action: 'RefreshKubernetesGateway',

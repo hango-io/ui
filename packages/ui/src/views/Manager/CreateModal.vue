@@ -1,5 +1,5 @@
 <template>
-    <g-modal-form title="创建网关" visible :submit="handleSubmit" @close="handleClose">
+    <g-modal-form :title="type==='edit'?'修改网关':'创建网关'" visible :submit="handleSubmit" @close="handleClose">
         <validation-provider v-slot="{ errors }" name="网关名称" rules="required">
             <v-text-field v-model="form.Name" label="网关名称*" :error-messages="errors" required></v-text-field>
         </validation-provider>

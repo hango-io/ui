@@ -1,6 +1,6 @@
 <template>
   <g-modal-form
-    title="创建虚拟网关"
+    :title="type==='edit'?'修改虚拟网关':'创建虚拟网关'"
     visible
     :submit="handleSubmit"
     @close="handleClose"
@@ -135,7 +135,7 @@ export default {
             { id: 'LoadBalance', label: '负载均衡' },
             { id: 'NetworkProxy', label: '通用网关' },
         ],
-        protocolList: [ 'HTTP', 'HTTPS' ],
+        protocolList: [ 'HTTP' ],
         gwList: [],
     }),
     computed: {
@@ -156,13 +156,14 @@ export default {
         current: {
             handler(newVal) {
                 if (newVal && this.isEdit) {
-                    const arr = [];
-                    console.log(this.current);
-                    this.current.VirtualHostList.forEach((item, index) => {
-                        this.$set(arr, index, { value: item });
-                    });
+                    if (this.current.VirtualHostList && this.current.VirtualHostList.length) {
+                        const arr = [];
+                        this.current.VirtualHostList.forEach((item, index) => {
+                            this.$set(arr, index, { value: item });
+                        });
+                        this.form.VirtualHostList = arr;
+                    }
                     this.load();
-                    this.form.VirtualHostList = arr;
                 }
             },
             immediate: true,
