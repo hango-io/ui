@@ -82,6 +82,7 @@ export default {
                 action: this.isEdit ? 'UpdateGateway' : 'CreateGateway',
                 data: {
                     ...this.form,
+                    SvcName: 'gateway-proxy',
                 },
             }).then(() => {
                 this.$notify.success(this.isEdit ? '更新成功' : '创建成功');
