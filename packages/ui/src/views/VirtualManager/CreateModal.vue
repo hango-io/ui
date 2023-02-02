@@ -178,7 +178,9 @@ export default {
         handleSubmit() {
             const params = JSON.parse(JSON.stringify(this.form));
             // 给后端传值做特殊处理
-            params.VirtualHostList = this.form.VirtualHostList.map(item => item.value);
+            if (this.form.VirtualHostList) {
+                params.VirtualHostList = this.form.VirtualHostList.map(item => item.value);
+            }
             return this.axios({
                 action: this.isEdit ? 'UpdateVirtualGateway' : 'CreateVirtualGateway',
                 data: {
