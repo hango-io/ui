@@ -156,13 +156,6 @@ export default {
         current: {
             handler(newVal) {
                 if (newVal && this.isEdit) {
-                    if (this.current.VirtualHostList && this.current.VirtualHostList.length) {
-                        const arr = [];
-                        this.current.VirtualHostList.forEach((item, index) => {
-                            this.$set(arr, index, { value: item });
-                        });
-                        this.form.VirtualHostList = arr;
-                    }
                     this.load();
                 }
             },
@@ -173,14 +166,19 @@ export default {
     methods: {
         load() {
             this.form = JSON.parse(JSON.stringify(this.current));
-            console.log(this.current);
+            if (this.current.VirtualHostList && this.current.VirtualHostList.length) {
+                const arr = [];
+                this.current.VirtualHostList.forEach((item, index) => {
+                    this.$set(arr, index, { value: item });
+                });
+                this.form.VirtualHostList = arr;
+            }
         },
         handleSubmit() {
             const params = JSON.parse(JSON.stringify(this.form));
             // 给后端传值做特殊处理
-            if (this.form.VirtualHostList) {
-                params.VirtualHostList = this.form.VirtualHostList.map(item => item.value);
-            }
+            console.log(this.form.VirtualHostList);
+            params.VirtualHostList = this.form.VirtualHostList.map(item => item.value);
             return this.axios({
                 action: this.isEdit ? 'UpdateVirtualGateway' : 'CreateVirtualGateway',
                 data: {
