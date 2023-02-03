@@ -33,6 +33,7 @@ export default {
         params: {
             Action: 'DescribePublishRouteRuleList',
             Version: '2019-09-01',
+            IsHangoEnv: true,
         },
     },
     DescribeBindingPlugins: {
