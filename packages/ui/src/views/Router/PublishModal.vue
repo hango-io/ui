@@ -13,7 +13,7 @@
         >
             <g-gateway-published-select
                 :ruleId="current.RouteRuleId"
-                v-model="form.GwId"
+                v-model="form.VirtualGwId"
                 label="目标网关*"
                 :error-messages="errors"
                 required
@@ -133,7 +133,7 @@ export default {
     data: () => ({
         serviceProxyInfo: null,
         form: {
-            GwId: '',
+            VirtualGwId: '',
             EnableState: 'enable',
             Timeout: '60000',
             DestinationServices: [],
@@ -190,7 +190,7 @@ export default {
             const param = JSON.parse(JSON.stringify(this.form));
             param.ServiceId = this.current.ServiceId;
             param.RouteRuleId = this.current.RouteRuleId;
-            param.GwIds = [ this.form.GwId ];
+            param.ProjectId = this.form.VirtualGwId;
             param.Uri = this.current.Uri;
             if (param.HttpRetry.IsRetry) {
                 const ssformSchemaRef = this.$refs.ssformSchemaRef;
@@ -216,7 +216,7 @@ export default {
             this.$emit('close');
         },
         handleGatewaySelect() {
-            const VirtualGwId = this.form.GwId;
+            const VirtualGwId = this.form.VirtualGwId;
             const ServiceId = this.current.ServiceId;
             this.serviceProxyInfo = null;
             if (!VirtualGwId) return;
