@@ -117,7 +117,8 @@ export default {
         refreshTable() {
             return this.axios({
                 action: 'RefreshKubernetesGateway',
-            }).then(() => this.refresh());
+            }).then(() => this.refresh())
+                .catch(e => this.$notify.error(e));
         },
         handleCreate() {
             this.current = null;

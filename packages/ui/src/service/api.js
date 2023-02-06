@@ -33,7 +33,6 @@ export default {
         params: {
             Action: 'DescribePublishRouteRuleList',
             Version: '2019-09-01',
-            IsHangoEnv: true,
         },
     },
     DescribeBindingPlugins: {
@@ -400,7 +399,6 @@ export default {
         params: {
             Action: 'CreateVirtualGateway',
             Version: '2022-10-30',
-            IsHangoEnv: true,
         },
     },
     UpdateVirtualGateway: {
@@ -409,7 +407,6 @@ export default {
         params: {
             Action: 'UpdateVirtualGateway',
             Version: '2022-10-30',
-            IsHangoEnv: true,
         },
     },
     // 删除虚拟网关
@@ -417,9 +414,8 @@ export default {
         url: '/gdashboard',
         method: 'get',
         params: {
-            Action: 'DeleteVirtualGateway',
+            Action: 'DeleteVirtualGatewayFromHango',
             Version: '2022-10-30',
-            IsHangoEnv: true,
         },
     },
     // 获取虚拟网关详情
