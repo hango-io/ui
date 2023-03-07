@@ -1,4 +1,5 @@
-FROM keymetrics/pm2:10-alpine
+
+FROM hub.c.163.com/qingzhou/keymetrics/pm2:10-alpine
 # Install app dependencies
 ENV NPM_CONFIG_LOGLEVEL warn
 
