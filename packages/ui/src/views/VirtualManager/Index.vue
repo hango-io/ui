@@ -15,6 +15,7 @@
               @click="refreshTable()"
           ></ActionBtnComp>
           <ActionBtnComp
+            v-if="Total < 1"
             icon="mdi-plus"
             tooltip="创建虚拟网关"
             color="primary"
@@ -88,6 +89,7 @@ export default {
             }),
             createVisible: false,
             editVisible: false,
+            Total: 0,
         };
     },
     filters: {
@@ -143,6 +145,7 @@ export default {
                     ProjectIdList: null,
                 },
             }).then(({ Result = [], Total = 0 }) => {
+                this.Total = Total;
                 return { list: Result, total: Total };
             });
         },

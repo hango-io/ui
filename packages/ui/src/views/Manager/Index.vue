@@ -4,7 +4,7 @@
         <div>
             <g-table-list :headers="headers" :load="getDataFromApi" ref="tableRef">
                 <template #top>
-                    <ActionBtnComp icon="mdi-plus" tooltip="创建网关" color="primary" @click="handleCreate()"></ActionBtnComp>
+                    <ActionBtnComp v-if="Total < 1" icon="mdi-plus" tooltip="创建网关" color="primary" @click="handleCreate()"></ActionBtnComp>
                 </template>
                 <template #item.VirtualHostList="{ item }">
                     <v-tooltip top min-width="320">
@@ -66,6 +66,7 @@ export default {
             }),
             createVisible: false,
             editVisible: false,
+            Total: 0,
         };
     },
     methods: {
@@ -79,6 +80,7 @@ export default {
                     ...params,
                 },
             }).then(({ Result = [], Total = 0 }) => {
+                this.Total = Total;
                 return { list: Result, total: Total };
             });
         },
