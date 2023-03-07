@@ -190,7 +190,6 @@ export default {
             const param = JSON.parse(JSON.stringify(this.form));
             param.ServiceId = this.current.ServiceId;
             param.RouteRuleId = this.current.RouteRuleId;
-            param.ProjectId = this.form.VirtualGwId;
             param.Uri = this.current.Uri;
             if (param.HttpRetry.IsRetry) {
                 const ssformSchemaRef = this.$refs.ssformSchemaRef;
