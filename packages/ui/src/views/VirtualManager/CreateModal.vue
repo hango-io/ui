@@ -72,7 +72,7 @@
         hint="请输入80-65535间的端口号,15000-20000为平台预留端口"
       ></v-text-field>
     </validation-provider>
-    <validation-provider v-slot="{ errors }" name="域名列表">
+    <validation-provider v-slot="{ errors }" name="域名列表" rules="required">
       <template v-for="(item, index) in form.VirtualHostList">
         <v-text-field
           :error-messages="errors"
