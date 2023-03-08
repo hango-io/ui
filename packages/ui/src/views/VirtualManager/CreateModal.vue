@@ -113,7 +113,7 @@ const TEMPLATE_MODEL = {
     Protocol: '',
     Port: '',
     Addr: '',
-    VirtualHostList: [],
+    VirtualHostList: [{}],
     Description: '',
 };
 import { ValidationProvider } from 'vee-validate';
@@ -208,6 +208,10 @@ export default {
             });
         },
         appendIconCallback(index) {
+            if (this.form.VirtualHostList.length < 2) {
+                this.$notify.warn('请输入至少一个域名');
+                return;
+            }
             this.form.VirtualHostList.splice(index, 1);
         },
     },
