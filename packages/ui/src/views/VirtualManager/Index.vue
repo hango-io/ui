@@ -74,6 +74,7 @@ const TABLE_HEADERS = [
     { text: '所属网关', value: 'GwName' },
     { text: '监听协议', value: 'Protocol' },
     { text: '监听端口', value: 'Port' },
+    { text: '访问地址', value: 'Addr' },
     { text: '操作', value: 'custom', name: 'actions', width: 120 },
 ];
 export default {
