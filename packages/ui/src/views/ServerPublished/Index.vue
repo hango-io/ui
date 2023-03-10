@@ -13,7 +13,7 @@
         ref="tableRef"
       >
         <template #item.ServiceName="{ item }">
-            <g-link :to="{ name: 'hango.published.server.info', query: { Id: item.ServiceId, gwId: item.GwId } }">{{ item.ServiceName }}</g-link>
+            <g-link :to="{ name: 'hango.published.server.info', query: { Id: item.ServiceId, gwId: item.VirtualGwId } }">{{ item.ServiceName }}</g-link>
         </template>
         <template #item.ServiceTag="{ item }">
             <v-tooltip bottom>

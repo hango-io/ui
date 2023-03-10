@@ -127,6 +127,7 @@ export default {
     methods: {
         loadInfo() {
             const { Id, gwId } = this.$route.query || {};
+            console.log(this.$route.query);
             if (!Id || !gwId) {
                 return this.$router.replace(this.$route.meta && this.$route.meta.breadcrumbs && this.$route.meta.breadcrumbs[0].to || '/');
             }
@@ -134,10 +135,10 @@ export default {
                 action: 'DescribeServiceProxy',
                 params: {
                     ServiceId: Id,
-                    GwId: gwId,
+                    VirtualGwId: gwId,
                 },
-            }).then(({ ServiceProxy = {} }) => {
-                this.info = ServiceProxy;
+            }).then(({ Result = {} }) => {
+                this.info = Result;
             });
         },
     },

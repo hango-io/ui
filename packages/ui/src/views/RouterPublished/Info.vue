@@ -149,11 +149,11 @@ export default {
             });
         },
         loadServiceProxyInfo() {
-            const { GwId, ServiceId } = this.info;
+            const { GwId, ServiceId, Id } = this.info;
             if (!ServiceId) return;
             return this.axios({
                 action: 'DescribeServiceProxyForPublishRoute',
-                params: { ServiceId, GwId },
+                params: { ServiceId, GwId, Id },
             }).then(({ EnvoyServiceProxy = {} }) => {
                 this.serviceProxyInfo = EnvoyServiceProxy || {};
             });

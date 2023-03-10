@@ -413,7 +413,7 @@ export default {
             const { DisplayName, Enable, Name } = item;
             this.$confirm({
                 title: '确认提示',
-                message: `警告，是否${Enable ? '启用' : '禁用'} ${DisplayName} 插件?,${Enable ? '开启' : '关闭'}`,
+                message: `警告，是否${Enable ? '启用' : '禁用'} ${DisplayName} 插件?`,
                 ok: () => {
                     return this.axios({
                         action: 'UpdatePluginManager',
@@ -428,6 +428,7 @@ export default {
                     });
                 },
             });
+            this.$refs.pluginList.refresh();
         },
         openPlugin(item, flag) {
             if (flag) {

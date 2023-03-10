@@ -143,7 +143,7 @@ export default {
         url: '/gdashboard',
         method: 'get',
         params: {
-            Action: 'DescribeServiceProxyForPublishRoute',
+            Action: 'DescribePublishRouteRuleById',
             Version: '2019-09-01',
         },
     },
