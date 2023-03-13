@@ -249,13 +249,13 @@ export default {
             }
         },
         loadServiceProxyInfo() {
-            const { GwId, ServiceId, Id } = this.current;
+            const { VirtualGwId, ServiceId } = this.current;
             if (!ServiceId) return;
             return this.axios({
-                action: 'DescribeServiceProxyForPublishRoute',
-                params: { ServiceId, GwId, Id },
-            }).then(({ EnvoyServiceProxy = {} }) => {
-                this.serviceProxyInfo = EnvoyServiceProxy || {};
+                action: 'DescribeServiceProxy',
+                params: { ServiceId, VirtualGwId },
+            }).then(({ Result = {} }) => {
+                this.serviceProxyInfo = Result || {};
             });
         },
         handleMethodChange() { // 切换方法名
@@ -334,10 +334,10 @@ export default {
         },
         loadDubboInfo() {
             const Igv = this.serviceProxyInfo.BackendService;
-            const GwId = this.current.GwId;
+            const VirtualGwId = this.current.VirtualGwId;
             return this.axios({
                 action: 'DescribeDubboMeta',
-                params: { Igv, GwId },
+                params: { Igv, VirtualGwId },
             }).then(({ Result = [] }) => {
                 this.DubboMetas = Result;
             });

@@ -331,21 +331,21 @@ export default {
         },
     },
     DescribePublishedDubbo: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         params: {
             Action: 'DescribePublishedDubbo',
             Version: '2020-10-29',
         },
     },
     DescribeDubboMeta: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         params: {
             Action: 'DescribeDubboMeta',
             Version: '2021-10-30',
         },
     },
     PublishDubbo: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'post',
         params: {
             Action: 'PublishDubbo',
