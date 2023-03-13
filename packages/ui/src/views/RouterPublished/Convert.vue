@@ -175,12 +175,13 @@ export default {
         RefreshDubboMeta() {
             if (!this.serviceProxyInfo) return;
             const Igv = this.serviceProxyInfo.BackendService;
-            const GwId = this.serviceProxyInfo.GwId;
+            const VirtualGwId = this.serviceProxyInfo.VirtualGwId;
+            console.log(this.serviceProxyInfo);
             return this.axios({
                 action: 'RefreshDubboMeta',
                 params: {
                     Igv,
-                    GwId,
+                    VirtualGwId,
                 },
             }).then(() => {
                 this.loadDubbo();

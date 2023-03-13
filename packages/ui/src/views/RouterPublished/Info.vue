@@ -149,13 +149,13 @@ export default {
             });
         },
         loadServiceProxyInfo() {
-            const { GwId, ServiceId, Id } = this.info;
+            const { VirtualGwId, ServiceId } = this.info;
             if (!ServiceId) return;
             return this.axios({
-                action: 'DescribeServiceProxyForPublishRoute',
-                params: { ServiceId, GwId, Id },
-            }).then(({ EnvoyServiceProxy = {} }) => {
-                this.serviceProxyInfo = EnvoyServiceProxy || {};
+                action: 'DescribeServiceProxy',
+                params: { ServiceId, VirtualGwId },
+            }).then(({ Result = {} }) => {
+                this.serviceProxyInfo = Result || {};
             });
         },
     },

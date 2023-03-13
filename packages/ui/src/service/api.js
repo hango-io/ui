@@ -361,7 +361,7 @@ export default {
         },
     },
     RefreshDubboMeta: {
-        url: '/gdashboard/envoy',
+        url: '/gdashboard',
         method: 'get',
         params: {
             Action: 'RefreshDubboMeta',
