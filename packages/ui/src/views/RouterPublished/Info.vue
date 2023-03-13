@@ -46,7 +46,7 @@
                                 </v-col>
                                 <v-col cols="12">
                                     <g-label>所属网关：</g-label>
-                                    <span>{{ info.GwName || '-' }}</span>
+                                    <span>{{ info.VirtualGwName || '-' }}</span>
                                 </v-col>
                             </v-row>
                         </v-list-item-subtitle>

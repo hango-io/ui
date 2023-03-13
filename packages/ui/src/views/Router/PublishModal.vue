@@ -43,7 +43,7 @@
                     cols="12"
                 >
                     <g-label>应用名称</g-label>
-                    <div>{{ serviceProxyInfo.BackendService }}</div>
+                    <div>{{ handleApplicationName(serviceProxyInfo.BackendService) }}</div>
                 </v-col>
             </v-row>
             <validation-provider
@@ -119,6 +119,7 @@
 </template>
 <script>
 import { ValidationProvider } from 'vee-validate';
+import handleApplicationName from '@/components/utils/applicationName.js';
 export default {
     components: {
         ValidationProvider,

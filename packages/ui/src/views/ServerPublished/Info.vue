@@ -79,6 +79,7 @@
     </v-container>
 </template>
 <script>
+import handleApplicationName from '@/components/utils/applicationName.js';
 export default {
     data() {
         return {
@@ -109,7 +110,7 @@ export default {
                     };
                     list.push({ label: '发布方式', text: '从注册中心同步' });
                     list.push({ label: '注册中心', text: RegistryCenterTypeMap[info.RegistryCenterType] });
-                    list.push({ label: '应用名称', text: info.BackendService });
+                    list.push({ label: '应用名称', text: handleApplicationName(info.BackendService) });
                     break;
                 }
                 case 'STATIC': {
