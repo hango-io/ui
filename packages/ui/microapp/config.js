@@ -43,7 +43,7 @@ const config = {
     devServer: {
         proxy: {
             '/proxy/api/gportal': {
-                target: 'http://portal.hango.io:32739/',
+                target: 'http://portal.hango.io:30951/',
                 changeOrigin: true,
                 ws: true,
                 pathRewrite: {

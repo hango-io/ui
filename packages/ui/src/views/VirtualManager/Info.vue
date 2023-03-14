@@ -262,7 +262,7 @@ export default {
                 theme: 'liquibyte', // 编辑器样式的主题
                 indentWithTabs: true, // 在缩进时，是否tabSize 应该用N个制表符替换前N *个空格。默认值为false。
                 smartIndent: true, // 是否使用模式提供的上下文相关缩进（或者只是缩进与之前的行相同）。默认为true。
-                lineNumbers: true, // 是否在编辑器左侧显示行号。
+                lineNumbers: false, // 是否在编辑器左侧显示行号。
                 matchBrackets: true, // 括号匹配
                 autofocus: true, // 可用于使CodeMirror将焦点集中在初始化上
                 extraKeys: { 'Ctrl-Space': 'autocomplete' }, // 按键配置
