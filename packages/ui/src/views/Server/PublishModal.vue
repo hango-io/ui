@@ -66,6 +66,7 @@
 import { ValidationProvider } from 'vee-validate';
 import MoreConfig from './MoreConfig';
 import VersionExpansionPanels from './VersionExpansionPanels';
+import handleApplicationName from '@/components/utils/applicationName.js';
 export const SUPPORT_TYPES = [
     {
         text: '从注册中心同步',
@@ -150,6 +151,7 @@ export default {
         },
     },
     methods: {
+        handleApplicationName,
         loadServiceAddressList() {
             this.registryCenterList = [];
             const VirtualGwId = this.form.VirtualGwId;
@@ -162,7 +164,7 @@ export default {
                     RegistryCenterType,
                 },
             }).then(({ ServiceList = [] } = {}) => {
-                this.registryCenterList = ServiceList.map(value => ({ value, text: value }));
+                this.registryCenterList = ServiceList.map(value => ({ value, text: handleApplicationName(value) }));
             });
         },
         handleSubmit() {
