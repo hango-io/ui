@@ -187,6 +187,7 @@ export default {
         },
     },
     methods: {
+        handleApplicationName,
         handleSubmit() {
             const param = JSON.parse(JSON.stringify(this.form));
             param.ServiceId = this.current.ServiceId;

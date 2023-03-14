@@ -1,25 +1,11 @@
 <template>
     <v-container fluid>
-        <v-breadcrumbs
-            class="pl-3"
-            v-if="$route.meta && $route.meta.breadcrumbs"
-            large
-            :items="$route.meta.breadcrumbs"
-        >
-        </v-breadcrumbs>
+        <v-breadcrumbs class="pl-3" v-if="$route.meta && $route.meta.breadcrumbs" large :items="$route.meta.breadcrumbs"></v-breadcrumbs>
         <div v-if="info">
-            <v-card
-                class="mx-auto mb-4"
-            >
+            <v-card class="mx-auto mb-4">
                 <v-list-item two-line>
-                    <v-list-item-avatar
-                        tile
-                        size="64"
-                    >
-                        <v-avatar
-                            color="secondary"
-                            size="64"
-                        >
+                    <v-list-item-avatar tile size="64">
+                        <v-avatar color="secondary" size="64">
                             <span class="white--text text-h5">{{ info.ServiceName.substring(0, 2).toUpperCase() }}</span>
                         </v-avatar>
                     </v-list-item-avatar>
@@ -36,9 +22,7 @@
                                         label
                                         text-color="white"
                                         x-small
-                                    >
-                                        {{ info.ServiceType && info.ServiceType.toUpperCase() || '-' }}
-                                    </v-chip>
+                                    >{{ info.ServiceType && info.ServiceType.toUpperCase() || '-' }}</v-chip>
                                 </v-col>
                                 <v-col cols="12">
                                     <g-label>所属网关：</g-label>
@@ -51,28 +35,21 @@
             </v-card>
             <v-row>
                 <v-col>
-                    <g-info-card
-                        title="基础信息"
-                        :list="basicInfoList">
+                    <g-info-card title="基础信息" :list="basicInfoList">
                         <template #ServiceType="{ item }">
                             <v-chip
                                 :color="item.text === 'dubbo' ? 'indigo' : 'info'"
                                 x-small
                                 text-color="white"
                                 label
-                            >
-                                {{ item.text && item.text.toUpperCase() || '-' }}
-                            </v-chip>
+                            >{{ item.text && item.text.toUpperCase() || '-' }}</v-chip>
                         </template>
                     </g-info-card>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col>
-                    <g-info-card
-                        title="发布详情"
-                        :list="publishedInfoList">
-                    </g-info-card>
+                    <g-info-card title="发布详情" :list="publishedInfoList"></g-info-card>
                 </v-col>
             </v-row>
         </div>
@@ -126,11 +103,14 @@ export default {
         },
     },
     methods: {
+        handleApplicationName,
         loadInfo() {
             const { Id, gwId } = this.$route.query || {};
             console.log(this.$route.query);
             if (!Id || !gwId) {
-                return this.$router.replace(this.$route.meta && this.$route.meta.breadcrumbs && this.$route.meta.breadcrumbs[0].to || '/');
+                return this.$router.replace(
+                    (this.$route.meta && this.$route.meta.breadcrumbs && this.$route.meta.breadcrumbs[0].to) || '/'
+                );
             }
             return this.axios({
                 action: 'DescribeServiceProxy',
