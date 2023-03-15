@@ -34,6 +34,11 @@
         <template #item.Type="{ item }">
           {{ item.Type | apiType }}
         </template>
+        <template #item.VirtualHostList="{ item }">
+            <v-chip small color="success" style="margin-right:4px" v-for="(host, index) in item.VirtualHostList" :key="index">
+                {{host}}
+            </v-chip>
+        </template>
         <template #item.actions="{ item }">
           <ActionBtnComp
             color="primary"
@@ -74,6 +79,7 @@ const TABLE_HEADERS = [
     { text: '所属网关', value: 'GwName' },
     { text: '监听协议', value: 'Protocol' },
     { text: '监听端口', value: 'Port' },
+    { text: '域名', value: 'custom', name: 'VirtualHostList' },
     { text: '访问地址', value: 'Addr' },
     { text: '操作', value: 'custom', name: 'actions', width: 120 },
 ];
