@@ -1,5 +1,5 @@
 
-FROM harbor.cloud.netease.com/qztest/keymetrics/pm2:10-alpine
+FROM harbor.cloud.netease.com/qztest/keymetrics/pm2:10-alpine-mutiple-arch
 # Install app dependencies
 ENV NPM_CONFIG_LOGLEVEL warn
 
