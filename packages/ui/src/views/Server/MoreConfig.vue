@@ -44,12 +44,12 @@
 
             <validation-provider
                 v-slot="{ errors }"
-                name="取值"
+                name="请求头名称"
                 rules="required"
             >
                 <v-text-field
                     v-model="form.LoadBalancer.ConsistentHash.HttpHeaderName"
-                    disabled
+                    :disabled="form.LoadBalancer.ConsistentHash.Type === 'UseSourceIp'"
                     placeholder="请输入请求头"
                     label="取值"
                     :error-messages="errors"

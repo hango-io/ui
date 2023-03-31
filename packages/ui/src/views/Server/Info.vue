@@ -20,24 +20,24 @@
                             color="secondary"
                             size="54"
                         >
-                            <span class="white--text text-h5">{{ info.ServiceName.substring(0, 2).toUpperCase() }}</span>
+                            <span class="white--text text-h5">{{ info.Name.substring(0, 2).toUpperCase() }}</span>
                         </v-avatar>
                     </v-list-item-avatar>
                     <v-list-item-content>
                         <v-list-item-title class="text-h5 mb-2">
-                            <span>{{ info.ServiceName }}</span>
+                            <span>{{ info.Name }}</span>
                         </v-list-item-title>
                         <v-list-item-subtitle>
                             <v-row justify="center">
                                 <v-col>
-                                    <g-label>服务类型：</g-label>
+                                    <g-label>协议类型：</g-label>
                                     <v-chip
-                                        :color="info.ServiceType === 'dubbo' ? 'indigo' : 'info'"
+                                        :color="info.Protocol === 'dubbo' ? 'indigo' : 'info'"
                                         label
                                         text-color="white"
                                         x-small
                                     >
-                                        {{ info.ServiceType && info.ServiceType.toUpperCase() || '-' }}
+                                        {{ info.Protocol && info.Protocol.toUpperCase() || '-' }}
                                     </v-chip>
                                 </v-col>
                             </v-row>
@@ -58,20 +58,12 @@
                         {{ item.text && item.text.toUpperCase() || '-' }}
                     </v-chip>
                 </template>
-                <template #PublishedStatus="{ item }">
-                    <v-chip
-                        :color="+item.text === 1 ? 'success' : ''"
-                        label
-                        x-small
-                    >
-                        {{ +item.text === 1 ? '已发布' : '未发布' }}
-                    </v-chip>
-                </template>
             </g-info-card>
         </div>
     </v-container>
 </template>
 <script>
+import handleApplicationName from '@/components/utils/applicationName.js';
 export default {
     data() {
         return {
@@ -82,28 +74,30 @@ export default {
         basicInfoList() {
             const info = this.info || {};
             return [
-                { label: '服务标识', text: info.ServiceTag },
-                { label: '服务类型', key: 'ServiceType', text: info.ServiceType },
-                { label: '发布状态', key: 'PublishedStatus', text: info.PublishedStatus },
-                { label: '创建时间', key: 'CreateDate', text: info.CreateDate },
-                { label: '修改时间', key: 'ModifyDate', text: info.ModifyDate },
+                { label: '服务别名', text: info.Alias },
+                { label: '协议类型', text: info.Protocol },
+                { label: '应用名称', text: handleApplicationName(info.BackendService) },
+                { label: '域名', text: info.Hosts },
+                { label: '创建时间', key: 'CreateDate', text: info.CreateTime },
+                { label: '修改时间', key: 'ModifyDate', text: info.UpdateTime },
                 { label: '备注信息', text: info.Description },
             ];
         },
     },
     methods: {
+        handleApplicationName,
         loadInfo() {
             const { Id } = this.$route.query || {};
             if (!Id) {
                 return this.$router.replace(this.$route.meta && this.$route.meta.breadcrumbs && this.$route.meta.breadcrumbs[0].to || '/');
             }
             return this.axios({
-                action: 'DescribeServiceById',
+                action: 'DescribeService',
                 params: {
-                    ServiceId: Id,
+                    Id,
                 },
-            }).then(({ ServiceInfoBasic = {} }) => {
-                this.info = ServiceInfoBasic;
+            }).then(({ Result = {} }) => {
+                this.info = Result;
             });
         },
     },
