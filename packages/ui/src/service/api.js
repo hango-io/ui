@@ -1,11 +1,13 @@
+const url = '/v1/service';
+const Version = '';
 export default {
     // 服务管理
     DescribeServiceList: {
-        url: '/gdashboard',
+        url,
         method: 'get',
         params: {
-            Action: 'DescribeServiceList',
-            Version: '2018-08-09',
+            Action: 'DescribeServicePage',
+            Version,
         },
     },
     // 路由管理
@@ -100,7 +102,7 @@ export default {
         },
     },
     DescribeServiceListByGw: {
-        url: '/gdashboard',
+        url,
         method: 'get',
         params: {
             Action: 'DescribeServiceListByGw',
@@ -377,10 +379,10 @@ export default {
         },
     },
     DescribeVirtualGateway: {
-        url: '/gdashboard',
+        url: '/v1/virtualGateway',
         method: 'post',
         params: {
-            Action: 'DescribeVirtualGateway',
+            Action: 'DescribeVirtualGatewayPage',
             Version: '2022-10-30',
         },
     },
@@ -478,6 +480,15 @@ export default {
         params: {
             Action: 'RefreshKubernetesGateway',
             Version: '',
+        },
+    },
+    // 服务详情
+    DescribeService: {
+        url,
+        method: 'get',
+        params: {
+            Action: 'DescribeService',
+            Version,
         },
     },
 };
