@@ -170,6 +170,20 @@ const routes = [
         },
     },
     {
+        path: '/domain',
+        name: 'hango.domain',
+        component: () => import(/* webpackChunkName: "plugins" */ '../views/Domain/Index.vue'),
+        meta: {
+            breadcrumbs: [
+                {
+                    text: '域名管理',
+                    disabled: true,
+                    to: { name: 'hango.domain' },
+                },
+            ],
+        },
+    },
+    {
         path: '/manager',
         name: 'hango.manager',
         component: () => import(/* webpackChunkName: "manager" */ '../views/Manager/Index.vue'),

@@ -491,4 +491,51 @@ export default {
             Version,
         },
     },
+    DescribeDomainPage: { // 查询虚拟网关下绑定的域名
+        url: '/v1/domain',
+        method: 'post',
+        params: {
+            Action: 'DescribeDomainPage',
+            Version: '',
+        },
+    },
+    // 通过证书Id或项目Id查询证书详情
+    DescribeCertificateInfo: {
+        url: '/gdashboard',
+        method: 'get',
+        params: {
+            Action: 'DescribeCertificateInfo',
+            Version: '2022-10-30',
+        },
+    },
+    // 证书列表
+    DescribeCertificateList: {
+        url: '/gdashboard',
+        method: 'get',
+        params: {
+            Action: 'DescribeCertificateList',
+            Version: '2022-10-30',
+        },
+    },
+    CreateDomain: { // 创建域名
+        url: '/v1/domain',
+        method: 'post',
+        params: {
+            Action: 'CreateDomain',
+        },
+    },
+    UpdateDomain: { // 修改域名
+        url: '/v1/domain',
+        method: 'post',
+        params: {
+            Action: 'UpdateDomain',
+        },
+    },
+    DeleteDomain: { // 删除域名
+        url: '/v1/domain',
+        method: 'get',
+        params: {
+            Action: 'DeleteDomain',
+        },
+    },
 };

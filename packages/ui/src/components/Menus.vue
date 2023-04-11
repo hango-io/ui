@@ -39,6 +39,7 @@ export default {
                 // { title: '已发布路由管理', icon: 'mdi-router-network', to: { name: 'hango.published.router' } },
                 { title: '插件管理', icon: 'mdi-google-circles-extended', to: { name: 'hango.plugins' } },
                 // { title: 'About', icon: 'mdi-help-box' },
+                { title: '域名管理', icon: 'mdi-domain', to: { name: 'hango.domain' } },
             ],
             globalMenus: [
                 { title: '网关管理', icon: 'mdi-cog', to: { name: 'hango.manager' } },
