@@ -548,7 +548,7 @@ export default {
         },
     },
     DeleteCertificate: {
-        // 创建证书
+        // 删除证书
         url: '/gdashboard',
         method: 'get',
         params: {
