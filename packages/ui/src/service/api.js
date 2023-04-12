@@ -538,4 +538,22 @@ export default {
             Action: 'DeleteDomain',
         },
     },
+    CreateCertificate: {
+        // 创建证书
+        url: '/gdashboard',
+        method: 'post',
+        params: {
+            Action: 'CreateCertificate',
+            Version: '2022-10-30',
+        },
+    },
+    DeleteCertificate: {
+        // 创建证书
+        url: '/gdashboard',
+        method: 'get',
+        params: {
+            Action: 'DeleteCertificate',
+            Version: '2022-10-30',
+        },
+    },
 };

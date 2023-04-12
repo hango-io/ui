@@ -231,6 +231,20 @@ const routes = [
             ],
         },
     },
+    {
+        path: '/certify',
+        name: 'hango.certify',
+        component: () => import(/* webpackChunkName: "plugins" */ '../views/Certify/Index.vue'),
+        meta: {
+            breadcrumbs: [
+                {
+                    text: 'SSL证书管理',
+                    disabled: true,
+                    to: { name: 'hango.certify' },
+                },
+            ],
+        },
+    },
     // {
     //     path: '/api',
     //     name: 'hango.api',

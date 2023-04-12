@@ -44,6 +44,7 @@ export default {
             globalMenus: [
                 { title: '网关管理', icon: 'mdi-cog', to: { name: 'hango.manager' } },
                 { title: '虚拟网关管理', icon: 'mdi-message-text', to: { name: 'hango.virtualManager' } },
+                { title: 'SSL证书管理', icon: 'mdi-certificate', to: { name: 'hango.certify' } },
             ],
         };
     },
