@@ -263,18 +263,18 @@ export default {
         },
     },
     DescribeHealthCheckRule: {
-        url: '/gdashboard',
+        url: '/v1/service',
         params: {
             Action: 'DescribeHealthCheckRule',
-            Version: '2019-09-01',
+            Version,
         },
     },
     UpdateHealthCheckRule: {
         method: 'post',
-        url: '/gdashboard',
+        url: '/v1/service',
         params: {
             Action: 'UpdateHealthCheckRule',
-            Version: '2019-09-01',
+            Version: '',
         },
     },
     DescribePublishedDubbo: {

@@ -78,11 +78,18 @@
                 tooltip="删除"
                 @click="handleDelete(item)"
             ></ActionBtnComp>
+            <ActionBtnComp
+                color="primary"
+                icon="mdi-heart"
+                tooltip="健康检查"
+                @click="handleHealth(item)"
+            ></ActionBtnComp>
         </template>
       </g-table-list>
     </div>
     <CreateModalComp v-if="createVisible" :current="current" @close="handleClose"/>
     <CreateModalComp v-if="editVisible" :current="current" type="edit" @close="handleClose"/>
+    <HealthModalComp v-if="healthVisible" :current="current" @close="handleClose"/>
   </v-container>
 </template>
 
@@ -97,8 +104,10 @@ const TABLE_HEADERS = [
 ];
 import ActionBtnComp from '@/components/ActionBtn';
 import CreateModalComp from './CreateModal';
+import HealthModalComp from './HealthModal';
+
 export default {
-    components: { ActionBtnComp, CreateModalComp },
+    components: { ActionBtnComp, CreateModalComp, HealthModalComp },
     data() {
         return {
             headers: TABLE_HEADERS.map(item => {
@@ -111,6 +120,7 @@ export default {
             createVisible: false,
             editVisible: false,
             publishVisible: false,
+            healthVisible: false,
             current: null,
         };
     },
@@ -132,6 +142,7 @@ export default {
             this.createVisible = false;
             this.editVisible = false;
             this.publishVisible = false;
+            this.healthVisible = false;
             this.current = null;
             this.refresh();
         },
@@ -142,6 +153,10 @@ export default {
         handleEdit(item) {
             this.current = item;
             this.editVisible = true;
+        },
+        handleHealth(item) {
+            this.current = item;
+            this.healthVisible = true;
         },
         handleDelete(item) {
             const Id = item.Id;
