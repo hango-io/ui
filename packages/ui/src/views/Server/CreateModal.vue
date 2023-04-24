@@ -72,7 +72,7 @@
                 ></g-multi-validation-text-field>
             </template>
             <validation-provider v-slot="{ errors }" name="域名" rules="required">
-                <v-select :items="HostsList" v-model="form.Hosts" label="域名*" :error-messages="errors" required></v-select>
+                <v-select :items="HostsList" item-text="Host" item-value="Host" v-model="form.Hosts" label="域名*" :error-messages="errors" required></v-select>
             </validation-provider>
 
             <!-- 更多配置 -->
@@ -135,7 +135,7 @@ export default {
         registryCenterList: [],
         GetRegistryCenterList: [],
         registryCenterTypeList: [],
-        HostsList: [ '1.1.1.1', 'a.b.c' ],
+        HostsList: [],
         moreSwitch: false,
         form: {
             Name: '',
@@ -165,7 +165,7 @@ export default {
                 if (this.type === 'edit' && nV.VirtualGwId) {
                     await this.loadInfo();
                     await this.loadRegistryCenterType();
-                    // await this.loadDomain();
+                    await this.loadDomain();
                 }
                 return nV;
             },
@@ -243,8 +243,8 @@ export default {
         },
         loadDomain() {
             return this.axios({
-                action: 'DescribeVgDomainList',
-                params: {
+                action: 'DescribeDomainList',
+                data: {
                     VirtualGwId: this.form.VirtualGwId,
                 },
             }).then(({ Result = [] }) => {

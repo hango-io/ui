@@ -14,6 +14,12 @@ export default {
             items: [],
         };
     },
+    props: {
+        VirtualGwId: {
+            type: [ String, Number ],
+            default: '',
+        },
+    },
     methods: {
         load() {
             return this.axios({
@@ -21,6 +27,7 @@ export default {
                 params: {
                     Limit: 1000,
                     Offset: 0,
+                    VirtualGwId: this.VirtualGwId,
                 },
             }).then(({ ServiceInfoList = [] }) => {
                 this.items = ServiceInfoList.map(item => {

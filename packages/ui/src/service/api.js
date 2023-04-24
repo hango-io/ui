@@ -11,30 +11,12 @@ export default {
         },
     },
     // 路由管理
-    DescribeRouteRuleList: {
-        url: '/gdashboard',
+    DescribeRouteList: {
+        url: '/v1/route',
         method: 'get',
         params: {
-            Action: 'DescribeRouteRuleList',
-            Version: '2019-09-01',
-        },
-    },
-    // 已发布服务管理
-    DescribeEnvoyServiceProxyList: {
-        url: '/gdashboard',
-        method: 'get',
-        params: {
-            Action: 'DescribeServiceProxyList',
-            Version: '2019-09-01',
-        },
-    },
-    // 已发布路由管理
-    DescribePublishRouteRuleList: {
-        url: '/gdashboard',
-        method: 'get',
-        params: {
-            Action: 'DescribePublishRouteRuleList',
-            Version: '2019-09-01',
+            Action: 'DescribeRouteList',
+            Version,
         },
     },
     DescribeBindingPlugins: {
@@ -109,14 +91,6 @@ export default {
             Version: '2019-09-01',
         },
     },
-    PublishService: {
-        url: '/gdashboard',
-        method: 'post',
-        params: {
-            Action: 'PublishService',
-            Version: '2019-09-01',
-        },
-    },
     CreateRouteRule: {
         url: '/gdashboard',
         method: 'post',
@@ -149,20 +123,12 @@ export default {
             Version: '2019-09-01',
         },
     },
-    PublishRouteRule: {
-        url: '/gdashboard',
+    DeleteRoute: {
+        url: '/v1/route',
         method: 'post',
         params: {
-            Action: 'PublishRouteRule',
-            Version: '2019-09-01',
-        },
-    },
-    DeleteRouteRule: {
-        url: '/gdashboard',
-        method: 'get',
-        params: {
-            Action: 'DeleteRouteRule',
-            Version: '2019-09-01',
+            Action: 'DeleteRoute',
+            Version,
         },
     },
     DeleteServiceProxy: {
@@ -259,27 +225,6 @@ export default {
         params: {
             Action: 'DescribeGateway',
             Version: '2018-08-09',
-        },
-    },
-    DescribePublishRouteRuleById: {
-        url: '/gdashboard',
-        params: {
-            Action: 'DescribePublishRouteRuleById',
-            Version: '2019-09-01',
-        },
-    },
-    DescribePublishedRouteRule: {
-        url: '/gdashboard',
-        params: {
-            Action: 'DescribePublishRouteRuleById',
-            Version: '2019-09-01',
-        },
-    },
-    DescribePublishRouteRuleByRouteRuleId: {
-        url: '/gdashboard',
-        params: {
-            Action: 'DescribePublishRouteRuleByRouteRuleId',
-            Version: '2019-09-01',
         },
     },
     UpdateRouteRuleEnableState: {
@@ -382,7 +327,7 @@ export default {
         url: '/v1/virtualGateway',
         method: 'post',
         params: {
-            Action: 'DescribeVirtualGatewayPage',
+            Action: 'DescribeVirtualGatewayList',
             Version: '2022-10-30',
         },
     },
@@ -496,6 +441,14 @@ export default {
         method: 'post',
         params: {
             Action: 'DescribeDomainPage',
+            Version: '',
+        },
+    },
+    DescribeDomainList: { // 查询域名列表
+        url: '/v1/domain',
+        method: 'post',
+        params: {
+            Action: 'DescribeDomainList',
             Version: '',
         },
     },

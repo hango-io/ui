@@ -18,9 +18,11 @@ service.interceptors.request.use(
                 config = _.merge({}, config, actionConfig);
             }
         }
-        config.headers.common['x-auth-projectId'] = 1;
-        config.headers.common['x-auth-tenantId'] = 1;
+        config.headers.common['x-auth-projectId'] = 3;
+        config.headers.common['x-auth-tenantId'] = 2;
         config.headers.common['X-163-AcceptLanguage'] = 'zh';
+        config.headers.common['x-auth-accountId'] = 'admin';
+        config.headers.common['x-auth-token'] = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBY2NvdW50SWQiOiJhZG1pbiIsIlBlcm1pc3Npb25UeXBlIjoiZnVuY3Rpb24iLCJJZCI6IjEiLCJSRUdJU1RSQVRJT04iOiLns7vnu5_lr7zlhaUiLCJleHAiOjE2ODIyOTEwMTMsImlhdCI6MTY4MjIzMzQxMywiRW52SW5mbyI6ImNvbnNvbGUudGVzdDI4My1xaW5nemhvdS5jb20ifQ.ayYsT2nw_hSVTBRTiAFbecpHMIK71znIG9cWbntPLbw';
 
         // console.info('config:', JSON.stringify(config, false, 4));
         return config;

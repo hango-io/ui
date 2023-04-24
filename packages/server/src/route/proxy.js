@@ -15,8 +15,10 @@ module.exports = function(app) {
     };
 
     proxyOptions.onProxyReq = (proxyReq, req, res) => {
-        proxyReq.setHeader('x-auth-projectId', '1');
-        proxyReq.setHeader('x-auth-tenantId', '1');
+        proxyReq.setHeader('x-auth-projectId', '3');
+        proxyReq.setHeader('x-auth-tenantId', '2');
+        proxyReq.setHeader('x-auth-accountId', 'admin');
+        proxyReq.setHeader('x-auth-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBY2NvdW50SWQiOiJhZG1pbiIsIlBlcm1pc3Npb25UeXBlIjoiZnVuY3Rpb24iLCJJZCI6IjEiLCJSRUdJU1RSQVRJT04iOiLns7vnu5_lr7zlhaUiLCJleHAiOjE2ODIyOTEwMTMsImlhdCI6MTY4MjIzMzQxMywiRW52SW5mbyI6ImNvbnNvbGUudGVzdDI4My1xaW5nemhvdS5jb20ifQ.ayYsT2nw_hSVTBRTiAFbecpHMIK71znIG9cWbntPLbw');
     };
 
     proxyOptions.onError = (e, req, res) => {

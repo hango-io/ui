@@ -15,8 +15,7 @@ export default {
             return this.axios({
                 action: 'DescribeVirtualGateway',
                 data: {
-                    Limit: 1000,
-                    Offset: 0,
+                    ProjectIdList: [ '3' ], // 固定写1
                 },
             }).then(({ Result = [] }) => {
                 this.items = Result.map(item => {

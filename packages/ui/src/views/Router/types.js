@@ -21,15 +21,15 @@ export const SUPOORT_MODAL_TYPES = [
         required: true, // ruleNames: 'Required',
         help: 'path 前缀已自动添加，前缀为：<label style="background: #eee; padding: 2px 6px; border-radius: 6px;">/应用标识/服务标识/</label>',
     },
-    {
-        key: 'Host',
-        text: 'Host',
-        type: 'object',
-        model: {
-            Type: 'exact',
-            Value: [ '' ],
-        },
-    },
+    // {
+    //     key: 'Host',
+    //     text: 'Host',
+    //     type: 'object',
+    //     model: {
+    //         Type: 'exact',
+    //         Value: [ '' ],
+    //     },
+    // },
     {
         key: 'Method',
         text: 'Method',
