@@ -509,4 +509,13 @@ export default {
             Version: '2022-10-30',
         },
     },
+    // 路由详情
+    DescribeRoute: {
+        url: '/v1/route',
+        method: 'get',
+        params: {
+            Action: 'DescribeRoute',
+            Version,
+        },
+    },
 };
