@@ -9,6 +9,21 @@ export const SUPPORT_TYPES = [
         text: '正则表达式', value: 'regex', bans: [ 'Method' ],
     },
 ];
+export const SUPPORT_TYPES_TAG = [
+    {
+        text: '精确', value: 'exact',
+    },
+    {
+        text: '前缀', value: 'prefix', bans: [ 'Method', 'Query' ],
+    },
+    {
+        text: '正则', value: 'regex', bans: [ 'Method' ],
+    },
+];
+export const SUPPORT_TYPES_MAP = SUPPORT_TYPES_TAG.reduce((obj, item) => {
+    obj[item.value] = item;
+    return obj;
+}, {});
 
 export const SUPPORT_METHOD_KEYS = [ 'POST', 'GET', 'PUT', 'DELETE', 'OPTIONS', 'HEAD', 'TRACE', 'CONNECT', 'PATCH' ];
 export const SUPPORT_METHOD_VALUES = SUPPORT_METHOD_KEYS.map(key => ({ text: key, value: key }));

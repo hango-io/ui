@@ -263,18 +263,18 @@ export default {
         },
     },
     DescribeHealthCheckRule: {
-        url: '/gdashboard',
+        url: '/v1/service',
         params: {
             Action: 'DescribeHealthCheckRule',
-            Version: '2019-09-01',
+            Version,
         },
     },
     UpdateHealthCheckRule: {
         method: 'post',
-        url: '/gdashboard',
+        url: '/v1/service',
         params: {
             Action: 'UpdateHealthCheckRule',
-            Version: '2019-09-01',
+            Version: '',
         },
     },
     DescribePublishedDubbo: {
@@ -507,6 +507,15 @@ export default {
         params: {
             Action: 'DeleteCertificate',
             Version: '2022-10-30',
+        },
+    },
+    // 路由详情
+    DescribeRoute: {
+        url: '/v1/route',
+        method: 'get',
+        params: {
+            Action: 'DescribeRoute',
+            Version,
         },
     },
 };
