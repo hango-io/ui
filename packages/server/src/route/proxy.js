@@ -18,7 +18,7 @@ module.exports = function(app) {
         proxyReq.setHeader('x-auth-projectId', '3');
         proxyReq.setHeader('x-auth-tenantId', '2');
         proxyReq.setHeader('x-auth-accountId', 'admin');
-        proxyReq.setHeader('x-auth-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBY2NvdW50SWQiOiJhZG1pbiIsIlBlcm1pc3Npb25UeXBlIjoiZnVuY3Rpb24iLCJJZCI6IjEiLCJSRUdJU1RSQVRJT04iOiLns7vnu5_lr7zlhaUiLCJleHAiOjE2ODIyOTEwMTMsImlhdCI6MTY4MjIzMzQxMywiRW52SW5mbyI6ImNvbnNvbGUudGVzdDI4My1xaW5nemhvdS5jb20ifQ.ayYsT2nw_hSVTBRTiAFbecpHMIK71znIG9cWbntPLbw');
+        proxyReq.setHeader('x-auth-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBY2NvdW50SWQiOiJhZG1pbiIsIlBlcm1pc3Npb25UeXBlIjoiZnVuY3Rpb24iLCJJZCI6IjEiLCJSRUdJU1RSQVRJT04iOiLns7vnu5_lr7zlhaUiLCJleHAiOjE2ODIzNjE1MTAsImlhdCI6MTY4MjMwMzkxMCwiRW52SW5mbyI6ImNvbnNvbGUudGVzdDI4My1xaW5nemhvdS5jb20ifQ.4Xp0mQ67rlS-sebhfvMJ9Bltrqbfr3aK0hJ3Fp2lfPM');
     };
 
     proxyOptions.onError = (e, req, res) => {

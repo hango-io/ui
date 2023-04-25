@@ -92,19 +92,19 @@ export default {
         },
     },
     CreateRouteRule: {
-        url: '/gdashboard',
+        url: '/v1/route',
         method: 'post',
         params: {
-            Action: 'CreateRouteRule',
-            Version: '2019-09-01',
+            Action: 'CreateRoute',
+            Version: '',
         },
     },
     UpdateRouteRule: {
-        url: '/gdashboard',
+        url: '/v1/route',
         method: 'post',
         params: {
-            Action: 'UpdateRouteRule',
-            Version: '2019-09-01',
+            Action: 'UpdateRoute',
+            Version: '',
         },
     },
     DescribeGatewayForPublishedRule: {

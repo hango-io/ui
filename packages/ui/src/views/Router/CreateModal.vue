@@ -15,6 +15,7 @@
             <v-text-field
                 v-model="form.Name"
                 label="路由名称*"
+                :disabled="isEdit"
                 :error-messages="errors"
                 required
             ></v-text-field>
@@ -281,64 +282,110 @@
                 </validation-provider>
                 <!-- 单服务 -->
                 <template v-if="serviceType === 'single'">
-                    <validation-provider
-                        v-slot="{ errors }"
-                        name="目标服务"
-                        rules="required"
-                    >
-                        <g-service-select
-                            v-model="form.ServiceId"
-                            :VirtualGwId="form.VirtualGwId"
-                            label="目标服务*"
-                            :error-messages="errors"
-                            required
-                        ></g-service-select>
-                    </validation-provider>
-                </template>
-                <!-- 多服务 -->
-                <template v-else>
-                    <g-form-table isAdd v-model="multipleForm.data" :add="() => [{ServiceId: '', Weight:'', Port: ''}]">
-                        <v-col cols="12" md="4">
+                    <v-row>
+                        <v-col cols="12" md="6">
                             <validation-provider
                                 v-slot="{ errors }"
                                 name="目标服务"
                                 rules="required"
                             >
                                 <g-service-select
-                                    v-model="multipleForm.data.ServiceId"
+                                    v-model="singleFrom.ServiceId"
                                     :VirtualGwId="form.VirtualGwId"
                                     label="目标服务*"
                                     :error-messages="errors"
+                                    @change="handleChangeService(singleFrom.ServiceId)"
                                     required
                                 ></g-service-select>
                             </validation-provider>
                         </v-col>
-                        <v-col cols="12" md="4">
+                         <v-col cols="12" md="6">
                             <validation-provider
-                                v-slot="{ errors }"
                                 name="端口"
-                                rules="required"
                             >
                                 <v-select
-                                    label="端口*"
-                                    :error-messages="errors"
-                                    v-model="multipleForm.data.Port"
-                                    :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                                    label="端口"
+                                    v-model="singleFrom.Port"
+                                    :items="serviceProxyInfo.Por"
                                 ></v-select>
                             </validation-provider>
                         </v-col>
-                        <v-col cols="12" md="4">
-                            <validation-provider
-                                v-slot="{ errors }"
-                                name="权重"
-                                rules="required"
-                            >
-                                <v-text-field
-                                    v-model="multipleForm.data.Weight"
-                                    label="权重*"
-                                ></v-text-field>
-                            </validation-provider>
-                        </v-col>
+                    </v-row>
+                    <validation-provider name="路由策略">
+                        <v-radio-group label="路由策略" row v-model="advancedVersionSwitch">
+                            <v-radio label="所有实例" :value="false"></v-radio>
+                            <v-radio label="版本实例" :value="true" v-if="serviceProxyInfo.Subsets && serviceProxyInfo.Subsets.length"></v-radio>
+                        </v-radio-group>
+                    </validation-provider>
+                    <g-form-table v-if="advancedVersionSwitch" key="singleFrom" isAdd isDelet :data.sync="singleFrom.DestinationServices" :add="() => ({ServiceId:singleFrom.ServiceId, SubsetName: '', Port: '', Weight: ''})">
+                        <template slot-scope="scope">
+                            <v-col cols="12" md="3" v-for="(item, index) in DestinationServicesDataModel" :key="item.key">
+                                <validation-provider
+                                    v-slot="{ errors }"
+                                    :name="item.name"
+                                    :rules="item.rules"
+                                >
+                                    <v-select
+                                        v-if="item.select"
+                                        :label="item.name"
+                                        v-model="scope.row[item.key]"
+                                        :items="item.select"
+                                    ></v-select>
+                                    <v-text-field
+                                        v-else
+                                        v-model="scope.row[item.key]"
+                                        :label="item.name"
+                                    ></v-text-field>
+                                </validation-provider>
+                            </v-col>
+                        </template>
+                    </g-form-table>
+                </template>
+                <!-- 多服务 -->
+                <template v-else>
+                    <g-form-table isAdd isDelet key="multipleForm" :data.sync="multipleForm.data" :add="() => ({ServiceId: '', Weight:'', Port: '', serviceProxyInfo:null})">
+                        <template slot-scope="scope">
+                            <v-col cols="12" md="3">
+                                <validation-provider
+                                    v-slot="{ errors }"
+                                    name="目标服务"
+                                    rules="required"
+                                >
+                                    <g-service-select
+                                        v-model="scope.row.ServiceId"
+                                        :VirtualGwId="form.VirtualGwId"
+                                        label="目标服务*"
+                                        :error-messages="errors"
+                                        required
+                                        @change="handleChangeService(scope.row.ServiceId, scope.row)"
+                                    ></g-service-select>
+                                </validation-provider>
+                            </v-col>
+                            <v-col cols="12" md="3" v-if="scope.row.serviceProxyInfo">
+                                <validation-provider
+                                    name="端口"
+                                >
+                                    <v-select
+                                        label="端口"
+                                        v-model="scope.row.Port"
+                                        :items="scope.row.serviceProxyInfo.Port"
+                                    ></v-select>
+                                </validation-provider>
+                            </v-col>
+                            <v-col cols="12" md="3">
+                                <validation-provider
+                                    v-slot="{ errors }"
+                                    name="权重"
+                                    rules="required"
+                                >
+                                    <v-text-field
+                                        v-model="scope.row.Weight"
+                                        :error-messages="errors"
+                                        label="权重*"
+                                    ></v-text-field>
+                                </validation-provider>
+                            </v-col>
+                        </template>
                     </g-form-table>
                 </template>
             </v-card-text>
@@ -418,6 +465,15 @@ export default {
             // },
             // Headers: [],
             // QueryParams: [],
+        },
+        advancedVersionSwitch: false,
+        DestinationServicesDataModel: [],
+        serviceProxyInfo: {},
+        singleFrom: {
+            ServiceId: '',
+            Weight: '100',
+            Port: '',
+            DestinationServices: [],
         },
         multipleForm: {
             data: [],
@@ -512,11 +568,22 @@ export default {
             });
         },
         handleSubmit() {
+            const data = JSON.parse(JSON.stringify(this.form));
+            // 处理后端要求的传参形式
+            let ServiceMetaForRoute = [];
+            if (this.serviceType === 'single') {
+                ServiceMetaForRoute = [ this.singleFrom ];
+            } else {
+                ServiceMetaForRoute = this.multipleFrom.data;
+            }
+            // 重试条件
+            if (data.HttpRetry && data.HttpRetry.RetryOn) {
+                data.HttpRetry.RetryOn = data.HttpRetry.RetryOn.join(',');
+            }
+            data.ServiceMetaForRoute = ServiceMetaForRoute;
             return this.axios({
                 action: this.isEdit ? 'UpdateRouteRule' : 'CreateRouteRule',
-                data: {
-                    ...this.form,
-                },
+                data,
             }).then(() => {
                 this.$notify.success(this.isEdit ? '更新成功' : '创建成功');
                 this.handleClose();
@@ -524,6 +591,61 @@ export default {
         },
         handleClose() {
             this.$emit('close');
+        },
+        // 获取Port
+        async getServiceProxyInfo(Id) {
+            const { Result = {} } = await this.axios({
+                action: 'DescribeService',
+                params: {
+                    Id,
+                },
+            });
+            return Result;
+        },
+        async handleChangeService(e, item) {
+            if (this.serviceType === 'single') {
+                this.serviceProxyInfo = await this.getServiceProxyInfo(e);
+                this.singleFrom.Port = this.serviceProxyInfo.Port[0] || '';
+                if (!this.serviceProxyInfo.Subsets) {
+                    this.advancedVersionSwitch = false;
+                }
+                this.DestinationServicesDataModel = this.getDestinationServicesDataModel();
+                this.singleFrom.DestinationServices = [];
+            } else {
+                item.serviceProxyInfo = await this.getServiceProxyInfo(e);
+            }
+        },
+        // 获取版本实例渲染模板
+        getDestinationServicesDataModel() {
+            const serviceProxyInfo = this.serviceProxyInfo || {};
+            const RegistryCenterType = serviceProxyInfo.RegistryCenterType;
+            const Ports = serviceProxyInfo.Port || [];
+            const result = [];
+            const Subsets = (serviceProxyInfo.Subsets && serviceProxyInfo.Subsets.map(item => item.Name)) || null;
+            result.push({
+                name: '版本',
+                key: 'SubsetName',
+                value: '',
+                select: Subsets,
+                placeholder: '请选择版本',
+                rules: 'required',
+            });
+            if (RegistryCenterType === 'Kubernetes') {
+                result.push({
+                    name: '端口',
+                    key: 'Port',
+                    value: Ports[0] || '',
+                    select: Ports,
+                    placeholder: '请选择端口',
+                });
+            }
+            result.push({
+                name: '权重',
+                key: 'Weight',
+                placeholder: '0~100间的整数',
+                rules: 'required',
+            });
+            return result;
         },
     },
     created() {
