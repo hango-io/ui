@@ -43,6 +43,16 @@
                 <v-radio label="禁用" value="disable"></v-radio>
             </v-radio-group>
         </validation-provider>
+        <validation-provider name="Method">
+            <v-autocomplete
+                v-model="form.Method"
+                :items="SUPPORT_METHOD_KEYS"
+                chips
+                small-chips
+                label="Method"
+                multiple
+            ></v-autocomplete>
+        </validation-provider>
 
         <g-label>Path</g-label>
         <v-row>
@@ -88,47 +98,6 @@
                 :value="item.key"
                 @change="handleTypeSelectChange"
             ></v-checkbox>
-            </v-col>
-        </v-row>
-
-        <v-row v-if="typeSelected.includes('Method')">
-            <v-col cols="12">
-                <g-label>Method</g-label>
-            </v-col>
-            <v-col
-                cols="12"
-                sm="6"
-            >
-                <validation-provider
-                    v-slot="{ errors }"
-                    name="匹配方式"
-                    rules="required"
-                >
-                    <v-select
-                        v-model="form.Method.Type"
-                        :items="SUPPORT_TYPES.filter(item => item.bans ? !item.bans.includes('Method') : true)"
-                        label="匹配方式"
-                        :error-messages="errors"
-                        required
-                    ></v-select>
-                </validation-provider>
-            </v-col>
-            <v-col
-                cols="12"
-                sm="6"
-            >
-                <v-autocomplete
-                    v-model="form.Method.Value"
-                    :items="SUPPORT_METHOD_KEYS"
-                    chips
-                    small-chips
-                    label="条件取值"
-                    multiple
-                ></v-autocomplete>
-                <!-- <g-multi-validation-text-field
-                    label="条件取值"
-                    v-model="form.Method.Value">
-                </g-multi-validation-text-field> -->
             </v-col>
         </v-row>
 <!-- Header -->
@@ -455,6 +424,7 @@ export default {
                 Attempts: '2',
                 PerTryTimeout: '60000',
             },
+            Method: [],
             // Host: {
             //     Type: 'exact',
             //     Value: [ '' ],
@@ -574,7 +544,7 @@ export default {
             if (this.serviceType === 'single') {
                 ServiceMetaForRoute = [ this.singleFrom ];
             } else {
-                ServiceMetaForRoute = this.multipleFrom.data;
+                ServiceMetaForRoute = this.multipleForm.data;
             }
             // 重试条件
             if (data.HttpRetry && data.HttpRetry.RetryOn) {

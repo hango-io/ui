@@ -45,15 +45,15 @@ export const SUPOORT_MODAL_TYPES = [
     //         Value: [ '' ],
     //     },
     // },
-    {
-        key: 'Method',
-        text: 'Method',
-        type: 'object',
-        model: {
-            Type: 'exact',
-            Value: [],
-        },
-    },
+    // {
+    //     key: 'Method',
+    //     text: 'Method',
+    //     type: 'object',
+    //     model: {
+    //         Type: 'exact',
+    //         Value: [],
+    //     },
+    // },
     {
         key: 'Headers',
         text: 'Header',
