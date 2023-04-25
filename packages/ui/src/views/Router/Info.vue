@@ -163,7 +163,6 @@ export default {
                 { label: '优先级', key: 'Priority', text: info.Priority },
                 { label: '创建时间', key: 'CreateTime', text: info.CreateTime },
                 { label: '更新时间', key: 'UpdateTime', text: info.UpdateTime },
-                { label: '备注信息', text: info.Description },
 
             ];
         },
