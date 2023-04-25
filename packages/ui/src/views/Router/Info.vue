@@ -65,7 +65,7 @@
                             </span>
                         </template>
                         <template #Method="{ item }">
-                            <span v-if="item.text.length !== 0">
+                            <span v-if="item.text && item.text.length !== 0">
                                 <v-chip label x-small v-for="(method, index) in item.text" :key="index"
                                     style="margin-right: 8px">{{ method }}</v-chip>
                             </span>
@@ -87,6 +87,14 @@
 
             <v-row>
                 <v-col>
+                    <g-info-card title="路由规则" v-if="_list.length">
+                        <rule-list :list="_list"></rule-list>
+                    </g-info-card>
+                </v-col>
+            </v-row>
+
+            <v-row>
+                <v-col>
                     <g-info-card title="目标服务">
                         <div v-for="(item, index) in info.ServiceMetaForRoute" :key="index" style="padding-bottom:24px">
                             <div :class="$style.serviceCardHead">
@@ -102,11 +110,12 @@
                                 <v-chip label x-small>{{ item.Weight }}%</v-chip>
                             </div>
                             <div v-if="item.DestinationServices &&
-                                item.DestinationServices.length
+                                item.DestinationServices.length !== 0
                                 " :class="$style.serviceCardBody">
                                 <div v-for="(subset,
                                     index) in item.DestinationServices" :key="index" style="margin-bottom: 12px">
                                     <span :class="$style.span"></span>
+                                    <span style="margin-right:8px">{{ subset.SubsetName }}</span>
                                     <v-chip label x-small>{{ subset.Weight }}%</v-chip>
                                 </div>
                             </div>
@@ -128,9 +137,12 @@
 </template>
 <script>
 import RouterRuleInfoComp from './RouterRuleInfo';
-import { SUPPORT_TYPES_MAP } from './types.js';
+import { SUPPORT_TYPES_MAP, SUPPORT_VALUES } from './types.js';
+import _ from 'lodash';
+import RuleList from './RuleList.vue';
+
 export default {
-    components: { RouterRuleInfoComp },
+    components: { RouterRuleInfoComp, RuleList },
     data() {
         return {
             info: null,
@@ -171,6 +183,32 @@ export default {
                 { label: '超时时间', text: info.Timeout },
                 { label: '重试', text: '关闭' },
             ];
+        },
+        _list() {
+            const info = this.info;
+            const result = [];
+            const model = _.cloneDeep(SUPPORT_VALUES).splice(3, 5);
+            model.forEach(item => {
+                const itemInfo = info[item.key];
+                if (Array.isArray(itemInfo)) {
+                    itemInfo.forEach(_item => {
+                        result.push({
+                            ParamName: item.text,
+                            ParamKey: _item.Key,
+                            ParamMethod: _item.Type,
+                            ParamValue: _item.Value,
+                        });
+                    });
+                } else if (itemInfo) {
+                    result.push({
+                        ParamName: item.text,
+                        ParamKey: itemInfo.Key,
+                        ParamMethod: itemInfo.Type,
+                        ParamValue: itemInfo.Value,
+                    });
+                }
+            });
+            return result;
         },
     },
     methods: {
@@ -213,10 +251,10 @@ export default {
 
 .span {
     display: inline-block;
-    height: 20px;
+    height: 14px;
     vertical-align: middle;
     background: #37f;
     width: 4px;
-    margin-right: 4px;
+    margin-right: 8px;
 }
 </style>
