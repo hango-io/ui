@@ -327,11 +327,19 @@ export default {
         url: '/v1/virtualGateway',
         method: 'post',
         params: {
+            Action: 'DescribeVirtualGatewayPage',
+            Version: '2022-10-30',
+        },
+    },
+    DescribeVirtualGatewayList: {
+        url: '/v1/virtualGateway',
+        method: 'post',
+        params: {
             Action: 'DescribeVirtualGatewayList',
             Version: '2022-10-30',
         },
     },
-    // 虚拟网关所属网关列表
+    // 物理网关列表
     DescribeAllGateway: {
         url: '/gdashboard',
         method: 'get',
@@ -341,7 +349,7 @@ export default {
         },
     },
     CreateVirtualGateway: {
-        url: '/gdashboard',
+        url: '/v1/virtualGateway',
         method: 'post',
         params: {
             Action: 'CreateVirtualGateway',
@@ -349,7 +357,7 @@ export default {
         },
     },
     UpdateVirtualGateway: {
-        url: '/gdashboard',
+        url: '/v1/virtualGateway',
         method: 'post',
         params: {
             Action: 'UpdateVirtualGateway',
@@ -358,16 +366,16 @@ export default {
     },
     // 删除虚拟网关
     DeleteVirtualGateway: {
-        url: '/gdashboard',
+        url: '/v1/virtualGateway',
         method: 'get',
         params: {
-            Action: 'DeleteVirtualGatewayFromHango',
+            Action: 'DeleteVirtualGateway',
             Version: '2022-10-30',
         },
     },
     // 获取虚拟网关详情
     DescribeVirtualGatewayById: {
-        url: '/gdashboard',
+        url: '/v1/virtualGateway',
         method: 'get',
         params: {
             Action: 'DescribeVirtualGatewayById',

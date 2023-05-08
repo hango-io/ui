@@ -13,9 +13,9 @@ export default {
     methods: {
         load() {
             return this.axios({
-                action: 'DescribeVirtualGateway',
+                action: 'DescribeVirtualGatewayList',
                 data: {
-                    ProjectIdList: [ '3' ], // 固定写1
+                    ProjectIdList: [ '1' ], // 固定写1
                 },
             }).then(({ Result = [] }) => {
                 this.items = Result.map(item => {

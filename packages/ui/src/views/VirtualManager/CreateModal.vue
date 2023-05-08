@@ -72,7 +72,10 @@
         hint="请输入80-65535间的端口号,15000-20000为平台预留端口"
       ></v-text-field>
     </validation-provider>
-    <v-card>
+    <validation-provider v-slot="{ errors }" name="域名" rules="required">
+          <v-select :items="HostsList" multiple item-text="Host" item-value="Host" v-model="form.VirtualHostList" label="域名*" :error-messages="errors" required></v-select>
+      </validation-provider>
+    <!-- <v-card>
       <v-card-text>
         <validation-provider v-slot="{ errors }" name="域名列表" rules="required">
           <template v-for="(item, index) in form.VirtualHostList">
@@ -91,7 +94,7 @@
       <v-card-actions>
         <v-btn block color="primary" @click="() => form.VirtualHostList.push({ value: '' })">添加一个域名</v-btn>
       </v-card-actions>
-    </v-card>
+    </v-card> -->
     <validation-provider v-slot="{ errors }" name="访问地址">
       <v-text-field
         v-model="form.Addr"
@@ -119,7 +122,7 @@ const TEMPLATE_MODEL = {
     Protocol: '',
     Port: '',
     Addr: '',
-    VirtualHostList: [{}],
+    VirtualHostList: [],
     Description: '',
 };
 import { ValidationProvider } from 'vee-validate';
@@ -143,6 +146,7 @@ export default {
         ],
         protocolList: [ 'HTTP' ],
         gwList: [],
+        HostsList: [],
     }),
     computed: {
         isEdit() {
@@ -182,8 +186,6 @@ export default {
         },
         handleSubmit() {
             const params = JSON.parse(JSON.stringify(this.form));
-            // 给后端传值做特殊处理
-            params.VirtualHostList = this.form.VirtualHostList.map(item => item.value);
             return this.axios({
                 action: this.isEdit ? 'UpdateVirtualGateway' : 'CreateVirtualGateway',
                 data: {
@@ -213,6 +215,16 @@ export default {
                 });
             });
         },
+        loadDomain() {
+            return this.axios({
+                action: 'DescribeDomainList',
+                data: {
+                    VirtualGwId: '',
+                },
+            }).then(({ Result = [] }) => {
+                this.HostsList = Result;
+            });
+        },
         appendIconCallback(index) {
             if (this.form.VirtualHostList.length < 2) {
                 this.$notify.warn('请输入至少一个域名');
@@ -223,6 +235,7 @@ export default {
     },
     created() {
         this.getGwList();
+        this.loadDomain();
     },
 };
 </script>
