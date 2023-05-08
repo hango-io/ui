@@ -72,7 +72,7 @@
                 ></g-multi-validation-text-field>
             </template>
             <validation-provider v-slot="{ errors }" name="域名" rules="required">
-                <v-select :items="HostsList" item-text="Host" item-value="Host" v-model="form.Hosts" label="域名*" :error-messages="errors" required></v-select>
+                <v-select :items="HostsList" multiple item-text="Host" item-value="Host" v-model="form.Hosts" label="域名*" :error-messages="errors" required></v-select>
             </validation-provider>
 
             <!-- 更多配置 -->
@@ -84,6 +84,7 @@
             <VersionExpansionPanels
                 v-if="!isDubboType"
                 v-model="form.Subsets"
+                :panel="form.Subsets"
                 :staticAddrList="form.BackendService.split(',')"
                 :publishType="form.PublishType"
             >
@@ -165,6 +166,7 @@ export default {
                 if (this.type === 'edit' && nV.VirtualGwId) {
                     await this.loadInfo();
                     await this.loadRegistryCenterType();
+                    await this.loadServiceAddressList();
                     await this.loadDomain();
                 }
                 return nV;
@@ -218,9 +220,11 @@ export default {
         },
         handleSubmit() {
             const param = JSON.parse(JSON.stringify(this.form));
+            param.Hosts = this.form.Hosts.join(',');
             // param.ServiceId = this.current.ServiceId;
+            const action = this.isEdit ? 'UpdateService' : 'CreateService';
             return this.axios({
-                action: 'CreateService',
+                action,
                 data: {
                     ...param,
                 },
@@ -259,12 +263,13 @@ export default {
                 },
             }).then(({ Result = {} }) => {
                 this.form = Result;
+                this.form.Hosts = Result.Hosts.split(',');
             });
         },
         handleChange() {
             this.loadServiceAddressList();
             this.loadRegistryCenterType();
-            // this.loadDomain();
+            this.loadDomain();
         },
         handleClose() {
             this.$emit('close');

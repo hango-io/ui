@@ -275,7 +275,7 @@
                                 <v-select
                                     label="端口"
                                     v-model="singleFrom.Port"
-                                    :items="serviceProxyInfo.Por"
+                                    :items="serviceProxyInfo.Port"
                                 ></v-select>
                             </validation-provider>
                         </v-col>
@@ -420,7 +420,7 @@ export default {
             DestinationServices: [],
             HttpRetry: {
                 IsRetry: false,
-                RetryOn: [],
+                RetryOn: [ '5xx', 'refused-stream' ],
                 Attempts: '2',
                 PerTryTimeout: '60000',
             },
@@ -539,6 +539,16 @@ export default {
         },
         handleSubmit() {
             const data = JSON.parse(JSON.stringify(this.form));
+            // 获取重试内容
+            if (data.HttpRetry.IsRetry) {
+                const ssformSchemaRef = this.$refs.ssformSchemaRef;
+                if (ssformSchemaRef) {
+                    const config = ssformSchemaRef.getValue();
+                    data.HttpRetry = config;
+                    data.HttpRetry.IsRetry = true;
+                }
+            }
+            console.log(data.HttpRetry.RetryOn);
             // 处理后端要求的传参形式
             let ServiceMetaForRoute = [];
             if (this.serviceType === 'single') {
@@ -618,7 +628,7 @@ export default {
             return result;
         },
     },
-    created() {
+    async created() {
         if (this.isEdit) {
             this.form = JSON.parse(JSON.stringify(this.current));
             const SUPOORT_MODAL_TYPES = this.SUPOORT_MODAL_TYPES || [];
@@ -628,6 +638,31 @@ export default {
                     this.typeSelected.push(key);
                 }
             });
+            // 处理重试回显
+            if (this.current.HttpRetry && this.current.HttpRetry.IsRetry && this.current.HttpRetry.RetryOn) {
+                this.form.HttpRetry.RetryOn = this.current.HttpRetry.RetryOn.split(',');
+            }
+            // 处理回显
+            if (this.current.ServiceMetaForRoute.length > 1) {
+                this.serviceType = 'multiple';
+                this.multipleForm.data = this.current.ServiceMetaForRoute;
+                // 处理port列表
+                this.multipleFrom.data.forEach(async item => {
+                    item.serviceProxyInfo = await this.getServiceProxyInfo(item.ServiceId);
+                });
+            } else {
+                this.serviceType = 'single';
+                this.singleFrom = this.current.ServiceMetaForRoute[0];
+                // 处理port列表
+                this.serviceProxyInfo = await this.getServiceProxyInfo(this.singleFrom.ServiceId);
+                // 处理版本回显
+                if (this.current.ServiceMetaForRoute[0] && this.current.ServiceMetaForRoute[0].DestinationServices && this.current.ServiceMetaForRoute[0].DestinationServices.length) {
+                    this.advancedVersionSwitch = true;
+                    this.DestinationServicesDataModel = this.getDestinationServicesDataModel();
+                } else {
+                    this.advancedVersionSwitch = false;
+                }
+            }
         }
     },
 };

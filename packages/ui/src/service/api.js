@@ -44,27 +44,27 @@ export default {
         },
     },
     CreateService: {
-        url: '/gdashboard',
+        url: '/v1/service',
         method: 'post',
         params: {
             Action: 'CreateService',
-            Version: '2018-08-09',
+            Version: '',
         },
     },
     DeleteService: {
-        url: '/gdashboard',
+        url: '/v1/service',
         method: 'get',
         params: {
             Action: 'DeleteService',
-            Version: '2018-08-09',
+            Version: '',
         },
     },
     UpdateService: {
-        url: '/gdashboard',
+        url: '/v1/service',
         method: 'post',
         params: {
             Action: 'UpdateService',
-            Version: '2018-08-09',
+            Version: '',
         },
     },
     DescribeGatewayList: {
