@@ -191,9 +191,17 @@ export default {
                 data: {
                     ...params,
                 },
-            }).then(() => {
-                this.$notify.success(this.isEdit ? '虚拟网关更新成功' : '虚拟网关创建成功');
-                this.handleClose();
+            }).then(({ VirtualGwId = '' }) => {
+                this.axios({
+                    action: 'BindDomainInfo',
+                    data: {
+                        VirtualGwId,
+                        DomainIds: this.form.VirtualHostList,
+                    },
+                }).then(() => {
+                    this.$notify.success(this.isEdit ? '虚拟网关更新成功' : '虚拟网关创建成功');
+                    this.handleClose();
+                });
             });
         },
         handleClose() {

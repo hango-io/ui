@@ -378,8 +378,8 @@ export default {
         url: '/v1/virtualGateway',
         method: 'get',
         params: {
-            Action: 'DescribeVirtualGatewayById',
-            Version: '2022-10-30',
+            Action: 'DescribeVirtualGateway',
+            Version: '',
         },
     },
     // 查询K8s Gateway
@@ -523,6 +523,15 @@ export default {
         method: 'get',
         params: {
             Action: 'DescribeRoute',
+            Version,
+        },
+    },
+    // 绑定域名
+    BindDomainInfoL: {
+        url: '/v1/virtualGateway',
+        method: 'post',
+        params: {
+            Action: 'BindDomainInfoL',
             Version,
         },
     },
