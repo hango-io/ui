@@ -73,7 +73,7 @@
       ></v-text-field>
     </validation-provider>
     <validation-provider v-slot="{ errors }" name="域名" rules="required">
-          <v-select :items="HostsList" multiple item-text="Host" item-value="Host" v-model="form.VirtualHostList" label="域名*" :error-messages="errors" required></v-select>
+          <v-select :items="HostsList" multiple item-text="Host" item-value="DomainId" v-model="form.VirtualHostList" label="域名*" :error-messages="errors" required></v-select>
       </validation-provider>
     <!-- <v-card>
       <v-card-text>
@@ -191,11 +191,12 @@ export default {
                 data: {
                     ...params,
                 },
-            }).then(({ VirtualGwId = '' }) => {
+            }).then(({ Result = '' }) => {
+                console.log(Result);
                 this.axios({
                     action: 'BindDomainInfo',
                     data: {
-                        VirtualGwId,
+                        VirtualGwId: Result,
                         DomainIds: this.form.VirtualHostList,
                     },
                 }).then(() => {

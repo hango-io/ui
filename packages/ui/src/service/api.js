@@ -527,11 +527,11 @@ export default {
         },
     },
     // 绑定域名
-    BindDomainInfoL: {
+    BindDomainInfo: {
         url: '/v1/virtualGateway',
         method: 'post',
         params: {
-            Action: 'BindDomainInfoL',
+            Action: 'BindDomainInfo',
             Version,
         },
     },

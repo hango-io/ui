@@ -35,7 +35,7 @@
         </template>
         <template #item.DomainInfos="{ item }">
             <v-chip small color="success" style="margin-right:4px" v-for="(host, index) in item.DomainInfos" :key="index">
-                {{host}}
+                {{host.Host}}
             </v-chip>
         </template>
         <template #item.actions="{ item }">
