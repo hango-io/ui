@@ -144,7 +144,7 @@ export default {
             { id: 'LoadBalance', label: '负载均衡' },
             { id: 'NetworkProxy', label: '通用网关' },
         ],
-        protocolList: [ 'HTTP' ],
+        protocolList: [ 'HTTP', 'HTTPS' ],
         gwList: [],
         HostsList: [],
     }),
@@ -192,7 +192,6 @@ export default {
                     ...params,
                 },
             }).then(({ Result = '' }) => {
-                console.log(Result);
                 this.axios({
                     action: 'BindDomainInfo',
                     data: {
@@ -200,8 +199,16 @@ export default {
                         DomainIds: this.form.VirtualHostList,
                     },
                 }).then(() => {
-                    this.$notify.success(this.isEdit ? '虚拟网关更新成功' : '虚拟网关创建成功');
-                    this.handleClose();
+                    this.axios({
+                        action: 'UpdateProjectBinding',
+                        data: {
+                            VirtualGwId: Result,
+                            ProjectIdList: [ 1 ],
+                        },
+                    }).then(() => {
+                        this.$notify.success(this.isEdit ? '虚拟网关更新成功' : '虚拟网关创建成功');
+                        this.handleClose();
+                    });
                 });
             });
         },

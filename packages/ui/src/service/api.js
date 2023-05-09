@@ -535,4 +535,13 @@ export default {
             Version,
         },
     },
+    // 绑定项目
+    UpdateProjectBinding: {
+        url: '/gdashboard',
+        method: 'post',
+        params: {
+            Action: 'UpdateProjectBinding',
+            Version: '2022-10-30',
+        },
+    },
 };

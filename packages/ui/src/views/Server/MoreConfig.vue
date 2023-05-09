@@ -267,6 +267,7 @@ export default {
                 data.LoadBalancer.Simple = '';
             } else {
                 data.LoadBalancer.Type = 'Simple';
+                delete data.LoadBalancer.ConsistentHash.HttpHeaderName;
             }
             // 给后端特殊处理
             if (data.LoadBalancer && data.LoadBalancer.ConsistentHash && typeof data.LoadBalancer.ConsistentHash.HttpHeaderName === 'string') {
