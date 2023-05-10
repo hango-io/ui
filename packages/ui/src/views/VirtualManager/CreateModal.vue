@@ -176,11 +176,11 @@ export default {
     methods: {
         load() {
             this.form = JSON.parse(JSON.stringify(this.current));
-            if (this.current.VirtualHostList && this.current.VirtualHostList.length) {
-                const arr = [];
-                this.current.VirtualHostList.forEach((item, index) => {
-                    this.$set(arr, index, { value: item });
-                });
+            if (this.current.DomainInfos && this.current.DomainInfos.length) {
+                const arr = this.current.DomainInfos.map(item => item.DomainId);
+                // this.current.VirtualHostList.forEach((item, index) => {
+                //     this.$set(arr, index, { value: item });
+                // });
                 this.form.VirtualHostList = arr;
             }
         },

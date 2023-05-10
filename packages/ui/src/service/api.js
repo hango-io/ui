@@ -537,7 +537,7 @@ export default {
     },
     // 绑定项目
     UpdateProjectBinding: {
-        url: '/gdashboard',
+        url: '/v1/virtualGateway',
         method: 'post',
         params: {
             Action: 'UpdateProjectBinding',

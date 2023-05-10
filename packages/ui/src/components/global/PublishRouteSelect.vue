@@ -10,7 +10,7 @@
 
 <script>
 export default {
-    name: 'g-publish-route-select',
+    name: 'g-route-select',
     data() {
         return {
             items: [],
@@ -29,17 +29,17 @@ export default {
     methods: {
         load() {
             return this.axios({
-                action: 'DescribePublishRouteRuleList',
+                action: 'DescribeRouteList',
                 params: {
                     Limit: 1000,
                     Offset: 0,
                 },
-            }).then(({ RouteRuleProxyList = [] }) => {
-                this.items = RouteRuleProxyList.map(item => {
+            }).then(({ RouteList = [] }) => {
+                this.items = RouteList.map(item => {
                     return {
                         ...item,
-                        text: item.RouteRuleName,
-                        value: item.RouteRuleId,
+                        text: item.Name,
+                        value: item.Id,
                     };
                 });
             });
