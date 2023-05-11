@@ -544,4 +544,22 @@ export default {
             Version: '2022-10-30',
         },
     },
+    // 解除绑定项目
+    UnBindProject: {
+        url: '/v1/virtualGateway',
+        method: 'get',
+        params: {
+            Action: 'UnBindProject',
+            Version: '2022-10-30',
+        },
+    },
+    // 解除绑定域名
+    UnbindDomainInfo: {
+        url: '/v1/virtualGateway',
+        method: 'post',
+        params: {
+            Action: 'UnbindDomainInfo',
+            Version: '',
+        },
+    },
 };

@@ -34,7 +34,7 @@
           {{ item.Type | apiType }}
         </template>
         <template #item.DomainInfos="{ item }">
-            <v-chip small color="success" style="margin-right:4px" v-for="(host, index) in item.DomainInfos" :key="index">
+            <v-chip close @click:close="unbindDomain(item, host)" style="margin-right:4px" small color="success" v-for="(host, index) in item.DomainInfos" :key="index">
                 {{host.Host}}
             </v-chip>
         </template>
@@ -161,15 +161,35 @@ export default {
                 message: '警告，是否删除该虚拟网关?',
                 ok: () => {
                     return this.axios({
-                        action: 'DeleteVirtualGateway',
+                        action: 'UnBindProject',
                         params: {
                             ..._.pick(item, [ 'VirtualGwId' ]),
+                            ProjectId: '1',
                         },
                     }).then(() => {
-                        this.$notify.success('删除成功');
-                        this.refresh();
+                        this.axios({
+                            action: 'DeleteVirtualGateway',
+                            params: {
+                                ..._.pick(item, [ 'VirtualGwId' ]),
+                            },
+                        }).then(() => {
+                            this.$notify.success('删除成功');
+                            this.refresh();
+                        });
                     });
                 },
+            });
+        },
+        unbindDomain(item, host) {
+            console.log(item, host);
+            return this.axios({
+                action: 'UnbindDomainInfo',
+                data: {
+                    ..._.pick(item, [ 'VirtualGwId' ]),
+                    DomainIds: host.DomainId,
+                },
+            }).then(() => {
+                this.refresh();
             });
         },
     },

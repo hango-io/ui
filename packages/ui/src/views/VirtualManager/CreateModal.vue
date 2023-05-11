@@ -72,29 +72,9 @@
         hint="请输入80-65535间的端口号,15000-20000为平台预留端口"
       ></v-text-field>
     </validation-provider>
-    <validation-provider v-slot="{ errors }" name="域名" rules="required">
-          <v-select :items="HostsList" multiple item-text="Host" item-value="DomainId" v-model="form.VirtualHostList" label="域名*" :error-messages="errors" required></v-select>
+    <validation-provider name="域名">
+          <v-select :items="HostsList" multiple item-text="Host" item-value="DomainId" v-model="form.VirtualHostList" label="域名"></v-select>
       </validation-provider>
-    <!-- <v-card>
-      <v-card-text>
-        <validation-provider v-slot="{ errors }" name="域名列表" rules="required">
-          <template v-for="(item, index) in form.VirtualHostList">
-            <v-text-field
-              :error-messages="errors"
-              :key="index"
-              @click:append="appendIconCallback(index)"
-              v-model="item.value"
-              :label="`域名列表${index+1}`"
-              append-icon="mdi-delete"
-              hint="请输入域名">
-            </v-text-field>
-          </template>
-        </validation-provider>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn block color="primary" @click="() => form.VirtualHostList.push({ value: '' })">添加一个域名</v-btn>
-      </v-card-actions>
-    </v-card> -->
     <validation-provider v-slot="{ errors }" name="访问地址">
       <v-text-field
         v-model="form.Addr"
