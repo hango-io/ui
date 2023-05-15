@@ -67,7 +67,6 @@ export default {
         schema() {
             if (this.PluginInfo && this.PluginInfo.PluginSchema) {
                 const s = JSON.parse(this.PluginInfo.PluginSchema);
-                console.info(JSON.stringify(s, null, 4));
                 return s;
             }
             return null;
@@ -87,7 +86,6 @@ export default {
             }).then(({ PluginBindingInfo = {} } = {}) => {
                 this.PluginBindingInfo = PluginBindingInfo;
                 this.data = JSON.parse(PluginBindingInfo.PluginConfiguration);
-                console.info(JSON.stringify(this.data, null, 4));
             });
         },
         loadPluginInfo() {
@@ -124,6 +122,7 @@ export default {
                             VirtualGwId: this.GwId,
                             PluginConfiguration: JSON.stringify(config),
                             PluginType: this.PluginType,
+                            PluginName: this.current.PluginName,
                         },
                     });
                 }
@@ -135,9 +134,6 @@ export default {
         },
         handleClose() {
             this.$emit('close');
-        },
-        handleClick(row) {
-            console.info(row);
         },
     },
     async created() {
