@@ -420,7 +420,7 @@ export default {
             DestinationServices: [],
             HttpRetry: {
                 IsRetry: false,
-                RetryOn: [ '5xx', 'refused-stream' ],
+                RetryOn: [],
                 Attempts: '2',
                 PerTryTimeout: '60000',
             },
@@ -548,7 +548,7 @@ export default {
                     data.HttpRetry.IsRetry = true;
                 }
             }
-            console.log(data.HttpRetry.RetryOn);
+            debugger;
             // 处理后端要求的传参形式
             let ServiceMetaForRoute = [];
             if (this.serviceType === 'single') {
@@ -557,8 +557,10 @@ export default {
                 ServiceMetaForRoute = this.multipleForm.data;
             }
             // 重试条件
-            if (data.HttpRetry && data.HttpRetry.RetryOn) {
+            if (data.HttpRetry.IsRetry) {
                 data.HttpRetry.RetryOn = data.HttpRetry.RetryOn.join(',');
+            } else {
+                data.HttpRetry.RetryOn = [];
             }
             data.ServiceMetaForRoute = ServiceMetaForRoute;
             return this.axios({
@@ -641,6 +643,8 @@ export default {
             // 处理重试回显
             if (this.current.HttpRetry && this.current.HttpRetry.IsRetry && this.current.HttpRetry.RetryOn) {
                 this.form.HttpRetry.RetryOn = this.current.HttpRetry.RetryOn.split(',');
+            } else {
+                this.form.HttpRetry.RetryOn = [];
             }
             // 处理回显
             if (this.current.ServiceMetaForRoute.length > 1) {
