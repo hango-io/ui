@@ -2,7 +2,7 @@
     <!-- TODO -->
     <g-modal-form :title="isEdit ? '修改服务' : '创建服务'" visible :submit="handleSubmit" @close="handleClose">
         <validation-provider v-slot="{ errors }" name="协议类型" rules="required">
-            <v-radio-group label="服务类型" v-model="form.Protocol" row :error-messages="errors">
+            <v-radio-group label="服务类型" v-model="form.Protocol" row :error-messages="errors" @change="changeProtocol">
                 <v-radio v-for="item in ProtocolType" :key="item.value" :disabled="isEdit" :label="item.text" :value="item.value"></v-radio>
             </v-radio-group>
         </validation-provider>
@@ -273,6 +273,9 @@ export default {
         },
         handleClose() {
             this.$emit('close');
+        },
+        changeProtocol() {
+            this.loadRegistryCenterType();
         },
     },
 };
