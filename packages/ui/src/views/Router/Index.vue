@@ -87,6 +87,13 @@
                 @click="handleEdit(item)"
             ></ActionBtnComp>
             <ActionBtnComp
+                v-if="[ 'webservice', 'dubbo' ].includes(item.ServiceMetaForRoute[0].Protocol)"
+                color="primary"
+                icon="mdi-protocol"
+                tooltip="协议转换"
+                @click="handleConvert(item)"
+            ></ActionBtnComp>
+            <ActionBtnComp
                 color="error"
                 icon="mdi-delete"
                 tooltip="删除"
@@ -97,7 +104,7 @@
     </div>
     <CreateModalComp v-if="createVisible" :current="current" @close="handleClose"/>
     <CreateModalComp v-if="editVisible" :current="current" type="edit" @close="handleClose"/>
-    <PublishModalComp v-if="publishVisible" :current="current" @close="handleClose"/>
+    <ConvertModelComp v-if="convertVisible" :current="current" @close="handleClose"/>
   </v-container>
 </template>
 
@@ -115,9 +122,9 @@ const TABLE_HEADERS = [
 import ActionBtnComp from '@/components/ActionBtn';
 import RouterRuleInfoComp from './RouterRuleInfo';
 import CreateModalComp from './CreateModal';
-import PublishModalComp from './PublishModal';
+import ConvertModelComp from './ConvertModel';
 export default {
-    components: { ActionBtnComp, RouterRuleInfoComp, CreateModalComp, PublishModalComp },
+    components: { ActionBtnComp, RouterRuleInfoComp, CreateModalComp, ConvertModelComp },
     data() {
         return {
             headers: TABLE_HEADERS.map(item => {
@@ -128,8 +135,8 @@ export default {
                 };
             }),
             createVisible: false,
+            convertVisible: false,
             editVisible: false,
-            publishVisible: false,
             current: null,
         };
     },
@@ -150,7 +157,7 @@ export default {
         handleClose() {
             this.createVisible = false;
             this.editVisible = false;
-            this.publishVisible = false;
+            this.convertVisible = false;
             this.current = null;
             this.refresh();
         },
@@ -179,6 +186,10 @@ export default {
                     });
                 },
             });
+        },
+        handleConvert(item) {
+            this.current = item;
+            this.convertVisible = true;
         },
     },
 };

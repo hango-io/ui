@@ -235,6 +235,7 @@ export default {
         },
         // 注册中心类型
         loadRegistryCenterType() {
+            if (!this.form.VirtualGwId) return;
             return this.axios({
                 action: 'DescribeRegistryTypes',
                 params: {

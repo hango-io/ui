@@ -132,6 +132,11 @@
                     </g-info-card>
                 </v-col>
             </v-row>
+            <v-row v-if="[ 'webservice', 'dubbo' ].includes(info.ServiceMetaForRoute[0].Protocol)">
+                <v-col>
+                    <ConvertInfo :info="info" :serviceProxyInfo="serviceProxyInfo"/>
+                </v-col>
+            </v-row>
         </div>
     </v-container>
 </template>
@@ -140,13 +145,15 @@ import RouterRuleInfoComp from './RouterRuleInfo';
 import { SUPPORT_TYPES_MAP, SUPPORT_VALUES } from './types.js';
 import _ from 'lodash';
 import RuleList from './RuleList.vue';
+import ConvertInfo from './Convert';
 
 export default {
-    components: { RouterRuleInfoComp, RuleList },
+    components: { RouterRuleInfoComp, RuleList, ConvertInfo },
     data() {
         return {
             info: null,
             SUPPORT_TYPES_MAP,
+            serviceProxyInfo: null,
         };
     },
     computed: {

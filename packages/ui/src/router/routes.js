@@ -88,40 +88,6 @@ const routes = [
         },
     },
     {
-        path: '/published/router',
-        name: 'hango.published.router',
-        component: () => import(/* webpackChunkName: "router" */ '../views/RouterPublished/Index.vue'),
-        meta: {
-            breadcrumbs: [
-                {
-                    text: '已发布路由管理',
-                    disabled: true,
-                    to: { name: 'hango.published.router' },
-                },
-            ],
-        },
-    },
-    {
-        path: '/published/router/info',
-        name: 'hango.published.router.info',
-        component: () => import(/* webpackChunkName: "router" */ '../views/RouterPublished/Info.vue'),
-        meta: {
-            breadcrumbs: [
-                {
-                    text: '已发布路由管理',
-                    disabled: false,
-                    exact: true,
-                    to: { name: 'hango.published.router' },
-                },
-                {
-                    text: '路由详情',
-                    disabled: true,
-                    // to: { name: 'hango.published.router.info' },
-                },
-            ],
-        },
-    },
-    {
         path: '/plugins',
         name: 'hango.plugins',
         component: () => import(/* webpackChunkName: "plugins" */ '../views/Plugins/Index.vue'),
