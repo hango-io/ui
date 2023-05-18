@@ -172,13 +172,17 @@ export default {
                     ...params,
                 },
             }).then(({ Result = '' }) => {
-                this.axios({
-                    action: 'BindDomainInfo',
-                    data: {
-                        VirtualGwId: Result,
-                        DomainIds: this.form.VirtualHostList,
-                    },
-                }).then(() => {
+                let action = Promise.resolve();
+                if (this.form.VirtualHostList && this.form.VirtualHostList.length) {
+                    action = this.axios({
+                        action: 'BindDomainInfo',
+                        data: {
+                            VirtualGwId: Result,
+                            DomainIds: this.form.VirtualHostList,
+                        },
+                    });
+                }
+                action.then(() => {
                     this.axios({
                         action: 'UpdateProjectBinding',
                         data: {
@@ -220,13 +224,6 @@ export default {
             }).then(({ Result = [] }) => {
                 this.HostsList = Result;
             });
-        },
-        appendIconCallback(index) {
-            if (this.form.VirtualHostList.length < 2) {
-                this.$notify.warn('请输入至少一个域名');
-                return;
-            }
-            this.form.VirtualHostList.splice(index, 1);
         },
     },
     created() {
