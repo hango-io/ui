@@ -10,62 +10,33 @@
       <g-table-list
         :headers="headers"
         :load="getDataFromApi"
-        item-key="ServiceTag"
         ref="tableRef"
       >
         <template #top>
             <ActionBtnComp
                 icon="mdi-plus"
-                tooltip="创建服务"
+                tooltip="新增域名"
                 color="primary"
                 @click="handleCreate()"
             ></ActionBtnComp>
         </template>
-        <template #item.Name="{ item }">
-            <g-link :to="{ name: 'hango.server.info', query: { Id: item.Id } }">{{ item.Name }}</g-link>
-        </template>
-        <template #item.Alias="{ item }">
-            <v-tooltip bottom>
-                <template v-slot:activator="{ on, attrs }">
-                    <v-chip
-                        v-bind="attrs"
-                        v-on="on"
-                        :color="item.Protocol === 'dubbo' ? 'indigo' : 'info'"
-                        text-color="white"
-                        x-small
-                        label
-                    >
-                        {{ item.Protocol.substr(0,1).toUpperCase() || '-' }}
-                    </v-chip>
-                </template>
-                <span>{{ item.Protocol.toUpperCase() }}</span>
-            </v-tooltip>
-            {{item.Alias}}
-        </template>
-        <template #item.PublishType="{ item }">
-            <v-tooltip top min-width="320">
+        <template v-slot:item.CertificateName="{ item}">
+          <v-tooltip top v-if="item.CertificateId"  color="white">
                 <template v-slot:activator="{ on, attrs }">
                     <v-chip
                         small
-                        color="success"
-                        outlined
+                        color="primary"
                         v-bind="{ ...attrs }"
                         v-on="{ ...on }"
+                        @mouseenter="handleCertifyInfo(item)"
                         >
-                        <template v-if="item.PublishType === 'DYNAMIC'">
-                            <span>注册中心</span>
-                        </template>
-                        <template v-else-if="item.PublishType === 'STATIC'">
-                            <span>静态地址</span>
-                        </template>
+                      {{ item.CertificateName }}
                     </v-chip>
                 </template>
-                <div>
-                    <span>{{ item.BackendService || '-' }}</span>
-                </div>
+                <certificate-info :loading="loadingCertifyInfo" :info="certificateInfos" />
             </v-tooltip>
         </template>
-        <template #item.actions="{ item }">
+        <template v-slot:item.actions="{ item }">
             <ActionBtnComp
                 color="primary"
                 icon="mdi-pencil"
@@ -78,36 +49,28 @@
                 tooltip="删除"
                 @click="handleDelete(item)"
             ></ActionBtnComp>
-            <ActionBtnComp
-                color="primary"
-                icon="mdi-heart"
-                tooltip="健康检查"
-                @click="handleHealth(item)"
-            ></ActionBtnComp>
         </template>
       </g-table-list>
     </div>
     <CreateModalComp v-if="createVisible" :current="current" @close="handleClose"/>
     <CreateModalComp v-if="editVisible" :current="current" type="edit" @close="handleClose"/>
-    <HealthModalComp v-if="healthVisible" :current="current" @close="handleClose"/>
   </v-container>
 </template>
 
 <script>
 const TABLE_HEADERS = [
-    { text: '服务名称', value: 'custom', name: 'Name' },
-    { text: '服务别名', value: 'custom', name: 'Alias' },
-    { text: '发布信息', value: 'custom', name: 'PublishType' },
-    { text: '所属网关', value: 'VirtualGwName' },
-    { text: '更新时间', value: 'UpdateTime' },
+    { text: '域名', value: 'Host' },
+    { text: '协议类型', value: 'Protocol' },
+    { text: '证书', value: 'custom', name: 'CertificateName' },
     { text: '操作', value: 'custom', name: 'actions', width: 180 },
 ];
+import _ from 'lodash';
 import ActionBtnComp from '@/components/ActionBtn';
 import CreateModalComp from './CreateModal';
-import HealthModalComp from './HealthModal';
+import CertificateInfo from './CertificateInfo.vue';
 
 export default {
-    components: { ActionBtnComp, CreateModalComp, HealthModalComp },
+    components: { ActionBtnComp, CreateModalComp, CertificateInfo },
     data() {
         return {
             headers: TABLE_HEADERS.map(item => {
@@ -119,9 +82,9 @@ export default {
             }),
             createVisible: false,
             editVisible: false,
-            publishVisible: false,
-            healthVisible: false,
-            current: null,
+            certificateInfos: {},
+            loadingCertifyInfo: false,
+            current: {},
         };
     },
     methods: {
@@ -130,19 +93,32 @@ export default {
         },
         getDataFromApi(params) {
             return this.axios({
-                action: 'DescribeServiceList',
-                params: {
+                action: 'DescribeDomainPage',
+                data: {
                     ...params,
                 },
-            }).then(({ Result = [], TotalCount = 0 }) => {
-                return { list: Result, total: TotalCount };
+            }).then(({ Result = [], Total = 0 }) => {
+                return { list: Result, total: Total };
+            });
+        },
+        handleCertifyInfo({ CertificateId }) {
+            this.loadingCertifyInfo = true;
+            return this.axios({
+                action: 'DescribeCertificateInfo',
+                params: {
+                    CertificateId,
+                },
+            }).then(({ Result = {} }) => {
+                Result.ExpiredTime = Result.ExpiredTime.split(' ')[0];
+                Result.IssuingTime = Result.IssuingTime.split(' ')[0];
+                this.certificateInfos = Result;
+            }).finally(() => {
+                this.loadingCertifyInfo = false;
             });
         },
         handleClose() {
             this.createVisible = false;
             this.editVisible = false;
-            this.publishVisible = false;
-            this.healthVisible = false;
             this.current = null;
             this.refresh();
         },
@@ -154,20 +130,36 @@ export default {
             this.current = item;
             this.editVisible = true;
         },
-        handleHealth(item) {
-            this.current = item;
-            this.healthVisible = true;
-        },
-        handleDelete(item) {
-            const Id = item.Id;
+        handleChangeStatus(item, isEnableFlag) {
             this.$confirm({
-                title: '删除确认提示',
-                message: '警告，是否删除该服务?',
+                title: isEnableFlag ? '启用确认提示' : '禁用确认提示',
+                message: '警告，是否' + (isEnableFlag ? '启用' : '禁用') + '该插件?',
                 ok: () => {
                     return this.axios({
-                        action: 'DeleteService',
+                        action: 'UpdatePluginBindingStatus',
                         params: {
-                            Id,
+                            ..._.pick(item, [
+                                'PluginBindingInfoId',
+                            ]),
+                            BindingStatus: isEnableFlag ? 'enable' : 'disable',
+                        },
+                    }).then(() => {
+                        this.$notify.success('操作成功');
+                        this.refresh();
+                    });
+                },
+            });
+        },
+        handleDelete(item) {
+            const { DomainId } = item;
+            this.$confirm({
+                title: '删除确认提示',
+                message: '警告，是否删除该域名?',
+                ok: () => {
+                    return this.axios({
+                        action: 'DeleteDomain',
+                        params: {
+                            DomainId,
                         },
                     }).then(() => {
                         this.$notify.success('删除成功');

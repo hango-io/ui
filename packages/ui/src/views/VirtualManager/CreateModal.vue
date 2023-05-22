@@ -72,26 +72,9 @@
         hint="请输入80-65535间的端口号,15000-20000为平台预留端口"
       ></v-text-field>
     </validation-provider>
-    <v-card>
-      <v-card-text>
-        <validation-provider v-slot="{ errors }" name="域名列表" rules="required">
-          <template v-for="(item, index) in form.VirtualHostList">
-            <v-text-field
-              :error-messages="errors"
-              :key="index"
-              @click:append="appendIconCallback(index)"
-              v-model="item.value"
-              :label="`域名列表${index+1}`"
-              append-icon="mdi-delete"
-              hint="请输入域名">
-            </v-text-field>
-          </template>
-        </validation-provider>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn block color="primary" @click="() => form.VirtualHostList.push({ value: '' })">添加一个域名</v-btn>
-      </v-card-actions>
-    </v-card>
+    <validation-provider name="域名">
+          <v-select :items="HostsList" multiple item-text="Host" item-value="DomainId" v-model="form.VirtualHostList" label="域名"></v-select>
+      </validation-provider>
     <validation-provider v-slot="{ errors }" name="访问地址">
       <v-text-field
         v-model="form.Addr"
@@ -119,7 +102,7 @@ const TEMPLATE_MODEL = {
     Protocol: '',
     Port: '',
     Addr: '',
-    VirtualHostList: [{}],
+    VirtualHostList: [],
     Description: '',
 };
 import { ValidationProvider } from 'vee-validate';
@@ -141,8 +124,9 @@ export default {
             { id: 'LoadBalance', label: '负载均衡' },
             { id: 'NetworkProxy', label: '通用网关' },
         ],
-        protocolList: [ 'HTTP' ],
+        protocolList: [ 'HTTP', 'HTTPS' ],
         gwList: [],
+        HostsList: [],
     }),
     computed: {
         isEdit() {
@@ -172,26 +156,44 @@ export default {
     methods: {
         load() {
             this.form = JSON.parse(JSON.stringify(this.current));
-            if (this.current.VirtualHostList && this.current.VirtualHostList.length) {
-                const arr = [];
-                this.current.VirtualHostList.forEach((item, index) => {
-                    this.$set(arr, index, { value: item });
-                });
+            if (this.current.DomainInfos && this.current.DomainInfos.length) {
+                const arr = this.current.DomainInfos.map(item => item.DomainId);
+                // this.current.VirtualHostList.forEach((item, index) => {
+                //     this.$set(arr, index, { value: item });
+                // });
                 this.form.VirtualHostList = arr;
             }
         },
         handleSubmit() {
             const params = JSON.parse(JSON.stringify(this.form));
-            // 给后端传值做特殊处理
-            params.VirtualHostList = this.form.VirtualHostList.map(item => item.value);
             return this.axios({
                 action: this.isEdit ? 'UpdateVirtualGateway' : 'CreateVirtualGateway',
                 data: {
                     ...params,
                 },
-            }).then(() => {
-                this.$notify.success(this.isEdit ? '虚拟网关更新成功' : '虚拟网关创建成功');
-                this.handleClose();
+            }).then(({ Result = '' }) => {
+                let action = Promise.resolve();
+                if (this.form.VirtualHostList && this.form.VirtualHostList.length) {
+                    action = this.axios({
+                        action: 'BindDomainInfo',
+                        data: {
+                            VirtualGwId: Result,
+                            DomainIds: this.form.VirtualHostList,
+                        },
+                    });
+                }
+                action.then(() => {
+                    this.axios({
+                        action: 'UpdateProjectBinding',
+                        data: {
+                            VirtualGwId: Result,
+                            ProjectIdList: [ 1 ],
+                        },
+                    }).then(() => {
+                        this.$notify.success(this.isEdit ? '虚拟网关更新成功' : '虚拟网关创建成功');
+                        this.handleClose();
+                    });
+                });
             });
         },
         handleClose() {
@@ -213,16 +215,20 @@ export default {
                 });
             });
         },
-        appendIconCallback(index) {
-            if (this.form.VirtualHostList.length < 2) {
-                this.$notify.warn('请输入至少一个域名');
-                return;
-            }
-            this.form.VirtualHostList.splice(index, 1);
+        loadDomain() {
+            return this.axios({
+                action: 'DescribeDomainList',
+                data: {
+                    VirtualGwId: '',
+                },
+            }).then(({ Result = [] }) => {
+                this.HostsList = Result;
+            });
         },
     },
     created() {
         this.getGwList();
+        this.loadDomain();
     },
 };
 </script>

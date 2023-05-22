@@ -35,14 +35,16 @@ export default {
                 { title: '服务管理', icon: 'mdi-server', to: { name: 'hango.server' } },
                 { title: '路由管理', icon: 'mdi-router', to: { name: 'hango.router' } },
                 // { title: 'API 管理', icon: 'mdi-api', to: { name: 'hango.api' } },
-                { title: '已发布服务管理', icon: 'mdi-server-network', to: { name: 'hango.published.server' } },
-                { title: '已发布路由管理', icon: 'mdi-router-network', to: { name: 'hango.published.router' } },
+                // { title: '已发布服务管理', icon: 'mdi-server-network', to: { name: 'hango.published.server' } },
+                // { title: '已发布路由管理', icon: 'mdi-router-network', to: { name: 'hango.published.router' } },
                 { title: '插件管理', icon: 'mdi-google-circles-extended', to: { name: 'hango.plugins' } },
                 // { title: 'About', icon: 'mdi-help-box' },
+                { title: '域名管理', icon: 'mdi-domain', to: { name: 'hango.domain' } },
             ],
             globalMenus: [
                 { title: '网关管理', icon: 'mdi-cog', to: { name: 'hango.manager' } },
                 { title: '虚拟网关管理', icon: 'mdi-message-text', to: { name: 'hango.virtualManager' } },
+                { title: 'SSL证书管理', icon: 'mdi-certificate', to: { name: 'hango.certify' } },
             ],
         };
     },

@@ -15,7 +15,6 @@
               @click="refreshTable()"
           ></ActionBtnComp>
           <ActionBtnComp
-            v-if="Total < 1"
             icon="mdi-plus"
             tooltip="创建虚拟网关"
             color="primary"
@@ -34,9 +33,9 @@
         <template #item.Type="{ item }">
           {{ item.Type | apiType }}
         </template>
-        <template #item.VirtualHostList="{ item }">
-            <v-chip small color="success" style="margin-right:4px" v-for="(host, index) in item.VirtualHostList" :key="index">
-                {{host}}
+        <template #item.DomainInfos="{ item }">
+            <v-chip close @click:close="unbindDomain(item, host)" style="margin-right:4px" small color="success" v-for="(host, index) in item.DomainInfos" :key="index">
+                {{host.Host}}
             </v-chip>
         </template>
         <template #item.actions="{ item }">
@@ -79,7 +78,7 @@ const TABLE_HEADERS = [
     { text: '所属网关', value: 'GwName' },
     { text: '监听协议', value: 'Protocol' },
     { text: '监听端口', value: 'Port' },
-    { text: '域名', value: 'custom', name: 'VirtualHostList' },
+    { text: '域名', value: 'custom', name: 'DomainInfos' },
     { text: '访问地址', value: 'Addr' },
     { text: '操作', value: 'custom', name: 'actions', width: 120 },
 ];
@@ -162,15 +161,35 @@ export default {
                 message: '警告，是否删除该虚拟网关?',
                 ok: () => {
                     return this.axios({
-                        action: 'DeleteVirtualGateway',
+                        action: 'UnBindProject',
                         params: {
                             ..._.pick(item, [ 'VirtualGwId' ]),
+                            ProjectId: '1',
                         },
                     }).then(() => {
-                        this.$notify.success('删除成功');
-                        this.refresh();
+                        this.axios({
+                            action: 'DeleteVirtualGateway',
+                            params: {
+                                ..._.pick(item, [ 'VirtualGwId' ]),
+                            },
+                        }).then(() => {
+                            this.$notify.success('删除成功');
+                            this.refresh();
+                        });
                     });
                 },
+            });
+        },
+        unbindDomain(item, host) {
+            console.log(item, host);
+            return this.axios({
+                action: 'UnbindDomainInfo',
+                data: {
+                    ..._.pick(item, [ 'VirtualGwId' ]),
+                    DomainIds: host.DomainId,
+                },
+            }).then(() => {
+                this.refresh();
             });
         },
     },

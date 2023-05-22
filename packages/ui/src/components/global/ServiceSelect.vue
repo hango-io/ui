@@ -14,6 +14,19 @@ export default {
             items: [],
         };
     },
+    props: {
+        VirtualGwId: {
+            type: [ String, Number ],
+            default: '',
+        },
+    },
+    watch: {
+        VirtualGwId(nV, oV) {
+            if (nV && nV !== oV) {
+                this.load();
+            }
+        },
+    },
     methods: {
         load() {
             return this.axios({
@@ -21,20 +34,23 @@ export default {
                 params: {
                     Limit: 1000,
                     Offset: 0,
+                    VirtualGwId: this.VirtualGwId,
                 },
-            }).then(({ ServiceInfoList = [] }) => {
-                this.items = ServiceInfoList.map(item => {
+            }).then(({ Result = [] }) => {
+                this.items = Result.map(item => {
                     return {
                         ...item,
-                        text: item.ServiceName,
-                        value: item.ServiceId,
+                        text: item.Name,
+                        value: item.Id,
                     };
                 });
             });
         },
     },
     created() {
-        this.load();
+        if (this.VirtualGwId !== '') {
+            this.load();
+        }
     },
 };
 </script>
