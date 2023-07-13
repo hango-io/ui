@@ -1,7 +1,7 @@
 <template>
     <g-modal-form title="添加插件" visible @close="handleClose" okText>
         <validation-provider v-if="!DomainId" v-slot="{ errors }" name="目标网关" rules="required">
-            <g-publish-route-select v-model="RouteId" label="目标已发布路由*" :error-messages="errors" @input="handleRouteChange" required></g-publish-route-select>
+            <g-route-select v-model="RouteId" label="目标路由*" :error-messages="errors" @input="handleRouteChange" required></g-route-select>
         </validation-provider>
 
         <template v-if="RouteId || DomainId">
@@ -73,8 +73,9 @@ export default {
             this.PluginList = [];
             return this.axios({
                 action: 'DescribePluginInfoList',
-                data: {
+                params: {
                     PluginScope: this.scope,
+                    VirtualGwId: this.GwId,
                 },
             }).then(({ PluginDtoList = [] } = {}) => {
                 this.PluginList = PluginDtoList;

@@ -43,13 +43,13 @@
             </validation-provider>
 
             <validation-provider
+                v-if="form.LoadBalancer.ConsistentHash.Type === 'HttpHeaderName'"
                 v-slot="{ errors }"
-                name="取值"
+                name="请求头名称"
                 rules="required"
             >
                 <v-text-field
                     v-model="form.LoadBalancer.ConsistentHash.HttpHeaderName"
-                    disabled
                     placeholder="请输入请求头"
                     label="取值"
                     :error-messages="errors"
@@ -267,6 +267,7 @@ export default {
                 data.LoadBalancer.Simple = '';
             } else {
                 data.LoadBalancer.Type = 'Simple';
+                delete data.LoadBalancer.ConsistentHash.HttpHeaderName;
             }
             // 给后端特殊处理
             if (data.LoadBalancer && data.LoadBalancer.ConsistentHash && typeof data.LoadBalancer.ConsistentHash.HttpHeaderName === 'string') {

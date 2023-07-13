@@ -1,38 +1,22 @@
+const url = '/v1/service';
+const Version = '';
 export default {
     // 服务管理
     DescribeServiceList: {
-        url: '/gdashboard',
+        url,
         method: 'get',
         params: {
-            Action: 'DescribeServiceList',
-            Version: '2018-08-09',
+            Action: 'DescribeServicePage',
+            Version,
         },
     },
     // 路由管理
-    DescribeRouteRuleList: {
-        url: '/gdashboard',
+    DescribeRouteList: {
+        url: '/v1/route',
         method: 'get',
         params: {
-            Action: 'DescribeRouteRuleList',
-            Version: '2019-09-01',
-        },
-    },
-    // 已发布服务管理
-    DescribeEnvoyServiceProxyList: {
-        url: '/gdashboard',
-        method: 'get',
-        params: {
-            Action: 'DescribeServiceProxyList',
-            Version: '2019-09-01',
-        },
-    },
-    // 已发布路由管理
-    DescribePublishRouteRuleList: {
-        url: '/gdashboard',
-        method: 'get',
-        params: {
-            Action: 'DescribePublishRouteRuleList',
-            Version: '2019-09-01',
+            Action: 'DescribeRouteList',
+            Version,
         },
     },
     DescribeBindingPlugins: {
@@ -60,27 +44,27 @@ export default {
         },
     },
     CreateService: {
-        url: '/gdashboard',
+        url: '/v1/service',
         method: 'post',
         params: {
             Action: 'CreateService',
-            Version: '2018-08-09',
+            Version: '',
         },
     },
     DeleteService: {
-        url: '/gdashboard',
+        url: '/v1/service',
         method: 'get',
         params: {
             Action: 'DeleteService',
-            Version: '2018-08-09',
+            Version: '',
         },
     },
     UpdateService: {
-        url: '/gdashboard',
+        url: '/v1/service',
         method: 'post',
         params: {
             Action: 'UpdateService',
-            Version: '2018-08-09',
+            Version: '',
         },
     },
     DescribeGatewayList: {
@@ -100,35 +84,27 @@ export default {
         },
     },
     DescribeServiceListByGw: {
-        url: '/gdashboard',
+        url,
         method: 'get',
         params: {
             Action: 'DescribeServiceListByGw',
             Version: '2019-09-01',
         },
     },
-    PublishService: {
-        url: '/gdashboard',
-        method: 'post',
-        params: {
-            Action: 'PublishService',
-            Version: '2019-09-01',
-        },
-    },
     CreateRouteRule: {
-        url: '/gdashboard',
+        url: '/v1/route',
         method: 'post',
         params: {
-            Action: 'CreateRouteRule',
-            Version: '2019-09-01',
+            Action: 'CreateRoute',
+            Version: '',
         },
     },
     UpdateRouteRule: {
-        url: '/gdashboard',
+        url: '/v1/route',
         method: 'post',
         params: {
-            Action: 'UpdateRouteRule',
-            Version: '2019-09-01',
+            Action: 'UpdateRoute',
+            Version: '',
         },
     },
     DescribeGatewayForPublishedRule: {
@@ -147,20 +123,12 @@ export default {
             Version: '2019-09-01',
         },
     },
-    PublishRouteRule: {
-        url: '/gdashboard',
+    DeleteRoute: {
+        url: '/v1/route',
         method: 'post',
         params: {
-            Action: 'PublishRouteRule',
-            Version: '2019-09-01',
-        },
-    },
-    DeleteRouteRule: {
-        url: '/gdashboard',
-        method: 'get',
-        params: {
-            Action: 'DeleteRouteRule',
-            Version: '2019-09-01',
+            Action: 'DeleteRoute',
+            Version,
         },
     },
     DeleteServiceProxy: {
@@ -259,27 +227,6 @@ export default {
             Version: '2018-08-09',
         },
     },
-    DescribePublishRouteRuleById: {
-        url: '/gdashboard',
-        params: {
-            Action: 'DescribePublishRouteRuleById',
-            Version: '2019-09-01',
-        },
-    },
-    DescribePublishedRouteRule: {
-        url: '/gdashboard',
-        params: {
-            Action: 'DescribePublishRouteRuleById',
-            Version: '2019-09-01',
-        },
-    },
-    DescribePublishRouteRuleByRouteRuleId: {
-        url: '/gdashboard',
-        params: {
-            Action: 'DescribePublishRouteRuleByRouteRuleId',
-            Version: '2019-09-01',
-        },
-    },
     UpdateRouteRuleEnableState: {
         url: '/gdashboard',
         params: {
@@ -316,18 +263,18 @@ export default {
         },
     },
     DescribeHealthCheckRule: {
-        url: '/gdashboard',
+        url: '/v1/service',
         params: {
             Action: 'DescribeHealthCheckRule',
-            Version: '2019-09-01',
+            Version,
         },
     },
     UpdateHealthCheckRule: {
         method: 'post',
-        url: '/gdashboard',
+        url: '/v1/service',
         params: {
             Action: 'UpdateHealthCheckRule',
-            Version: '2019-09-01',
+            Version: '',
         },
     },
     DescribePublishedDubbo: {
@@ -377,14 +324,22 @@ export default {
         },
     },
     DescribeVirtualGateway: {
-        url: '/gdashboard',
+        url: '/v1/virtualGateway',
         method: 'post',
         params: {
-            Action: 'DescribeVirtualGateway',
+            Action: 'DescribeVirtualGatewayPage',
             Version: '2022-10-30',
         },
     },
-    // 虚拟网关所属网关列表
+    DescribeVirtualGatewayList: {
+        url: '/v1/virtualGateway',
+        method: 'post',
+        params: {
+            Action: 'DescribeVirtualGatewayList',
+            Version: '2022-10-30',
+        },
+    },
+    // 物理网关列表
     DescribeAllGateway: {
         url: '/gdashboard',
         method: 'get',
@@ -394,7 +349,7 @@ export default {
         },
     },
     CreateVirtualGateway: {
-        url: '/gdashboard',
+        url: '/v1/virtualGateway',
         method: 'post',
         params: {
             Action: 'CreateVirtualGateway',
@@ -402,7 +357,7 @@ export default {
         },
     },
     UpdateVirtualGateway: {
-        url: '/gdashboard',
+        url: '/v1/virtualGateway',
         method: 'post',
         params: {
             Action: 'UpdateVirtualGateway',
@@ -411,20 +366,20 @@ export default {
     },
     // 删除虚拟网关
     DeleteVirtualGateway: {
-        url: '/gdashboard',
+        url: '/v1/virtualGateway',
         method: 'get',
         params: {
-            Action: 'DeleteVirtualGatewayFromHango',
+            Action: 'DeleteVirtualGateway',
             Version: '2022-10-30',
         },
     },
     // 获取虚拟网关详情
     DescribeVirtualGatewayById: {
-        url: '/gdashboard',
+        url: '/v1/virtualGateway',
         method: 'get',
         params: {
-            Action: 'DescribeVirtualGatewayById',
-            Version: '2022-10-30',
+            Action: 'DescribeVirtualGateway',
+            Version: '',
         },
     },
     // 查询K8s Gateway
@@ -477,6 +432,133 @@ export default {
         method: 'get',
         params: {
             Action: 'RefreshKubernetesGateway',
+            Version: '',
+        },
+    },
+    // 服务详情
+    DescribeService: {
+        url,
+        method: 'get',
+        params: {
+            Action: 'DescribeService',
+            Version,
+        },
+    },
+    DescribeDomainPage: { // 查询虚拟网关下绑定的域名
+        url: '/v1/domain',
+        method: 'post',
+        params: {
+            Action: 'DescribeDomainPage',
+            Version: '',
+        },
+    },
+    DescribeDomainList: { // 查询域名列表
+        url: '/v1/domain',
+        method: 'post',
+        params: {
+            Action: 'DescribeDomainList',
+            Version: '',
+        },
+    },
+    // 通过证书Id或项目Id查询证书详情
+    DescribeCertificateInfo: {
+        url: '/gdashboard',
+        method: 'get',
+        params: {
+            Action: 'DescribeCertificateInfo',
+            Version: '2022-10-30',
+        },
+    },
+    // 证书列表
+    DescribeCertificateList: {
+        url: '/gdashboard',
+        method: 'get',
+        params: {
+            Action: 'DescribeCertificateList',
+            Version: '2022-10-30',
+        },
+    },
+    CreateDomain: { // 创建域名
+        url: '/v1/domain',
+        method: 'post',
+        params: {
+            Action: 'CreateDomain',
+        },
+    },
+    UpdateDomain: { // 修改域名
+        url: '/v1/domain',
+        method: 'post',
+        params: {
+            Action: 'UpdateDomain',
+        },
+    },
+    DeleteDomain: { // 删除域名
+        url: '/v1/domain',
+        method: 'get',
+        params: {
+            Action: 'DeleteDomain',
+        },
+    },
+    CreateCertificate: {
+        // 创建证书
+        url: '/gdashboard',
+        method: 'post',
+        params: {
+            Action: 'CreateCertificate',
+            Version: '2022-10-30',
+        },
+    },
+    DeleteCertificate: {
+        // 删除证书
+        url: '/gdashboard',
+        method: 'get',
+        params: {
+            Action: 'DeleteCertificate',
+            Version: '2022-10-30',
+        },
+    },
+    // 路由详情
+    DescribeRoute: {
+        url: '/v1/route',
+        method: 'get',
+        params: {
+            Action: 'DescribeRoute',
+            Version,
+        },
+    },
+    // 绑定域名
+    BindDomainInfo: {
+        url: '/v1/virtualGateway',
+        method: 'post',
+        params: {
+            Action: 'BindDomainInfo',
+            Version,
+        },
+    },
+    // 绑定项目
+    UpdateProjectBinding: {
+        url: '/v1/virtualGateway',
+        method: 'post',
+        params: {
+            Action: 'UpdateProjectBinding',
+            Version: '2022-10-30',
+        },
+    },
+    // 解除绑定项目
+    UnBindProject: {
+        url: '/v1/virtualGateway',
+        method: 'get',
+        params: {
+            Action: 'UnBindProject',
+            Version: '2022-10-30',
+        },
+    },
+    // 解除绑定域名
+    UnbindDomainInfo: {
+        url: '/v1/virtualGateway',
+        method: 'post',
+        params: {
+            Action: 'UnbindDomainInfo',
             Version: '',
         },
     },

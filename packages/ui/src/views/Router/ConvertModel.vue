@@ -219,6 +219,7 @@ export default {
     },
     computed: {
         DubboMetaMethods() {
+            console.log(this.DubboMetas);
             return (this.DubboMetas || []).map(item => {
                 return {
                     label: `${item.Method}(${item.RequestParams ? item.RequestParams.length : 0})`,
@@ -249,11 +250,11 @@ export default {
             }
         },
         loadServiceProxyInfo() {
-            const { VirtualGwId, ServiceId } = this.current;
-            if (!ServiceId) return;
+            const { VirtualGwId, serviceIds } = this.current;
+            if (!serviceIds) return;
             return this.axios({
-                action: 'DescribeServiceProxy',
-                params: { ServiceId, VirtualGwId },
+                action: 'DescribeService',
+                params: { Id: serviceIds[0], VirtualGwId },
             }).then(({ Result = {} }) => {
                 this.serviceProxyInfo = Result || {};
             });

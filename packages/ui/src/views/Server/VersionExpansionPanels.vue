@@ -45,7 +45,7 @@
                                 rules="required"
                             >
                                 <v-text-field
-                                    v-model="item.Labels[0].Key"
+                                    v-model="item.Labels.Key"
                                     label="Key*"
                                     :error-messages="errors"
                                     required
@@ -57,7 +57,7 @@
                                 rules="required"
                             >
                                 <v-text-field
-                                    v-model="item.Labels[0].Value"
+                                    v-model="item.Labels.Value"
                                     label="Value*"
                                     :error-messages="errors"
                                     required
@@ -106,8 +106,8 @@ import MoreConfig from './MoreConfig';
 const TEMPLATE_MODAL = {
     Name: '',
     Labels: [{
-        key: '',
-        value: '',
+        // key: '',
+        // value: '',
     }],
     TrafficPolicy: {
 
@@ -156,6 +156,7 @@ export default {
     },
     watch: {
         panel(nV, oV) {
+            console.log(nV);
             if (nV !== oV) {
                 this.panelList = nV || [];
             }
