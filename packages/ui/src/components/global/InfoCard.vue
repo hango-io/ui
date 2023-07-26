@@ -3,10 +3,13 @@
         class="mx-auto mb-4"
     >
         <v-card-title v-if="!!title" :class="$style.tit">
-            {{ title }}
+            <span>
+                <v-icon  @click="show = !show" color="success" size="20">{{ show ? 'mdi-chevron-down' : 'mdi-chevron-up' }}</v-icon>
+                {{ title }}
+            </span>
             <slot name="extra"></slot>
         </v-card-title>
-        <slot>
+        <slot v-if="show">
             <v-row v-for="(row, rIndex) in _list" :key="rIndex">
                 <v-col v-for="(col, cIndex) in row" :key="cIndex"
                     cols="12"
@@ -41,6 +44,11 @@ export default {
             type: Array,
             default: () => [],
         },
+    },
+    data() {
+        return {
+            show: true,
+        };
     },
     computed: {
         _list() {

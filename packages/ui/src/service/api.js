@@ -562,4 +562,13 @@ export default {
             Version: '',
         },
     },
+    // 查看ingress
+    DescribeIngress: {
+        url: '/v1/virtualGateway',
+        method: 'get',
+        params: {
+            Action: 'DescribeIngress',
+            Version: '',
+        },
+    },
 };

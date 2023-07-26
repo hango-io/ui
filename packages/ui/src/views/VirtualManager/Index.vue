@@ -107,12 +107,12 @@ export default {
                     return '负载均衡';
                 case 'KubernetesGateway':
                     return 'Kubernetes Gateway';
-                case 'KubernetesIngress':
-                    return 'Kubernetes Ingress';
                 case 'ServerlessGateway':
                     return 'Serverless网关';
                 case 'NetworkProxy':
                     return '通用网关';
+                case 'Ingress':
+                    return 'Ingress网关';
                 default:
                     return '-';
             }
@@ -181,7 +181,6 @@ export default {
             });
         },
         unbindDomain(item, host) {
-            console.log(item, host);
             return this.axios({
                 action: 'UnbindDomainInfo',
                 data: {

@@ -75,7 +75,7 @@
                                             color="primary"
                                             label
                                             close
-                                            @click:close="deletePlugin(value)"
+                                            @click:close="deletePlugin(value, 'gatewayList')"
                                             @click="openPlugin(value, false)"
                                             v-for="value in item.pluginBindingDtos"
                                             :key="value.PluginBindingInfoId"
@@ -160,6 +160,43 @@
                     </g-info-card>
                 </v-col>
             </v-row>
+            <template v-if="info.Type =='Ingress'">
+                <v-row id="Ingress">
+                    <!-- Ingress -->
+                    <v-col>
+                        <g-info-card title="Ingress">
+                            <template #extra>
+                                <div :class="$style.color" @click="yamlVisible = true">查看yaml</div>
+                            </template>
+                            <g-table-list ref="ingressList" :headers="ingressheaders" :load="getIngressFromApi" hide-default-footer>
+                                <template #header>
+                                    <div class="ml-4"></div>
+                                </template>
+                                <template #item.Path="{ item }">
+                                    <v-chip small style="margin-right: 4px;" color="success">
+                                        {{item.PathType}}
+                                    </v-chip>
+                                    <v-chip small>{{ item.Path }}</v-chip>
+                                </template>
+                                <template #item.Backend="{ item }">
+                                    {{item.ServiceName}}:{{item.ServicePort}}
+                                </template>
+                                <template #item.filter="{ item }">
+                                    <v-chip
+                                        v-for="(filter, index) in item.Plugins"
+                                        :key="index"
+                                        small
+                                        close
+                                        @click:close="deletePlugin(filter, 'ingressList')"
+                                        style="margin-right: 4px;"
+                                    >{{filter.PluginName}}</v-chip>
+                                    <v-icon color="secondary" @click="openPlugin(item, true)">mdi-plus</v-icon>
+                                </template>
+                            </g-table-list>
+                        </g-info-card>
+                    </v-col>
+                </v-row>
+            </template>
         </div>
         <g-modal-form :visible="yamlVisible" title="Yaml" :submit="() => yamlVisible=false" @close="yamlVisible=false">
             <codemirror ref="cmLint" v-model="yamlCode" :options="cmOptions"></codemirror>
@@ -195,7 +232,7 @@ const MENU_LIST = [
         text: '基础信息',
         icon: 'mdi-card-bulleted',
         color: '#00a3a3',
-        type: [ 'ApiGateway', 'LoadBalance', 'KubernetesGateway', 'KubernetesIngress', 'ServerlessGateway', 'NetworkProxy' ],
+        type: [ 'ApiGateway', 'LoadBalance', 'KubernetesGateway', 'Ingress', 'ServerlessGateway', 'NetworkProxy' ],
     },
     { id: 'Gateway', text: 'Gateway', icon: 'mdi-comment-edit', color: '#00a3a3', type: [ 'KubernetesGateway' ] },
     {
@@ -210,8 +247,21 @@ const MENU_LIST = [
         text: '插件配置',
         icon: 'mdi-brightness-5',
         color: '#00a3a3',
-        type: [ 'ApiGateway', 'LoadBalance', 'KubernetesGateway', 'KubernetesIngress', 'ServerlessGateway', 'NetworkProxy' ],
+        type: [ 'ApiGateway', 'LoadBalance', 'KubernetesGateway', 'Ingress', 'ServerlessGateway', 'NetworkProxy' ],
     },
+    {
+        id: 'Ingress',
+        text: 'Ingress',
+        icon: 'mdi-brightness-5',
+        color: '#00a3a3',
+        type: [ 'Ingress' ],
+    },
+];
+const INGRESS_HEADERS = [
+    { text: 'Host', value: 'Host' },
+    { text: 'Path', value: 'custom', name: 'Path' },
+    { text: 'Backend', value: 'custom', name: 'Backend' },
+    { text: 'filter', value: 'custom', name: 'filter' },
 ];
 export default {
     components: { pluginModal, BindModalComp, codemirror },
@@ -246,6 +296,13 @@ export default {
                 };
             }),
             pluginheaders: PLUGIN_HEADERS.map(item => {
+                return {
+                    ...item,
+                    align: 'start',
+                    sortable: false,
+                };
+            }),
+            ingressheaders: INGRESS_HEADERS.map(item => {
                 return {
                     ...item,
                     align: 'start',
@@ -356,6 +413,7 @@ export default {
                 },
             }).then(({ Result = [] }) => {
                 this.info = Result;
+                this.info.Type === 'KubernetesGateway' && this.getHttpFromApi();
             });
         },
         getDataFromApi(params) {
@@ -390,6 +448,18 @@ export default {
                 },
             }).then(({ Result = [] }) => {
                 return { list: Result, total: Result.length };
+            });
+        },
+        getIngressFromApi(params) {
+            return this.axios({
+                action: 'DescribeIngress',
+                params: {
+                    ...params,
+                    VirtualGatewayId: this.VirtualGwId,
+                },
+            }).then(({ Result = {} }) => {
+                this.yamlCode = Result.Content;
+                return { list: Result.Rule, total: Result.Rule.length };
             });
         },
         openYamlGateway(params) {
@@ -442,12 +512,13 @@ export default {
         handlePluginClose() {
             this.pluginVisible = false;
             this.editPluginVisible = false;
-            this.$refs.gatewayList.refresh();
+            this.$refs.gatewayList && this.$refs.gatewayList.refresh();
+            this.$refs.ingressList && this.$refs.ingressList.refresh();
         },
         linkTo(item) {
             document.getElementById(item.id).scrollIntoView();
         },
-        deletePlugin(item) {
+        deletePlugin(item, list) {
             this.$confirm({
                 title: '删除确认提示',
                 message: '警告，是否删除该插件?',
@@ -461,7 +532,7 @@ export default {
                         },
                     }).then(() => {
                         this.$notify.success('删除成功');
-                        this.$refs.gatewayList.refresh();
+                        this.$refs[list].refresh();
                     });
                 },
             });
@@ -472,7 +543,6 @@ export default {
     },
     async created() {
         await this.load();
-        await this.getHttpFromApi();
     },
 };
 </script>

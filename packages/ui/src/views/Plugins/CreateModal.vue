@@ -95,8 +95,8 @@ export default {
     },
     created() {
         if (this.DomainId) {
-            this.loadPluginList();
             this.GwId = this.VirtualGwId;
+            this.loadPluginList();
         }
     },
 };
