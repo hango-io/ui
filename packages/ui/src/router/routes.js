@@ -4,21 +4,6 @@ const routes = [
         path: '/',
         redirect: { name: 'hango.server' },
     },
-    // {
-    //     path: '/dashboard',
-    //     name: 'hango.dashboard',
-    //     // component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard/Index.vue'),
-    //     // meta: {
-    //     //     breadcrumbs: [
-    //     //         {
-    //     //             text: 'Dashboard',
-    //     //             disabled: true,
-    //     //             to: { name: 'hango.dashboard' },
-    //     //         },
-    //     //     ],
-    //     // },
-    //     redirect: { name: 'hango.server' },
-    // },
     {
         path: '/server',
         name: 'hango.server',
@@ -139,6 +124,34 @@ const routes = [
                     text: '虚拟网关管理',
                     disabled: true,
                     to: { name: 'hango.virtualManager' },
+                },
+            ],
+        },
+    },
+    {
+        path: '/pluginMarket',
+        name: 'hango.pluginMarket',
+        component: () => import(/* webpackChunkName: "manager" */ '../views/pluginMarket/Index.vue'),
+        meta: {
+            breadcrumbs: [
+                {
+                    text: '插件市场',
+                    disabled: true,
+                    to: { name: 'hango.pluginMarket' },
+                },
+            ],
+        },
+    },
+    {
+        path: '/pluginMarket/info',
+        name: 'hango.pluginMarket.info',
+        component: () => import(/* webpackChunkName: "manager" */ '../views/pluginMarket/Info.vue'),
+        meta: {
+            breadcrumbs: [
+                {
+                    text: '插件市场详情',
+                    disabled: true,
+                    to: { name: 'hango.pluginMarket.info' },
                 },
             ],
         },
