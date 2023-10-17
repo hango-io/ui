@@ -12,6 +12,8 @@
                             <v-item>
                                 <v-hover v-slot="{ hover }">
                                     <v-card height="150" style="overflow: auto;">
+                                        <v-chip small v-if="item.PluginSource == 'system'" style="float: right" text-color="white" class="ma-2" color="success" label>官方</v-chip>
+                                        <v-chip small v-else style="float: right" text-color="white" class="ma-2" color="orange" label>市场</v-chip>
                                         <div :class="$style.cardItem">
                                             <h3 class="title font-weight primary--text mb-2">
                                                 <span>{{ item.PluginName }}</span>

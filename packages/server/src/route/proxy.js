@@ -17,6 +17,8 @@ module.exports = function(app) {
     proxyOptions.onProxyReq = (proxyReq, req, res) => {
         proxyReq.setHeader('x-auth-projectId', '1');
         proxyReq.setHeader('x-auth-tenantId', '1');
+        // proxyReq.setHeader('x-auth-accountId', 'admin');
+        // proxyReq.setHeader('x-auth-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBY2NvdW50SWQiOiJhZG1pbiIsIlBlcm1pc3Npb25UeXBlIjoiZnVuY3Rpb24iLCJJZCI6IjEiLCJSRUdJU1RSQVRJT04iOiLns7vnu5_lr7zlhaUiLCJleHAiOjE2OTcyMjA2MzQsImlhdCI6MTY5NzE2MzAzNCwiRW52SW5mbyI6ImNvbnNvbGUudGVzdDI1MS1xaW5nemhvdS5jb20ifQ.RGfX-fw32kjEXs4ppde6GXVbJvE935bPWzobUqboUPQ'); // add new header to response
     };
 
     proxyOptions.onError = (e, req, res) => {

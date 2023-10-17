@@ -89,11 +89,12 @@ export default {
             });
         },
         loadPluginInfo() {
+            console.log(this.current);
             return this.axios({
                 action: 'DescribePluginInfo',
                 params: {
                     VirtualGwId: this.GwId,
-                    PluginType: this.PluginType,
+                    PluginType: this.PluginType || this.PluginBindingInfo.PluginType,
                 },
             }).then(({ PluginInfo = {} } = {}) => {
                 this.PluginInfo = PluginInfo;
@@ -137,10 +138,10 @@ export default {
         },
     },
     async created() {
-        await this.loadPluginInfo();
         if (this.isEdit) {
             await this.loadBindingPluginInfo();
         }
+        await this.loadPluginInfo();
     },
 };
 </script>

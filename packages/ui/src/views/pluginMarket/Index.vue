@@ -13,14 +13,14 @@
                         icon="mdi-plus"
                         tooltip="导入插件"
                         color="primary"
-                        @click="handleCreate()"
+                        @click="$router.push({ name: 'hango.pluginMarket.upload' })"
                     ></ActionBtnComp>
                 </template>
                 <template #item.PluginType="{ item }">
-                    <g-link :to="{ name: 'hango.server.info', query: { Id: item.Id } }">{{ item.PluginType }}</g-link>
+                    <g-link :to="{ name: 'hango.pluginMarket.info', query: { Id: item.Id } }">{{ item.PluginType }}</g-link>
                 </template>
                 <template #item.PluginCategory="{ item }">
-                    {{ item.PluginCategory | type }}
+                    {{ TYPE_TEXT[item.PluginCategory] }}
                 </template>
                 <template #item.PluginScope="{ item }">
                     <v-chip
@@ -41,6 +41,34 @@
                         {{ item.PluginStatus === 'online' ? '已上架' : '未上架' }}
                     </v-chip>
                 </template>
+                <template template #item.actions="{ item }">
+                    <ActionBtnComp
+                        color="primary"
+                        icon="mdi-pencil"
+                        tooltip="修改"
+                        @click="$router.push({ name: 'hango.pluginMarket.upload', query: {Id: item.Id} })"
+                    ></ActionBtnComp>
+                    <ActionBtnComp
+                        color="primary"
+                        v-if="item.PluginStatus === 'offline'"
+                        icon="mdi-arrow-expand-up"
+                        tooltip="上架"
+                        @click="handleUpdateStatus(item)"
+                    ></ActionBtnComp>
+                    <ActionBtnComp
+                        color="primary"
+                        v-else
+                        icon="mdi-arrow-expand-down"
+                        tooltip="下架"
+                        @click="handleUpdateStatus(item)"
+                    ></ActionBtnComp>
+                    <ActionBtnComp
+                        color="error"
+                        icon="mdi-delete"
+                        tooltip="删除"
+                        @click="handleDelete(item)"
+                    ></ActionBtnComp>
+                </template>
             </g-table-list>
         </div>
     </v-container>
@@ -48,14 +76,15 @@
 <script>
 import _ from 'lodash';
 import ActionBtnComp from '@/components/ActionBtn';
+import { TYPE_TEXT, PluginScope } from './config.js';
 const TABLE_HEADERS = [
     { text: '插件名称', value: 'custom', name: 'PluginType' },
-    { text: '中文名称', name: 'PluginName' },
+    { text: '中文名称', value: 'PluginName' },
     { text: '类型', value: 'custom', name: 'PluginCategory' },
     { text: '作用域', value: 'custom', name: 'PluginScope' },
     { text: '状态', value: 'custom', name: 'PluginStatus' },
     { text: '更新时间', value: 'UpdateTime' },
-    { text: '操作', value: 'custom', name: 'actions', width: 120 },
+    { text: '操作', value: 'custom', name: 'actions', width: 150 },
 ];
 export default {
     components: { ActionBtnComp },
@@ -68,37 +97,16 @@ export default {
                     sortable: false,
                 };
             }),
+            TYPE_TEXT,
         };
     },
     filters: {
-        type(val) {
-            switch (val) {
-                case 'security': return '安全防护';
-                case 'auth': return '认证鉴权';
-                case 'trafficPolicy': return '流量管理';
-                case 'dataFormat': return '数据转换';
-                default:
-                    return '-';
-            }
-        },
-        PluginScope(val) {
-            switch (val) {
-                case 'routeRule':
-                    return '路由';
-                case 'service':
-                    return '服务';
-                case 'global':
-                    return '项目';
-                case 'host':
-                    return 'Host';
-                case 'gateway':
-                    return '网关';
-                default:
-            }
-            return '-';
-        },
+        PluginScope,
     },
     methods: {
+        refresh() {
+            this.$refs.tableRef && this.$refs.tableRef.refresh();
+        },
         loadList(params) {
             return this.axios({
                 action: 'DescribeCustomPluginList',
@@ -109,7 +117,48 @@ export default {
                 return { list: Result, total: TotalCount };
             });
         },
-        handleCreate() {},
+        handleEdit(item) {
+            this.current = item;
+            this.editVisible = true;
+        },
+        handleDelete(item) {
+            const Id = item.Id;
+            this.$confirm({
+                title: '删除确认提示',
+                message: '警告，是否删除该插件?',
+                ok: () => {
+                    return this.axios({
+                        action: 'DeletePlugin',
+                        params: {
+                            Id,
+                        },
+                    }).then(() => {
+                        this.$notify.success('删除成功');
+                        this.refresh();
+                    });
+                },
+            });
+        },
+        handleUpdateStatus(item) {
+            const Id = item.Id;
+            const text = item.PluginStatus === 'offline' ? '上架' : '下架';
+            this.$confirm({
+                title: `${text}确认提示`,
+                message: `警告，是否${text}该插件?`,
+                ok: () => {
+                    return this.axios({
+                        action: 'UpdatePluginStatus',
+                        data: {
+                            Id,
+                            PluginStatus: item.PluginStatus === 'online' ? 'offline' : 'online',
+                        },
+                    }).then(() => {
+                        this.$notify.success(`${text}成功`);
+                        this.refresh();
+                    });
+                },
+            });
+        },
     },
 };
 </script>

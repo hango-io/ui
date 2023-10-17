@@ -1,0 +1,99 @@
+{
+    "version": "版本",
+    "layouts": [
+        {
+            "key": "header",
+            "alias": "header名称",
+            "type": "input",
+            "rules": [
+                "MaxLength(200)",
+                "Required"
+            ]
+        },
+        {
+            "key": "day",
+            "alias": "每天请求数",
+            "type": "number",
+            "rules": [
+                "Number",
+                "MinNumber(0)"
+            ]
+        },
+        {
+            "key": "breakType",
+            "alias": "熔断触发条件",
+            "type": "checkbox",
+            "options": [
+                {
+                    "text": "错误率触发熔断",
+                    "value": "ErrorPercentCircuitbreaker"
+                },
+                {
+                    "text": "RT触发熔断",
+                    "value": "RTCircuitbreaker"
+                }
+            ],
+            "rules": [
+                "Required"
+            ],
+            "default": []
+        },
+        {
+            "key": "IsSafe",
+            "alias": "线程独立",
+            "type": "switch",
+            "help": "默认使用锁机制保证安全"
+        },
+        {
+            "key": "match_type",
+            "alias": "匹配方式",
+            "type": "select",
+            "default": "exact_match",
+            "options": [
+                {
+                    "text": "精确匹配",
+                    "value": "exact_match"
+                },
+                {
+                    "text": "正则表达式",
+                    "value": "safe_regex_match"
+                }
+            ]
+        },
+        {
+            "key": "method",
+            "alias": "请求方法",
+            "type": "multi_select",
+            "default": [
+                "GET"
+            ],
+            "options": [
+                {
+                    "text": "GET",
+                    "value": "GET"
+                },
+                {
+                    "text": "POST",
+                    "value": "POST"
+                },
+                {
+                    "text": "PUT",
+                    "value": "PUT"
+                },
+                {
+                    "text": "DELETE",
+                    "value": "DELETE"
+                }
+            ]
+        },
+        {
+            "key": "value",
+            "type": "multi_input",
+            "alias": "取值",
+            "rules": [
+                "MaxLength(200)",
+                "Required"
+            ]
+        }
+    ]
+}

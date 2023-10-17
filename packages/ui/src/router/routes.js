@@ -157,6 +157,20 @@ const routes = [
         },
     },
     {
+        path: '/pluginMarket/uploadPlugin',
+        name: 'hango.pluginMarket.upload',
+        component: () => import(/* webpackChunkName: "manager" */ '../views/pluginMarket/uploadPlugin.vue'),
+        meta: {
+            breadcrumbs: [
+                {
+                    text: '导入插件',
+                    disabled: true,
+                    to: { name: 'hango.pluginMarket.upload' },
+                },
+            ],
+        },
+    },
+    {
         path: '/virtualManager/info',
         name: 'hango.virtualManager.info',
         component: () => import(/* webpackChunkName: "router" */ '../views/VirtualManager/Info.vue'),

@@ -74,10 +74,10 @@ import ActionBtnComp from '@/components/ActionBtn';
 import CreateModalComp from './CreateModal';
 const TABLE_HEADERS = [
     { text: '虚拟网关名称', value: 'custom', name: 'Name' },
-    { text: '类型', value: 'custom', name: 'Type' },
-    { text: '所属网关', value: 'GwName' },
-    { text: '监听协议', value: 'Protocol' },
-    { text: '监听端口', value: 'Port' },
+    { text: '类型', value: 'custom', name: 'Type', width: 100 },
+    { text: '所属网关', value: 'GwName', width: 150 },
+    { text: '监听协议', value: 'Protocol', width: 80 },
+    { text: '监听端口', value: 'Port', width: 80 },
     { text: '域名', value: 'custom', name: 'DomainInfos' },
     { text: '访问地址', value: 'Addr' },
     { text: '操作', value: 'custom', name: 'actions', width: 120 },
