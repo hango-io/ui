@@ -61,16 +61,33 @@
                 v-slot="{ errors }"
                 name="作用域"
                 rules="required">
-                <v-combobox
-                    label="作用域*"
-                    multiple
+                <v-select
                     v-model="form.PluginScope"
+                    label="作用域*"
                     :items="[{text: '路由', value: 'routeRule'}]"
+                    attach
+                    chips
+                    multiple
                     required
-                ></v-combobox>
+                ></v-select>
+            </validation-provider>
+             <validation-provider
+                v-slot="{ errors }"
+                name="代码文件"
+                rules="required">
+                <v-radio-group row v-model="form.SourceType">
+                    <v-radio
+                        label="本地文件"
+                        value="file"
+                    ></v-radio>
+                    <v-radio
+                        label="镜像文件"
+                        value="oci"
+                    ></v-radio>
+                </v-radio-group>
             </validation-provider>
             <validation-provider>
-                <v-flex>
+                <v-flex v-if="form.SourceType === 'file'">
                     <v-btn @click="upload">upload file</v-btn>
                     <input type="file" id="upload" ref="upload" @change="changeFile" accept=".lua">
                     <span style="margin-left:20px">{{fileName}}</span>
@@ -81,6 +98,13 @@
                         mdi-arrow-down-bold-box-outline
                     </v-icon>
                 </v-flex>
+                <v-text-field
+                    v-else
+                    v-model="form.SourceUrl"
+                    label="镜像OCI地址"
+                    :error-messages="errors"
+                    required
+                ></v-text-field>
             </validation-provider>
         </v-card>
         <v-card class="mx-auto mb-4" style="padding:20px; height: 750px">
@@ -119,6 +143,13 @@
                 >确定</v-btn>
             </v-col>
         </v-row>
+        <v-alert
+            v-if="errMsg"
+            color="red"
+            text
+            type="error"
+            transition="scale-transition"
+        >{{errMsg}}</v-alert>
 </v-container>
 </template>
 <script>
@@ -141,7 +172,7 @@ export default {
                 Description: '',
                 PluginCategory: 'security',
                 Language: 'lua',
-                PluginScope: [{ text: '路由', value: 'routeRule' }],
+                PluginScope: [ 'routeRule' ],
                 SourceContent: '',
                 SourceUrl: '',
                 SecretName: '',
@@ -175,6 +206,7 @@ export default {
             resultValue: '',
             fileName: '',
             file: [],
+            errMsg: '',
         };
     },
     computed: {
@@ -214,7 +246,6 @@ export default {
                 this.form = Result;
                 this.schemaContent = Result.SchemaContent || '';
                 this.fileName = `${this.form.PluginType}.lua`;
-                this.form.PluginScope = [{ text: '路由', value: 'routeRule' }];
                 this.form.SourceContent = new Blob([ Result.SourceContent ]);
             });
         },
@@ -228,7 +259,7 @@ export default {
         },
         handleClick() {
             this.form.SchemaContent = this.schemaContent;
-            this.form.PluginScope = this.form.PluginScope.map(item => item.value);
+            console.log(this.form.PluginScope);
             Object.keys(this.form).forEach(key => {
                 if (!this.form[key]) {
                     delete this.form[key];
@@ -237,17 +268,17 @@ export default {
             const formData = this.formatterData({ ...this.form, Id: this.Id, Author: 'admin' });
             const xhr = new XMLHttpRequest();
             xhr.open('POST', this.Id ? this.PluginUpdate : this.PluginImport);
-            const tipText = this.Id ? '更新' : '导入';
             xhr.onreadystatechange = () => {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         this.$router.push({ name: 'hango.pluginMarket' });
                     } else {
-                        let errMsg = `${tipText}失败!`;
                         try {
                             const obj = JSON.parse(xhr.responseText);
-                            errMsg = obj.Message;
-                            this.$toast.error(errMsg);
+                            this.errMsg = obj.Message;
+                            setTimeout(() => {
+                                this.errMsg = '';
+                            }, 3000);
                         } catch (error) {
                             // error
                         }
