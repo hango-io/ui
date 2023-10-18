@@ -57,7 +57,8 @@
                             </v-chip>
                         </template>
                         <template #SourceContent="{ item }">
-                            <v-btn @click="downLoad">点击下载</v-btn>
+                            <v-btn @click="downLoad" v-if="info.SourceContent">点击下载</v-btn>
+                            <span v-else-if="info.SourceUrl">{{info.SourceUrl}}</span>
                         </template>
                     </g-info-card>
                 </v-col>
@@ -159,10 +160,10 @@ export default {
                 { label: '状态', key: 'PluginStatus', text: info.PluginStatus },
                 { label: '实现语言', text: info.Language },
                 { label: '作用域', key: 'PluginScope', text: info.PluginScope },
-                { label: '插件代码', key: 'SourceContent', text: '点击下载' },
+                { label: '插件代码/镜像', key: 'SourceContent', text: '点击下载' },
                 { label: '负责人', text: info.Author },
-                { label: '创建时间', text: info.CreateTime },
-                { label: '更新时间', text: info.UpdateTime },
+                { label: '创建时间', key: 'CreateTime', text: info.CreateTime },
+                { label: '更新时间', key: 'UpdateTime', text: info.UpdateTime },
                 { label: '插件描述', text: info.Description },
             ];
         },
