@@ -88,7 +88,7 @@
             </validation-provider>
             <validation-provider>
                 <v-flex v-if="form.SourceType === 'file'">
-                    <v-btn @click="upload">upload file</v-btn>
+                    <v-btn @click="upload">脚本文件上传</v-btn>
                     <input type="file" id="upload" ref="upload" @change="changeFile" accept=".lua">
                     <span style="margin-left:20px">{{fileName}}</span>
                     <v-icon
@@ -98,13 +98,19 @@
                         mdi-arrow-down-bold-box-outline
                     </v-icon>
                 </v-flex>
-                <v-text-field
-                    v-else
-                    v-model="form.SourceUrl"
-                    label="镜像OCI地址"
-                    :error-messages="errors"
-                    required
-                ></v-text-field>
+                <template v-else>
+                    <v-text-field
+                        v-model="form.SourceUrl"
+                        label="镜像OCI地址*"
+                        :error-messages="errors"
+                        required
+                    ></v-text-field>
+                    <v-text-field
+                        v-model="form.SecretName"
+                        label="secret名称"
+                        :error-messages="errors"
+                    ></v-text-field>
+                </template>
             </validation-provider>
         </v-card>
         <v-card class="mx-auto mb-4" style="padding:20px; height: 750px">
