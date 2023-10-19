@@ -10,15 +10,13 @@ jobs:
             - name: Checkout
               uses: actions/checkout@master
 
+            - name: Use Node.js 16.x
+              uses: actions/setup-node@v2
+              with:
+                node-version: '16.x'
+                
             - name: Build
               run: sh ./build.sh
-
-            - name: Install NodeJS
-              uses: actions/setup-node@v3
-              with:
-                node-version: '16.16.0'
-                cache: 'yarn'
-              
 
             # - name: Deploy
             #   run: npm run-script deploy
