@@ -56,7 +56,7 @@
                                 {{ scope |  PluginScope }}
                             </v-chip>
                         </template>
-                        <template #SourceContent="{ item }">   
+                        <template #SourceContent="{ item }">
                             <v-btn @click="downLoad" v-if="info.SourceContent">点击下载</v-btn>
                             <span v-else-if="info.SourceUrl">{{info.SourceUrl}}</span>
                         </template>
