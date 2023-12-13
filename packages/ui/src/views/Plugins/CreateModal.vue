@@ -7,7 +7,7 @@
         <template v-if="RouteId || DomainId">
             <div class="pb-4" style="max-height: 520px; overflow: auto;">
                 <v-item-group>
-                    <v-row>
+                    <v-row style="width: 100%; margin: 0px">
                         <v-col v-for="item in PluginList" :key="item.PluginType" cols="12" md="4">
                             <v-item>
                                 <v-hover v-slot="{ hover }">

@@ -55,7 +55,6 @@
                                         :color="info.Protocol === 'dubbo' ? 'indigo' : 'info'"
                                         label
                                         text-color="white"
-                                        x-small
                                     >
                                         {{ info.Protocol && info.Protocol.toUpperCase() || '-' }}
                                     </v-chip>
@@ -73,7 +72,6 @@
                         <template #ServiceType="{ item }">
                             <v-chip
                                 :color="item.text === 'dubbo' ? 'indigo' : 'info'"
-                                x-small
                                 text-color="white"
                                 label
                             >
@@ -243,6 +241,19 @@ export default {
                 { label: '请求排队上限(HTTP/1.1)', text: info.TrafficPolicy.ConnectionPool.HTTP.Http1MaxPendingRequests },
                 { label: '单体连接请求上限', text: info.TrafficPolicy.ConnectionPool.HTTP.MaxRequestsPerConnection },
             ]);
+            const sessionState = info.TrafficPolicy.SessionState;
+            if (sessionState && Object.keys(sessionState).length) {
+                list = list.concat([
+                    { label: '会话保持策略', text: 'Cookie插入模式' },
+                    { label: '会话保持时长', text: sessionState.CookieTTL },
+                ]);
+            }
+            const slowStartWindow = info.TrafficPolicy.LoadBalancer.SlowStartWindow;
+            if (slowStartWindow) {
+                list = list.concat([
+                    { label: '服务预热时长', text: slowStartWindow },
+                ]);
+            }
             return list;
         },
         subsetInfoList() {

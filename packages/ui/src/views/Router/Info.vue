@@ -20,11 +20,10 @@
                             <v-row justify="center">
                                 <v-col cols="12">
                                     <g-label>状态：</g-label>
-                                    <v-chip v-if="info.EnableState === 'enable'" color="indigo" text-color="white" label
-                                        x-small>
+                                    <v-chip v-if="info.EnableState === 'enable'" color="indigo" text-color="white" label>
                                         启用
                                     </v-chip>
-                                    <v-chip v-else color="info" text-color="white" label x-small>
+                                    <v-chip v-else color="info" text-color="white" label>
                                         禁用
                                     </v-chip>
                                 </v-col>
@@ -53,31 +52,31 @@
                     <g-info-card title="基础信息" :list="basicInfoList">
                         <template #EnableState="{ item }">
                             <v-chip v-if="info.EnableState === 'enable'" color="indigo" text-color="white" label
-                                x-small>启用</v-chip>
-                            <v-chip v-else color="info" text-color="white" label x-small>禁用</v-chip>
+                                >启用</v-chip>
+                            <v-chip v-else color="info" text-color="white" label >禁用</v-chip>
                         </template>
                         <template #Uri="{ item }">
-                            <v-chip label x-small style="margin-right: 4px" color="info">{{
+                            <v-chip label  style="margin-right: 4px" color="info">{{
                                 SUPPORT_TYPES_MAP[info.Uri.Type].text
                             }}</v-chip>
                             <span v-for="(path, index) in item.text.Value" :key="index" style="margin-right: 8px">
-                                <v-chip label x-small>{{ path }}</v-chip>
+                                <v-chip label >{{ path }}</v-chip>
                             </span>
                         </template>
                         <template #Method="{ item }">
                             <span v-if="item.text && item.text.length !== 0">
-                                <v-chip label x-small v-for="(method, index) in item.text" :key="index"
+                                <v-chip label  v-for="(method, index) in item.text" :key="index"
                                     style="margin-right: 8px">{{ method }}</v-chip>
                             </span>
                             <span v-else> - </span>
                         </template>
                         <template #Hosts="{ item }">
                             <span v-for="(host, index) in item.text" :key="index" style="margin-right: 8px">
-                                <v-chip label x-small>{{ host }}</v-chip>
+                                <v-chip label >{{ host }}</v-chip>
                             </span>
                         </template>
                         <template #Priority="{ item }">
-                            <v-chip x-small color="primary" label>
+                            <v-chip  color="primary" label>
                                 {{ item.text || "-" }}
                             </v-chip>
                         </template>
@@ -107,7 +106,7 @@
                                     }}</span>
                                 </v-avatar>
                                 <b style="margin:0 8px">{{ item.ServiceName }}</b>
-                                <v-chip label x-small>{{ item.Weight }}%</v-chip>
+                                <v-chip label >{{ item.Weight }}%</v-chip>
                             </div>
                             <div v-if="item.DestinationServices &&
                                 item.DestinationServices.length !== 0
@@ -116,7 +115,7 @@
                                     index) in item.DestinationServices" :key="index" style="margin-bottom: 12px">
                                     <span :class="$style.span"></span>
                                     <span style="margin-right:8px">{{ subset.SubsetName }}</span>
-                                    <v-chip label x-small>{{ subset.Weight }}%</v-chip>
+                                    <v-chip label >{{ subset.Weight }}%</v-chip>
                                 </div>
                             </div>
                         </div>
