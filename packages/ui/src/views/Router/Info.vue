@@ -244,7 +244,6 @@ export default {
 </script>
 <style module>
 .serviceCardHead {
-    height: 40px;
     background: #fafcfe;
     padding: 12px;
 }
