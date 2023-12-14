@@ -1,5 +1,5 @@
 <template>
-    <v-select :items="items" v-bind="$attrs" v-on="$listeners"></v-select>
+    <v-select :items="items" v-bind="$attrs" v-on="$listeners" @change="innerChangeHandler"></v-select>
 </template>
 
 <script>
@@ -26,6 +26,10 @@ export default {
                     };
                 });
             });
+        },
+        innerChangeHandler(value) {
+            const tragetGw = this.items.find(gw => gw.value === value);
+            this.$emit('gatewayChange', tragetGw);
         },
     },
     created() {

@@ -10,7 +10,7 @@ Object.keys(rules).forEach(rule => {
     });
 });
 
-const { required, numeric, email, max, min, regex, max_value, min_value } = rules || {};
+const { required, numeric, email, max, min, regex, max_value, min_value, integer } = rules || {};
 setInteractionMode('eager');
 extend('required', {
     ...required,
@@ -117,5 +117,11 @@ extend('Unique', {
     },
     message: (fieldName, placeholders) => {
         return '不可输入重复的值';
+    },
+});
+extend('Integer', {
+    ...integer,
+    message: (fieldName, placeholders) => {
+        return `${fieldName.replace(/\*$/, '')} 必须为整数`;
     },
 });

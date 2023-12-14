@@ -18,7 +18,7 @@
                 label="目标网关*"
                 :disabled="isEdit"
                 :error-messages="errors"
-                @change="handleChange"
+                @gatewayChange="handleChange"
                 required
             ></g-gateway-select>
         </validation-provider>
@@ -77,7 +77,7 @@
 
             <!-- 更多配置 -->
             <v-switch v-model="moreSwitch" label="更多配置"></v-switch>
-            <MoreConfig v-model="form.TrafficPolicy" v-show="moreSwitch" :publishType="form.PublishType">
+            <MoreConfig v-model="form.TrafficPolicy" v-show="moreSwitch" :publishType="form.PublishType" :gwType="selectedGwType" :isEdit="isEdit">
                 <g-label slot="title">更多配置</g-label>
             </MoreConfig>
 
@@ -119,6 +119,13 @@ export const REGISTRY_CENTER_TYPES = [
         value: 'Zookeeper',
     },
 ];
+const GW_TYPE = {
+    LB: 'LoadBalance',
+    API: 'ApiGateway',
+};
+const CONST = {
+    GW_TYPE,
+};
 export default {
     components: {
         ValidationProvider,
@@ -158,6 +165,7 @@ export default {
                 value: 'dubbo',
             },
         ],
+        selectedGwType: 'ApiGateway',
     }),
     watch: {
         current: {
@@ -265,9 +273,11 @@ export default {
             }).then(({ Result = {} }) => {
                 this.form = Result;
                 this.form.Hosts = Result.Hosts.split(',');
+                this.selectedGwType = Result.VirtualGwType;
             });
         },
-        handleChange() {
+        handleChange(gw) {
+            this.selectedGwType = gw.Type;
             this.loadServiceAddressList();
             this.loadRegistryCenterType();
             this.loadDomain();
