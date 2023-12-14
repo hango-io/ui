@@ -25,6 +25,7 @@
             <v-switch
                 v-model="enableSessionState"
                 label="会话保持"
+                @change="enableSessionStateChange"
             ></v-switch>
         </validation-provider>
         <template v-if="enableSessionState">
@@ -62,6 +63,7 @@
             <v-switch
                 v-model="enableSlowStartWindow"
                 label="服务预热"
+                @change="enableSlowStartWindowChange"
             ></v-switch>
         </validation-provider>
         <template v-if="enableSlowStartWindow">
@@ -249,10 +251,6 @@ const TEMPLATE_MODAL = {
             HttpHeaderName: '',
             UseSourceIp: true,
         },
-        SlowStartWindow: '300',
-    },
-    SessionState: {
-        CookieTTL: '120',
     },
     ConnectionPool: {
         HTTP: {
@@ -336,12 +334,12 @@ export default {
                 if (nV) {
                     if (JSON.stringify(nV) !== JSON.stringify(oV)) {
                         this.form = this.toDisplay(nV);
-                        if (nV.SessionState && Object.keys(nV.SessionState).length && this.isEdit) {
+                        if (nV.SessionState && Object.keys(nV.SessionState).length) {
                             this.enableSessionState = true;
                         } else {
                             this.enableSessionState = false;
                         }
-                        if (nV.LoadBalancer.SlowStartWindow && this.isEdit) {
+                        if (nV.LoadBalancer.SlowStartWindow) {
                             this.enableSlowStartWindow = true;
                         } else {
                             this.enableSlowStartWindow = false;
@@ -391,6 +389,20 @@ export default {
                 delete data.LoadBalancer.SlowStartWindow;
             }
             return data;
+        },
+        enableSessionStateChange() {
+            if (this.enableSessionState) {
+                this.$set(this.form, 'SessionState', {
+                    CookieTTL: '120',
+                });
+            }
+            this.$emit('update', this.getData());
+        },
+        enableSlowStartWindowChange() {
+            if (this.enableSlowStartWindow) {
+                this.$set(this.form.LoadBalancer, 'SlowStartWindow', '300');
+            }
+            this.$emit('update', this.getData());
         },
     },
 };
